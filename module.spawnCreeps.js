@@ -466,7 +466,7 @@ module.exports = {
 
         if (numberOf.harvester + numberOf.energyTransporter == 0 && spawnRoom.energyAvailable < global.buildingPlans.harvester.minEnergy) {
             // Set up miniHarvester to spawn
-            tableImportance.miniharvester.min = 1;4
+            tableImportance.miniharvester.min = 1;
         }
 
         tableImportance = _.filter(tableImportance, function (x) {
