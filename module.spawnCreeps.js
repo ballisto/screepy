@@ -55,14 +55,13 @@ module.exports = {
         minimumSpawnOf["SKHarvester"] = 0;
         minimumSpawnOf["SKHauler"] = 0;
 
-        //let myFlags = _.filter(Game.flags,{ memory: { spawn: spawnRoom.memory.masterSpawn}});
-        let myFlags = Game.flags;
+        let myFlags = _.filter(Game.flags,{ memory: { spawn: spawnRoom.memory.masterSpawn}});        
 
         let vacantFlags = {};
         for (let flag in myFlags) {
-          //console.log(flag);
             var mem = myFlags[flag].memory;
             var vol = mem.volume;
+
             switch (mem.function) {
                 case "transporter":
                     minimumSpawnOf.transporter += vol;
