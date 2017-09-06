@@ -492,9 +492,9 @@ module.exports = {
                     spawnList.push("upgrader");
                 }
             }
-            console.log(minimumSpawnOf.harvester);
-            console.log(numberOf.harvester);
-// console.log(minimumSpawnOf.energyHauler);
+            // console.log(minimumSpawnOf.harvester);
+            // console.log(numberOf.harvester);
+            // console.log(minimumSpawnOf.energyHauler);
             return spawnList;
         }
         else {
