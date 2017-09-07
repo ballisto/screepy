@@ -55,8 +55,8 @@ module.exports = {
         minimumSpawnOf["SKHarvester"] = 0;
         minimumSpawnOf["SKHauler"] = 0;
 
-        //let myFlags = _.filter(Game.flags,{ memory: { spawn: spawnRoom.memory.masterSpawn}});
-        let myFlags = Game.flags;
+        let myFlags = _.filter(Game.flags,{ memory: { spawn: spawnRoom.memory.masterSpawn}});
+        //let myFlags = Game.flags;
 
         let vacantFlags = {};
         for (let flag in myFlags) {
@@ -84,7 +84,7 @@ module.exports = {
                     break;
                 case 'narrowSource':
                     minimumSpawnOf.stationaryHarvester++;
-                    minimumSpawnOf.energyTransporter++;
+                    minimumSpawnOf.energyTransporter += vol - 1;
                     break;
                 case "remoteController":
                     vacantFlags = _.filter(myFlags, function (f) {
