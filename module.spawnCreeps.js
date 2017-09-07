@@ -54,8 +54,9 @@ module.exports = {
         minimumSpawnOf["transporter"] = 0;
         minimumSpawnOf["SKHarvester"] = 0;
         minimumSpawnOf["SKHauler"] = 0;
+        minimumSpawnOf["energyTransporter"] = 0;
 
-        let myFlags = _.filter(Game.flags,{ memory: { spawn: spawnRoom.memory.masterSpawn}});        
+        let myFlags = _.filter(Game.flags,{ memory: { spawn: spawnRoom.memory.masterSpawn}});
 
         let vacantFlags = {};
         for (let flag in myFlags) {
@@ -83,7 +84,7 @@ module.exports = {
                     break;
                 case 'narrowSource':
                     minimumSpawnOf.stationaryHarvester++;
-                    minimumSpawnOf.energyTransporter++;
+                    minimumSpawnOf.energyTransporter += vol - 1;
                     break;
                 case "remoteController":
                     vacantFlags = _.filter(myFlags, function (f) {
@@ -158,7 +159,7 @@ module.exports = {
             }
         }
         else {
-            minimumSpawnOf["upgrader"] = numberOfSources + 1;
+            minimumSpawnOf["upgrader"] = numberOfSources + 6;
         }
         //Wall Repairer
         if (spawnRoom.memory.roomSecure == true && constructionOfRampartsAndWalls == 0) {
@@ -182,7 +183,7 @@ module.exports = {
             }
         }
         // EnergyTransporter, Harvester & Repairer
-        minimumSpawnOf["energyTransporter"] = minimumSpawnOf.stationaryHarvester;
+        //minimumSpawnOf["energyTransporter"] = minimumSpawnOf.stationaryHarvester;
         minimumSpawnOf["harvester"] = Math.ceil(numberOfSources * 1.5) - minimumSpawnOf.energyTransporter;
         minimumSpawnOf["repairer"] = Math.ceil(numberOfSources * 0.5);
         /** Rest **/

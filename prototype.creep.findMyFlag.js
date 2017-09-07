@@ -101,19 +101,41 @@ module.exports = function() {
 
             let mySpawn = this.memory.spawn;
 
-            if (flagFunction != "remoteController") {
-                flagList = _.filter(Game.flags, {memory: {function: flagFunction}});
+						switch (flagFunction) {
+								case "remoteController":
+										flagList = _.filter(Game.flags, function (f) {
+												let flagRoom = Game.rooms[f.pos.roomName];
+												if (f.memory.function == "remoteController" && f.memory.spawn == mySpawn && flagRoom != undefined && flagRoom.controller != undefined && flagRoom.controller.owner == undefined && (flagRoom.controller.reservation == undefined || flagRoom.controller.reservation.ticksToEnd < 3000)) {
+														//Flag needing a claimer found
+														return true;
+												}
+										});
+								break;
 
-						}
-            else {
-                flagList = _.filter(Game.flags, function (f) {
-                    let flagRoom = Game.rooms[f.pos.roomName];
-                    if (f.memory.function == "remoteController" && f.memory.spawn == mySpawn && flagRoom != undefined && flagRoom.controller != undefined && flagRoom.controller.owner == undefined && (flagRoom.controller.reservation == undefined || flagRoom.controller.reservation.ticksToEnd < 3000)) {
-                        //Flag needing a claimer found
-                        return true;
-                    }
-                });
-            }
+								case "haulEnergy":
+										flagList = _.filter(Game.flags, function (f) {
+												let flagRoom = Game.rooms[f.pos.roomName];
+												if (f.memory.function == "haulEnergy" && f.memory.spawn == mySpawn ) {
+														//Flag for remote harvesting for this spawn found
+														return true;
+												}
+										});
+								break;
+
+								case "narrowSource":
+										flagList = _.filter(Game.flags, function (f) {
+												let flagRoom = Game.rooms[f.pos.roomName];
+												if (f.memory.function == "narrowSource" && f.memory.spawn == mySpawn ) {
+														//Flag for local harvesting for this spawn found
+														return true;
+												}
+										});
+								break;
+
+								default:
+										flagList = _.filter(Game.flags, {memory: {function: flagFunction}});
+								break;
+							}
 
             for (let fl in flagList) {
                 this.memory.currentFlag = flagList[fl].name;
