@@ -122,6 +122,16 @@ module.exports = function() {
 										});
 								break;
 
+								case "narrowSource":
+										flagList = _.filter(Game.flags, function (f) {
+												let flagRoom = Game.rooms[f.pos.roomName];
+												if (f.memory.function == "narrowSource" && f.memory.spawn == mySpawn ) {
+														//Flag for local harvesting for this spawn found
+														return true;
+												}
+										});
+								break;
+
 								default:
 										flagList = _.filter(Game.flags, {memory: {function: flagFunction}});
 								break;
