@@ -44,7 +44,7 @@ module.exports = {
                 }
             }
             else {
-                var wounded = Game.rooms[r].find(FIND_CREEPS, {filter: (s) => s.hits < s.hitsMax && isHostile(s) == false});
+                var wounded = Game.rooms[roomIndex].find(FIND_CREEPS, {filter: (s) => s.hits < s.hitsMax && isHostile(s) == false});
                 if (wounded.length > 0) {
                     // Tower healing code
                     for (var tower in towers) {
