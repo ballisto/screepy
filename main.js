@@ -4,6 +4,8 @@ const CPUdebug = false;
 
 require("globals");
 var moduleSpawnCreeps = require('module.spawnCreeps');
+var towerModule = require('tower');
+
 global.reqCPU = Game.cpu.getUsed();
 global.start = Game.time;
 console.log('CPU@Initialization: ' + (global.reqCPU - cpu) + " / Tick: " + Game.time + " / Bucket: " + Game.cpu.bucket);
@@ -757,7 +759,7 @@ module.exports.loop = function() {
 
             // Tower code
             if (Game.rooms[r].memory.roomArray != undefined) {
-                tower.defendMyRoom(r);
+                towerModule.defendMyRoom(r);
             }
 
             // Search for dropped energy
