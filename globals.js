@@ -4,6 +4,7 @@ require('prototype.creep.findResource')();
 require('functions.creeps');
 require('functions.game');
 require('functions.roles');
+require('tower');
 
 global.DELAYFLOWROOMCHECK = 313;
 global.DELAYMARKETAUTOSELL = 7;
@@ -775,28 +776,28 @@ global.buildingPlans = {
         },
         {
             //Level 4 (max 1300)
-            minEnergy: 700,
-            body: [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE]
+            minEnergy: 900,
+            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE]
         },
         {
             //Level 5 (max 1800)
-            minEnergy: 700,
-            body: [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE]
+            minEnergy: 900,
+            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE]
         },
         {
             //Level 6 (max 2300)
-            minEnergy: 700,
-            body: [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE]
+            minEnergy: 900,
+            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE]
         },
         {
             //Level 7 (max 5600)
-            minEnergy: 700,
-            body: [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE]
+            minEnergy: 900,
+            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE]
         },
         {
             //Level 8 (max 12900)
-            minEnergy: 700,
-            body: [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE]
+            minEnergy: 900,
+            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE]
         }],
 
     SKHarvester: [
