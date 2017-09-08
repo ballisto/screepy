@@ -184,7 +184,7 @@ module.exports = {
         }
         // EnergyTransporter, Harvester & Repairer
         //minimumSpawnOf["energyTransporter"] = minimumSpawnOf.stationaryHarvester;
-        minimumSpawnOf["harvester"] = Math.ceil(numberOfSources * 1.5) - minimumSpawnOf.energyTransporter;
+        minimumSpawnOf["harvester"] = Math.ceil(numberOfSources * 1) - minimumSpawnOf.energyTransporter;
         minimumSpawnOf["repairer"] = Math.ceil(numberOfSources * 0.5);
         /** Rest **/
         // Miner

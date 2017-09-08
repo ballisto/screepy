@@ -48,7 +48,7 @@ Creep.prototype.roleEnergyHauler = function() {
                     var structure;
                     if (_.sum(this.carry) == this.carry[RESOURCE_ENERGY]) {
                         //Creep has only energy loaded
-                        structure = this.findResource(global.RESOURCE_SPACE, STRUCTURE_SPAWN, STRUCTURE_TOWER, STRUCTURE_LINK, STRUCTURE_CONTAINER, STRUCTURE_STORAGE, STRUCTURE_EXTENSION);
+                        structure = this.findResource(global.RESOURCE_SPACE, STRUCTURE_SPAWN, STRUCTURE_TOWER, STRUCTURE_LINK, STRUCTURE_STORAGE, STRUCTURE_EXTENSION);
                     }
                     else {
                         //Creep has minerals loaded
