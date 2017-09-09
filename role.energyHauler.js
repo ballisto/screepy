@@ -1,4 +1,7 @@
 Creep.prototype.roleEnergyHauler = function() {
+    if (this.ticksToLive == 1) {
+      console.log(this.name + ' - livetime hauled - ' + this.memory.totalenergyhauled + ' - Flag - ' + this.memory.currentFlag);
+    }
     if (_.sum(this.carry) == 0) {
         // switch state to collecting
         if (this.memory.working == true) {
@@ -46,24 +49,58 @@ Creep.prototype.roleEnergyHauler = function() {
                 else {
                     // back in spawn room
                     var structure;
-                    if (_.sum(this.carry) == this.carry[RESOURCE_ENERGY]) {
+                    if (this.room.storage != undefined) {
+                        structure = this.room.storage;
+                    }
+                    else if (_.sum(this.carry) == this.carry[RESOURCE_ENERGY]) {
                         //Creep has only energy loaded
                         structure = this.findResource(global.RESOURCE_SPACE, STRUCTURE_SPAWN, STRUCTURE_TOWER, STRUCTURE_LINK, STRUCTURE_STORAGE, STRUCTURE_EXTENSION);
                     }
                     else {
                         //Creep has minerals loaded
-                        structure = this.room.storage;
+                        structure = this.findResource(global.RESOURCE_SPACE, STRUCTURE_CONTAINER);
                     }
-
                     // if we found one
                     if (structure != null) {
                         // try to transfer energy, if it is not in range
-                        for (let c in this.carry) {
-                            if (this.transfer(structure, c) == ERR_NOT_IN_RANGE) {
-                                // move towards it
-                                this.moveTo(structure, {reusePath: moveReusePath(), ignoreCreeps: false});
-                            }
+                        if (this.memory.totalenergyhauled == undefined) {
+                          this.memory.totalenergyhauled = 0;
                         }
+                        var carriedEnergyBefore = this.carry[RESOURCE_ENERGY];
+
+                        if (structure.store != undefined && structure.storeCapacity != undefined) {
+                            var structureTotalAmount = 0;
+                            for (var curResource in structure.store) {
+                              structureTotalAmount += structure.store[curResource];
+                            }
+                            var structureRemainingCapacity = structure.storeCapacity - structureTotalAmount;
+                        }
+
+                        for (let c in this.carry) {
+                            var amountToTransfer = 0;
+                            if (this.carry[c] < structureRemainingCapacity) {
+                                amountToTransfer = this.carry[c];
+                            }
+                            else
+                            {
+                              amountToTransfer = structureRemainingCapacity;
+                            }
+                            var result = this.transfer(structure, c, amountToTransfer);
+                            switch (result) {
+                              case ERR_NOT_IN_RANGE :
+                                  this.moveTo(structure, {reusePath: moveReusePath(), ignoreCreeps: false});
+                                  break;
+                              case OK :
+                                  if (c == RESOURCE_ENERGY) {
+                                      this.memory.totalenergyhauled += amountToTransfer ;
+                                      //console.log(this.name + ' - ' + this.memory.totalenergyhauled);
+                                  }
+                              break;
+
+                              default:
+                              break;
+                            }
+                          }
                     }
                     else {
                         this.say("No Structure!");
