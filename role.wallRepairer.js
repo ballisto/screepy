@@ -52,7 +52,7 @@ Creep.prototype.roleWallRepairer = function() {
                     }
 
                     // if we find a wall that has to be repaired
-                    if (target != undefined) {
+                    if (target != undefined && target.hits < 1000000) {
                         var result = this.repair(target);
                         if (result == ERR_NOT_IN_RANGE) {
                             // move towards it

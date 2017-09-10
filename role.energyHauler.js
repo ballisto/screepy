@@ -49,10 +49,10 @@ Creep.prototype.roleEnergyHauler = function() {
                 else {
                     // back in spawn room
                     var structure;
-                    if (this.room.storage != undefined) {
-                        structure = this.room.storage;
-                    }
-                    else if (_.sum(this.carry) == this.carry[RESOURCE_ENERGY]) {
+                    // if (this.room.storage != undefined) {
+                    //     structure = this.room.storage;
+                    // }
+                    if (_.sum(this.carry) == this.carry[RESOURCE_ENERGY]) {
                         //Creep has only energy loaded
                         structure = this.findResource(global.RESOURCE_SPACE, STRUCTURE_SPAWN, STRUCTURE_TOWER, STRUCTURE_LINK, STRUCTURE_STORAGE, STRUCTURE_EXTENSION);
                     }
