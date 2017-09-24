@@ -267,33 +267,33 @@ global.buildingPlans = {
         },
         {
             //Level 3 (max 800)
-            minEnergy: 700,
-            body: [MOVE, MOVE, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY]
+            minEnergy: 750,
+            body: [MOVE, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY]
         },
         {
             //Level 4 (max 1300)
-            minEnergy: 950,
-            body: [MOVE, MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]
+            minEnergy: 850,
+            body: [MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY]
         },
         {
             //Level 5 (max 1800)
-            minEnergy: 950,
-            body: [MOVE, MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]
+            minEnergy: 850,
+            body: [MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY]
         },
         {
             //Level 6 (max 2300)
-            minEnergy: 950,
-            body: [MOVE, MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]
+            minEnergy: 850,
+            body: [MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY]
         },
         {
             //Level 7 (max 5600)
-            minEnergy: 950,
-            body: [MOVE, MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]
+            minEnergy: 850,
+            body: [MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY]
         },
         {
             //Level 8 (max 12900)
-            minEnergy: 950,
-            body: [MOVE, MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]
+            minEnergy: 850,
+            body: [MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY]
         }],
 
     upgrader: [
