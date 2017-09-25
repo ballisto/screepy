@@ -106,7 +106,7 @@ Creep.prototype.roleEnergyHauler = function() {
                               default:
                               if (c == RESOURCE_ENERGY) {
                                   this.drop(c);
-                                  
+
                               }
                               break;
                             }
@@ -128,7 +128,6 @@ Creep.prototype.roleEnergyHauler = function() {
             // Find exit to target room
             if (this.room.name != remoteSource.pos.roomName) {
                 //still in old room, go out
-                console.log('MOVE')
                 this.moveTo(remoteSource, {reusePath: moveReusePath()});
             }
             else {
