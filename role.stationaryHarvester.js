@@ -25,6 +25,7 @@ Creep.prototype.roleStationaryHarvester = function() {
                     }
                     if (this.transfer(container, RESOURCE_ENERGY) != OK) {
                         delete this.memory.narrowContainer;
+                        this.drop(RESOURCE_ENERGY);
                     }
                 }
 
