@@ -772,32 +772,32 @@ global.buildingPlans = {
         {
             //Level 3 (max 800)
             minEnergy: 700,
-            body: [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE]
+            body: [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE]
         },
         {
             //Level 4 (max 1300)
             minEnergy: 900,
-            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE]
+            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE]
         },
         {
             //Level 5 (max 1800)
             minEnergy: 900,
-            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE]
+            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE]
         },
         {
             //Level 6 (max 2300)
             minEnergy: 900,
-            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE]
+            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE]
         },
         {
             //Level 7 (max 5600)
             minEnergy: 900,
-            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE]
+            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE]
         },
         {
             //Level 8 (max 12900)
             minEnergy: 900,
-            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE]
+            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE]
         }],
 
     SKHarvester: [

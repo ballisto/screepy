@@ -13,7 +13,7 @@ Creep.prototype.roleUpgrader = function() {
 
         // if creep is supposed to transfer energy to the controller
         if (this.memory.working == true) {
-            if (this.room.memory.hostiles.length > 0) {
+            if (this.room.memory.hostiles.length > 0 && this.room.memory.roomArray.towers.length > 0) {
                 // Hostiles present in room
                 this.towerEmergencyFill();
             }
