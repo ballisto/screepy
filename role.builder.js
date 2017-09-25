@@ -3,7 +3,7 @@ Creep.prototype.roleBuilder = function () {
     if (this.room.name != this.memory.homeroom && this.memory.role != "remoteHarvester" && this.memory.role != "energyHauler") {
         //return to home room
         var hometarget = Game.getObjectById(this.memory.spawn);
-        
+
         this.moveTo(hometarget, {reusePath: moveReusePath()});
     }
     else {
@@ -24,7 +24,7 @@ Creep.prototype.roleBuilder = function () {
         }
         // if creep is supposed to complete a constructionSite
         if (this.memory.working == true) {
-            if (this.room.memory.hostiles.length > 0) {
+            if (this.room.memory.hostiles.length > 0 && this.room.memory.roomArray.towers.length > 0) {
                 this.towerEmergencyFill();
             }
             else {
