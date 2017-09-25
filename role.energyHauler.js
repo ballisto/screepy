@@ -20,6 +20,7 @@ Creep.prototype.roleEnergyHauler = function() {
         // creep is supposed to transfer energy to a structure
         // Find construction sites
         var constructionSites = this.pos.findInRange(FIND_MY_CONSTRUCTION_SITES, 5);
+
         if (constructionSites.length > 0 && this.room.name != this.memory.homeroom) {
             // Construction sites found, build them!
             let site = this.pos.findClosestByPath(constructionSites);
@@ -61,6 +62,10 @@ Creep.prototype.roleEnergyHauler = function() {
                         //Creep has minerals loaded
                         structure = this.findResource(global.RESOURCE_SPACE, STRUCTURE_CONTAINER);
                     }
+                    if (structure == undefined) {
+                      structure = Game.getObjectById(this.memory.spawn);
+                    }
+
                     // if we found one
                     if (structure != null) {
                         // try to transfer energy, if it is not in range
@@ -99,11 +104,16 @@ Creep.prototype.roleEnergyHauler = function() {
                               break;
 
                               default:
+                              if (c == RESOURCE_ENERGY) {
+                                  this.drop(c);
+                                  
+                              }
                               break;
                             }
                           }
                     }
                     else {
+
                         this.say("No Structure!");
                     }
                 }
@@ -118,6 +128,7 @@ Creep.prototype.roleEnergyHauler = function() {
             // Find exit to target room
             if (this.room.name != remoteSource.pos.roomName) {
                 //still in old room, go out
+                console.log('MOVE')
                 this.moveTo(remoteSource, {reusePath: moveReusePath()});
             }
             else {
@@ -136,7 +147,7 @@ Creep.prototype.roleEnergyHauler = function() {
                         }
                     }
                     else {
-                        this.roleCollector();
+                        // this.roleCollector();
                     }
                 }
                 else {

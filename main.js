@@ -783,12 +783,12 @@ module.exports.loop = function() {
                                 let busyCollectors = Game.rooms[r].find(FIND_MY_CREEPS, {filter: (c) => c.memory.jobQueueTask == "pickUpEnergy" && c.memory.jobQueueObject == energyID});
                                 if (busyCollectors.length == 0 && energyAmount > 15 && (Game.rooms[r].memory.hostiles.length == 0 || (Game.rooms[r].memory.roomArray != undefined && Game.rooms[r].memory.roomArray.lairs.length > 0))) {
                                     var collector = energies[energy].pos.findClosestByPath(FIND_MY_CREEPS, {
-                                        filter: (s) => (s.carryCapacity - _.sum(s.carry) - energyAmount) >= 0 && s.memory.role != "protector" && s.memory.role != "einarr" && s.memory.role != "distributor" && s.memory.role != "stationaryHarvester" && s.memory.role != "remoteStationaryHarvester" && s.memory.dropEnergy != true
+                                        filter: (s) => (s.carryCapacity - _.sum(s.carry) - energyAmount) >= 0 && s.memory.role != "energyHauler" && s.memory.role != "protector" && s.memory.role != "einarr" && s.memory.role != "distributor" && s.memory.role != "stationaryHarvester" && s.memory.role != "remoteStationaryHarvester" && s.memory.dropEnergy != true
                                     });
 
                                     if (collector == null) {
                                         collector = energies[energy].pos.findClosestByPath(FIND_MY_CREEPS, {
-                                            filter: (s) => (s.carryCapacity - _.sum(s.carry)) > 0 && s.memory.role != "protector" && s.memory.role != "einarr" && s.memory.role != "distributor" && s.memory.role != "stationaryHarvester" && s.memory.role != "remoteStationaryHarvester" && s.memory.role != "SKHarvester" && s.memory.dropEnergy != true
+                                            filter: (s) => (s.carryCapacity - _.sum(s.carry)) > 0 && s.memory.role != "energyHauler" && s.memory.role != "protector" && s.memory.role != "einarr" && s.memory.role != "distributor" && s.memory.role != "stationaryHarvester" && s.memory.role != "remoteStationaryHarvester" && s.memory.role != "SKHarvester" && s.memory.dropEnergy != true
                                         });
                                     }
 
@@ -1331,7 +1331,8 @@ module.exports.loop = function() {
                                 }
                                 else if (creep.pickup(source) == ERR_NOT_IN_RANGE) {
                                     creep.moveTo(source, {reusePath: moveReusePath()});
-                                }
+                                  }
+                                                                
                             }
                             break;
                         case "prepareBoost": //Creep boost to be prepared

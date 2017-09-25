@@ -36,6 +36,19 @@ module.exports = function() {
             for (let argcounter = 1; argcounter < arguments.length; argcounter++) {
                 // Go through requested sourceTypes
                 switch (arguments[argcounter]) {
+										case FIND_DROPPED_RESOURCES:
+											if (resource == RESOURCE_ENERGY) {
+
+													tempArray = this.room.find(FIND_DROPPED_RESOURCES);
+													for (var s in tempArray) {
+															if (tempArray[s].energy != undefined) {
+																if (tempArray[s].energy > 0) {
+																	IDBasket.push(tempArray[s]);
+																}
+															}
+													}
+											}
+											break;
                     case FIND_SOURCES:
                         if (resource == RESOURCE_ENERGY) {
                             tempArray = this.room.memory.roomArray.sources;
@@ -187,11 +200,13 @@ module.exports = function() {
             //Get path to collected objects
             var target = this.pos.findClosestByPath(IDBasket);
             this.memory.resourceBuffer = resource;
+
             if (target != null) {
                 this.memory.targetBuffer = target.id;
                 this.memory.roomBuffer = this.room.name;
                 return target;
             }
+
             else {
                 return null;
             }
