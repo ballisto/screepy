@@ -159,7 +159,7 @@ module.exports = {
             }
         }
         else {
-            minimumSpawnOf["upgrader"] = numberOfSources + 1;
+            minimumSpawnOf["upgrader"] = numberOfSources;
         }
         //Wall Repairer
         if (spawnRoom.memory.roomSecure == true && constructionOfRampartsAndWalls == 0) {
