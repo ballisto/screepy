@@ -1,8 +1,8 @@
 require('prototype.spawn2')();
 require('prototype.creep.findMyFlag')();
 require('prototype.creep.findResource')();
-require('prototype.room')();
-require('prototype.roomobject')();
+require('prototype.room');
+require('prototype.roomobject');
 require('functions.creeps');
 require('functions.game');
 require('functions.roles');
