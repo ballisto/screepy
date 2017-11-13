@@ -77,7 +77,7 @@ RoomObject.prototype.getObjectType =
     };
     RoomObject.prototype.energyAvailable =
         function () {
-        switch (this.getObjectType) {
+        switch (this.getObjectType()) {
             case "Resource" :
                   if(this.resourceType == RESOURCE_ENERGY) {
                       return this.amount;

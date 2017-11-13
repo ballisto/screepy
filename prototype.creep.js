@@ -15,7 +15,7 @@ Creep.prototype.runRole =
         roles[this.memory.role].run(this);
     };
 
-/** @function 
+/** @function
     @param {bool} useContainer
     @param {bool} useSource */
 Creep.prototype.getEnergy =
@@ -46,11 +46,173 @@ Creep.prototype.getEnergy =
             // try to harvest energy, if the source is not in range
             if (this.harvest(source) == ERR_NOT_IN_RANGE) {
                 // move towards it
-                
+
                 var source_pos = source.pos;
-                
+
                 this.moveTo(source);
-                
+
             }
         }
     };
+Creep.prototype.findEnergySource =
+        function (sourceTypes) {
+          let IDBasket = [];
+          let tempArray = [];
+
+          for (let argcounter = 0; argcounter <= arguments.length - 1; argcounter++) {
+              // Go through requested sourceTypes
+              switch (arguments[argcounter]) {
+                  case FIND_DROPPED_RESOURCES:
+                        tempArray = this.room.find(FIND_DROPPED_RESOURCES);
+                        for (var s in tempArray) {
+                            if (tempArray[s].energy != undefined) {
+                              if (tempArray[s].energy > 0) {
+                                IDBasket.push(tempArray[s]);
+                              }
+                            }
+                        }
+                    break;
+                  case FIND_SOURCES:
+                          tempArray = this.room.memory.roomArray.sources;
+                          for (var s in tempArray) {
+                              if (Game.getObjectById(tempArray[s]).energy > 0) {
+                                  IDBasket.push(Game.getObjectById(tempArray[s]));
+                              }
+                          }
+                          break;
+
+                  case STRUCTURE_LINK:
+                          tempArray = this.room.memory.roomArray.links;
+                          for (var s in tempArray) {
+                              if (Game.getObjectById(tempArray[s]) != null && Game.getObjectById(tempArray[s]) != null && Game.getObjectById(tempArray[s]).energy > 0 && this.room.memory.links[tempArray[s]].priority > 0) {
+                                  IDBasket.push(Game.getObjectById(tempArray[s]));
+                              }
+                          }
+                      break;
+
+                  case STRUCTURE_CONTAINER:
+                          tempArray = this.room.memory.roomArray.containers;
+                          for (var s in tempArray) {
+                              if (Game.getObjectById(tempArray[s]) != null && Game.getObjectById(tempArray[s]).store[RESOURCE_ENERGY] > 0) {
+                                  IDBasket.push(Game.getObjectById(tempArray[s]));
+                              }
+                          }
+                      break;
+
+                  case STRUCTURE_STORAGE:
+                          if (this.room.storage != undefined && this.room.storage != undefined && this.room.storage.store[RESOURCE_ENERGY] > 0) {
+                              IDBasket.push(this.room.storage);
+                          }
+                      break;
+
+                  case STRUCTURE_TERMINAL:
+                          if (this.room.terminal != undefined && this.room.terminal.store[RESOURCE_ENERGY] > this.room.memory.resourceLimits[RESOURCE_ENERGY].minTerminal) {
+                              IDBasket.push(this.room.terminal);
+                          }
+                      break;
+              }
+          }
+
+          //Get path to collected objects
+          result = this.pos.findClosestByPath(IDBasket);
+          if (result != undefined && result != null) {
+            return result.id;
+          }
+          else {
+            return null;
+          }
+
+        };
+
+Creep.prototype.findSpaceEnergy =
+        function (sourceTypes) {
+          let IDBasket = [];
+          let tempArray = [];
+          var result;
+
+          for (let argcounter = 0; argcounter <= arguments.length - 1; argcounter++) {
+              // Go through requested sourceTypes
+              switch (arguments[argcounter]) {
+
+                  case STRUCTURE_EXTENSION:
+                          tempArray = this.room.memory.roomArray.extensions;
+                          for (var s in tempArray) {
+                              let container = Game.getObjectById(tempArray[s]);
+                              if (Game.getObjectById(tempArray[s]) != null && container.energy < container.energyCapacity) {
+                                  IDBasket.push(container);
+                              }
+                          }
+                      break;
+
+                  case STRUCTURE_SPAWN:
+                          tempArray = this.room.memory.roomArray.spawns;
+                          for (var s in tempArray) {
+                              let container = Game.getObjectById(tempArray[s]);
+                              if (container.energy < container.energyCapacity) {
+                                  IDBasket.push(container);
+                              }
+                          }
+                      break;
+
+                  case STRUCTURE_LINK:
+                          tempArray = this.room.memory.roomArray.links;
+                          for (var s in tempArray) {
+                              let container = Game.getObjectById(tempArray[s]);
+                              if (Game.getObjectById(tempArray[s]) != null && container.energy < container.energyCapacity && container.room.memory.links[container.id].priority == 0) {
+                                  IDBasket.push(container);
+                              }
+                          }
+                      break;
+
+                  case STRUCTURE_TOWER:
+                          tempArray = this.room.memory.roomArray.towers;
+                          for (var s in tempArray) {
+                              let container = Game.getObjectById(tempArray[s]);
+                              if (Game.getObjectById(tempArray[s]) != null && container.energy < (container.energyCapacity/10)*9) {
+                                  IDBasket.push(container);
+                              }
+                          }
+                      break;
+
+                  case STRUCTURE_CONTAINER:
+                          tempArray = this.room.memory.roomArray.containers;
+                          for (var s in tempArray) {
+                              if (Game.getObjectById(tempArray[s]) != null && Game.getObjectById(tempArray[s]).storeCapacity - _.sum(Game.getObjectById(tempArray[s]).store) > 0) {
+                                  IDBasket.push(Game.getObjectById(tempArray[s]));
+                              }
+                          }
+                      break;
+
+                  case STRUCTURE_STORAGE:
+                          if (this.room.storage != undefined && this.room.storage.storeCapacity - _.sum(this.room.storage.store) > 0) {
+                              IDBasket.push(this.room.storage);
+                          }
+                      break;
+
+                  case STRUCTURE_TERMINAL:
+                          if (this.room.terminal != undefined && this.room.terminal.storeCapacity - _.sum(this.room.terminal.store) > 0) {
+                              IDBasket.push(this.room.terminal);
+                          }
+                      break;
+
+                  case STRUCTURE_LAB:
+                          tempArray = this.room.memory.roomArray.labs;
+                          for (var s in tempArray) {
+                              let container = Game.getObjectById(tempArray[s]);
+                              if (Game.getObjectById(tempArray[s]) != null && container.energy < container.energyCapacity) {
+                                  IDBasket.push(container);
+                              }
+                          }
+                      break;
+              }
+          }
+
+          //Get path to collected objects
+          result = this.pos.findClosestByPath(IDBasket);
+          if (result != undefined && result != null) {
+            return result.id;
+          }
+          else {
+            return null;
+          }
+        };
