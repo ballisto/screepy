@@ -249,6 +249,10 @@ Room.prototype.saveHostiles =
 Room.prototype.manageRamparts =
     function () {
       //Manage ramparts
+      let roomCreeps = this.find(FIND_MY_CREEPS);
+      var hostiles = this.find(FIND_HOSTILE_CREEPS);
+      let enemies = _.filter(hostiles, function (e) {return (isHostile(e))});
+      
       if (this.controller != undefined && this.controller.owner != undefined && this.controller.owner.username == global.playerUsername) {
           if (this.memory.roomArray != undefined && enemies.length == 0) {
               //Allied creeps in room and no hostile creeps
