@@ -58,10 +58,7 @@ Creep.prototype.roleCollector = function() {
                     if (this.memory.role == "harvester") {
                         container = this.findResource(RESOURCE_ENERGY, FIND_SOURCES, STRUCTURE_LINK);
                     }
-                    if (this.memory.role == "energyTransporter") {
-                        container = this.findResource(RESOURCE_ENERGY, STRUCTURE_LINK, STRUCTURE_CONTAINER);
-                    }
-                    if (this.memory.role == "distributor" || this.memory.role == "scientist") {
+                    if (this.memory.role == "energyTransporter" || this.memory.role == "distributor" || this.memory.role == "scientist") {
                         container = this.findResource(RESOURCE_ENERGY, STRUCTURE_LINK);
                     }
                 }

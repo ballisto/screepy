@@ -56,14 +56,15 @@ module.exports = {
                   for(var i in towers){
                        //...repair Buildings! :) But ONLY until HALF the energy of the tower is gone.
                        //Because we don't want to be exposed if something shows up at our door :)
-                       if(towers.energy > ((towers.energyCapacity / 10)* 9)){
+                       if(towers[i].energy > ((towers[i].energyCapacity / 10)* 7)){
 
                            //Find the closest damaged Structure
-                           var closestDamagedStructure = towers.pos.findClosestByRange(FIND_STRUCTURES, {filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL && s.structureType != STRUCTURE_RAMPART});
+                           var closestDamagedStructure = towers[i].pos.findClosestByRange(FIND_STRUCTURES, {filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL && s.structureType != STRUCTURE_RAMPART});
            	            if(closestDamagedStructure) {
-           	 	            towers.repair(closestDamagedStructure);
-           	 	            console.log("The tower is repairing buildings.");
+           	 	            towers[i].repair(closestDamagedStructure);
+                          // console.log("The tower is repairing buildings.");
                            }
+
                        }
                    }
                 }

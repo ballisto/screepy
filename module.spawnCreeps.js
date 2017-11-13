@@ -54,7 +54,7 @@ module.exports = {
         minimumSpawnOf["transporter"] = 0;
         minimumSpawnOf["SKHarvester"] = 0;
         minimumSpawnOf["SKHauler"] = 0;
-        minimumSpawnOf["energyTransporter"] = 0;
+        minimumSpawnOf["energyTransporter"] = 1;
 
         let myFlags = _.filter(Game.flags,{ memory: { spawn: spawnRoom.memory.masterSpawn}});
 
@@ -159,14 +159,15 @@ module.exports = {
             }
         }
         else {
-            minimumSpawnOf["upgrader"] = numberOfSources;
+            minimumSpawnOf["upgrader"] = 1;
         }
         //Wall Repairer
         if (spawnRoom.memory.roomSecure == true && constructionOfRampartsAndWalls == 0) {
             minimumSpawnOf["wallRepairer"] = 0;
         }
         else {
-            minimumSpawnOf["wallRepairer"] = Math.ceil(numberOfSources * 0.5);
+            //minimumSpawnOf["wallRepairer"] = Math.ceil(numberOfSources * 0.5);
+            minimumSpawnOf["wallRepairer"] = 0;
         }
         // Distributor
         if (spawnRoom.memory.terminalTransfer != undefined) {
@@ -184,8 +185,8 @@ module.exports = {
         }
         // EnergyTransporter, Harvester & Repairer
         //minimumSpawnOf["energyTransporter"] = minimumSpawnOf.stationaryHarvester;
-        minimumSpawnOf["harvester"] = Math.ceil(numberOfSources * 1) - minimumSpawnOf.energyTransporter;
-        minimumSpawnOf["repairer"] = Math.ceil(numberOfSources * 0.5);
+        minimumSpawnOf["harvester"] = Math.ceil(1) - minimumSpawnOf.energyTransporter;
+        //minimumSpawnOf["repairer"] = Math.ceil(numberOfSources * 0.5);
         /** Rest **/
         // Miner
         minimumSpawnOf["miner"] = numberOfExploitableMineralSources;
@@ -482,16 +483,16 @@ module.exports = {
                 }
             }
             //Surplus Upgrader Spawning
-            if (numberOf.harvester + numberOf.energyTransporter > 0 && spawnRoom.memory.hostiles.length == 0 && spawnRoom.controller.level < 8 && numberOf.upgrader < (minimumSpawnOf.upgrader * 2)) {
-                let container = spawnRoom.find(FIND_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_CONTAINER || s.structureType == STRUCTURE_STORAGE});
-                let containerEnergy = 0;
-                for (let e in container) {
-                    containerEnergy += container[e].store[RESOURCE_ENERGY];
-                }
-                if (containerEnergy > spawnRoom.energyAvailable * 2 || containerEnergy > spawnRoom.memory.resourceLimits[RESOURCE_ENERGY].minMarket * 0.9) {
-                    spawnList.push("upgrader");
-                }
-            }
+            // if (numberOf.harvester + numberOf.energyTransporter > 0 && spawnRoom.memory.hostiles.length == 0 && spawnRoom.controller.level < 8 && numberOf.upgrader < (minimumSpawnOf.upgrader * 2)) {
+            //     let container = spawnRoom.find(FIND_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_CONTAINER || s.structureType == STRUCTURE_STORAGE});
+            //     let containerEnergy = 0;
+            //     for (let e in container) {
+            //         containerEnergy += container[e].store[RESOURCE_ENERGY];
+            //     }
+            //     if (containerEnergy > spawnRoom.energyAvailable * 2 || containerEnergy > spawnRoom.memory.resourceLimits[RESOURCE_ENERGY].minMarket * 0.9) {
+            //         spawnList.push("upgrader");
+            //     }
+            // }
             // console.log(minimumSpawnOf.harvester);
             // console.log(numberOf.harvester);
             // console.log(minimumSpawnOf.energyHauler);

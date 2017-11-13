@@ -1,6 +1,5 @@
 Creep.prototype.roleStationaryHarvester = function() {
-    if (this.memory.statusHarvesting == undefined || this.memory.statusHarvesting == false || this.carry.energy == this.carryCapacity) {
-        //Look for vacant source marked as narrowSource
+            //Look for vacant source marked as narrowSource
         if (this.memory.currentFlag == undefined) {
             this.memory.currentFlag = this.findMyFlag("narrowSource");
         }
@@ -25,13 +24,22 @@ Creep.prototype.roleStationaryHarvester = function() {
                     }
                     if (this.transfer(container, RESOURCE_ENERGY) != OK) {
                         delete this.memory.narrowContainer;
-                        this.drop(RESOURCE_ENERGY);
+
                     }
                 }
 
                 if (this.carry.energy < this.carryCapacity) {
                     //Time to refill
                     //Identify and save source
+                    tempArray = this.pos.findInRange(FIND_DROPPED_RESOURCES,1);
+                    for (var s in tempArray) {
+                        if (tempArray[s].energy != undefined) {
+                          if (tempArray[s].energy > 0) {
+                            this.pickup(tempArray[s]);
+                          }
+                        }
+                    }
+
                     if (this.memory.narrowSource == undefined) {
                         var source = this.pos.findClosestByRange(FIND_SOURCES);
                         this.memory.narrowSource = source.id;
@@ -62,12 +70,4 @@ Creep.prototype.roleStationaryHarvester = function() {
                 console.log(this.name + " in room " + this.room.name + " has a problem.");
             }
         }
-    }
-    else {
-        // Creep is harvesting, try to keep harvesting
-        var result = this.harvest(Game.getObjectById(this.memory.statusHarvesting));
-        if (result != OK) {
-            this.memory.statusHarvesting = false;
-        }
-    }
 };
