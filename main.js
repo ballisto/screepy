@@ -339,6 +339,10 @@ module.exports.loop = function() {
         // Cycle through rooms
         for (var r in Game.rooms) {
             //Save hostile creeps in room
+            let roomCreeps = this.find(FIND_MY_CREEPS);
+            var hostiles = this.find(FIND_HOSTILE_CREEPS);
+            let enemies = _.filter(hostiles, function (e) {return (isHostile(e))});
+
             Game.rooms[r].saveHostiles();
 
             Game.rooms[r].refreshMemory();
