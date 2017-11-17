@@ -123,7 +123,6 @@ Creep.prototype.findEnergySource =
           }
 
         };
-
 Creep.prototype.findSpaceEnergy =
         function (sourceTypes) {
           let IDBasket = [];
@@ -215,4 +214,54 @@ Creep.prototype.findSpaceEnergy =
           else {
             return null;
           }
+        };
+Creep.prototype.bodyMatrix =
+        function () {
+          //init matrix
+          let tmpBodyMatrix = [];
+          for (let i = 0; i < 8; i++) {
+              tmpBodyMatrix[i] = 0;
+          }
+
+          for (let c in this.body) {
+              var curBodyPart = this.body[c];
+              var index;
+              //translate bodypart types to matrix-index
+              switch(curBodyPart.type) {
+                case MOVE:
+                  index = 0;
+                break;
+                case WORK:
+                  index = 1;
+                break;
+                case CARRY:
+                  index = 2;
+                break;
+                case ATTACK:
+                  index = 3;
+                break;
+                case RANGED_ATTACK:
+                  index = 4;
+                break;
+                case HEAL:
+                  index = 5;
+                break;
+                case CLAIM:
+                  index = 6;
+                break;
+                case TOUGH:
+                  index = 7;
+                break;
+                default:
+                  index = 0;
+                  break;
+              }
+              if(curBodyPart.boost != undefined) {
+                tmpBodyMatrix[index] += curBodyPart.hits * 2;
+              }
+              else {
+                tmpBodyMatrix[index] += curBodyPart.hits;
+              }
+          }
+          return tmpBodyMatrix;
         };

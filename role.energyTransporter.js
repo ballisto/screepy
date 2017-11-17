@@ -91,7 +91,7 @@ Creep.prototype.roleEnergyTransporter = function() {
             }
             if (targetId == undefined || targetId == null) {
               targetId = this.findSpaceEnergy(STRUCTURE_STORAGE);
-              if (this.memory.sourceBuffer == targetId) {targetId = null;}
+              // if (this.memory.sourceBuffer == targetId) {targetId = null;}
             }
             if (targetId != undefined && targetId != null) {
               this.memory.targetBuffer = targetId;

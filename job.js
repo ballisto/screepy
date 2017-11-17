@@ -1,6 +1,6 @@
 
 
-function Polier() {
+function Job(jobid) {
     if(jobid == 0 || jobid == null || jobid == undefined) {
       // create new id
       if(Memory.maxjobid == undefined) {
@@ -18,14 +18,23 @@ function Polier() {
     }
   }
 
-  Polier.prototype.initFromMemory = function() {
+  Job.prototype.initFromMemory = function() {
+        
+  }
+
+  Job.prototype.writeToMemory = function() {
 
   }
 
-  Polier.prototype.writeToMemory = function() {
 
+  // Getter
+  Rectangle.prototype.getArea = function() {
+    return this.calcArea();
+  }
+  // Method
+  Rectangle.prototype.calcArea = function() {
+    return this.height * this.width;
   }
 
 
-
-module.exports = Polier;
+module.exports = Job;

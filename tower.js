@@ -38,7 +38,10 @@ module.exports = {
                     if (hostiles.length > 0) {
                         let towerTarget = towers[tower].pos.findClosestByRange(hostiles);
                         if (towerTarget != null) {
-                            towers[tower].attack(towerTarget);
+                            if(tower.room = "W58S4" && towerTarget.pos.y == 0) {}
+                            else {
+                              towers[tower].attack(towerTarget);
+                          }
                         }
                     }
                 }

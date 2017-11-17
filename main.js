@@ -602,7 +602,7 @@ module.exports.loop = function() {
                   if (sourceLinks[l].energy > 0 && sourceLinks[l].cooldown == 0) {
                     for (var i = 0; i < targetLinkPriorities.length; i++) {
                       var tmpTargetLink = Game.getObjectById(targetLinkPriorities[i].id);
-                      if ( (tmpTargetLink.energyCapacity - tmpTargetLink.energy) > 50 || targetLinkPriorities.length == 1) {
+                      if ( (tmpTargetLink.energyCapacity - tmpTargetLink.energy) > 50) {
                         if( sourceLinks[l].transferEnergy(Game.getObjectById(targetLinkPriorities[i].id)) == OK ) { break; }
                       }
                   }
