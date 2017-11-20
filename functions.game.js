@@ -500,7 +500,7 @@ global.buy = function (orderID, amount) {
     }
 
     if (Memory.buyOrder != undefined) {
-        return "Active buy order found: " + Game.memory.buyOrder;
+        return "Active buy order found: " + Memory.buyOrder;
     }
 
     Memory.buyOrder = amount + ":" + order.id;
