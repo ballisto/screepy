@@ -63,7 +63,12 @@ module.exports = {
 
                            //Find the closest damaged Structure
                            var closestDamagedStructure = towers[i].pos.findClosestByRange(FIND_STRUCTURES, {filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL && s.structureType != STRUCTURE_RAMPART});
-           	            if(closestDamagedStructure) {
+                           if(!closestDamagedStructure) {
+                             if(roomIndex == 'W58S5' && towers[i].room.storage.store[RESOURCE_ENERGY] > 300000) {
+                               var closestDamagedStructure = towers[i].pos.findClosestByRange(FIND_STRUCTURES, {filter: (s) => s.hits < s.hitsMax});
+                             }
+                           }
+           	              if(closestDamagedStructure) {
            	 	            towers[i].repair(closestDamagedStructure);
                           // console.log("The tower is repairing buildings.");
                            }

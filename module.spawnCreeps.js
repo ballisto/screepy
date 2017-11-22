@@ -154,7 +154,7 @@ module.exports = {
         // Upgrader
         if (spawnRoom.controller.level == 8) {
             minimumSpawnOf.upgrader = 0;
-            if (spawnRoom.storage.store[RESOURCE_ENERGY] > 200000) {
+            if (spawnRoom.controller.ticksToDowngrade < 50000 || spawnRoom.storage.store[RESOURCE_ENERGY] > 300000) {
                 minimumSpawnOf.upgrader = 1;
             }
         }
