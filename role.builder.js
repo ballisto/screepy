@@ -63,7 +63,7 @@ Creep.prototype.roleBuilder = function () {
                 // if no constructionSite is found
                 else {
                     // go upgrading the controller
-                    if (this.room.controller.level < 8) {
+                    if (this.room.controller.level <= 8) {
                         this.roleUpgrader();
                     }
                     else {
