@@ -160,7 +160,7 @@ module.exports = {
         }
         else {
             if (spawnRoom.controller.ticksToDowngrade < 50000 || spawnRoom.storage.store[RESOURCE_ENERGY] > 250000 || spawnRoom.controller.level < 7) {
-            minimumSpawnOf["upgrader"] = 1;
+            minimumSpawnOf["upgrader"] = 2;
             }
         }
         //Wall Repairer
