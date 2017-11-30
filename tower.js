@@ -65,8 +65,26 @@ module.exports = {
                            var closestDamagedStructure = towers[i].pos.findClosestByRange(FIND_STRUCTURES, {filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL && s.structureType != STRUCTURE_RAMPART});
                            if(!closestDamagedStructure) {
                              if(roomIndex == 'W58S5' && towers[i].room.storage.store[RESOURCE_ENERGY] > 300000) {
-                               var closestDamagedStructure = towers[i].pos.findClosestByRange(FIND_STRUCTURES, {filter: (s) => s.hits < s.hitsMax});
-                             }
+                               //var closestDamagedStructure = towers[i].pos.findClosestByRange(FIND_STRUCTURES, {filter: (s) => s.hits < s.hitsMax});
+                               var target = undefined;
+                               var ramparts = Game.rooms[roomIndex].find(FIND_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_RAMPART});
+                               ramparts = _.sortBy(ramparts,"hits");
+
+                               var walls = Game.rooms[roomIndex].find(FIND_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_WALL});
+                               walls = _.sortBy(walls,"hits");
+
+                               if (walls.length > 0 && ((ramparts[0] != undefined && walls[0].hits < ramparts[0].hits) || (ramparts.length == 0))) {
+                                   target = walls[0];
+                               }
+                               else if (ramparts.length > 0) {
+                                   target = ramparts[0];
+                               }
+
+                               // if we find a wall that has to be repaired
+                               if (target != undefined && target.hits < 100000000) {
+                                   var result = towers[i].repair(target);
+                                 }
+                              }
                            }
            	              if(closestDamagedStructure) {
            	 	            towers[i].repair(closestDamagedStructure);
