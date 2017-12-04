@@ -27,12 +27,15 @@ Creep.prototype.roleDistributor = function() {
             targetRoom = info[0];
             transferAmount = parseInt(info[1]);
             transferResource = info[2];
+            transferAmount = transferAmount - this.room.terminal.store[transferResource];
+
             if (transferAmount > this.carryCapacity) {
                 packageVolume = this.carryCapacity;
             }
             else {
                 packageVolume = transferAmount;
             }
+
             if (info[3] == "MarketOrder") {
                 var order = Game.market.getOrderById(targetRoom);
                 if (order != null) {

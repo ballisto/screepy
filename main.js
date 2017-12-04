@@ -278,7 +278,7 @@ module.exports.loop = function() {
                         if (combinedResources[n] == RESOURCE_ENERGY) {
                             packetSize = global.RBS_PACKETSIZE * 2;
                         }
-
+                        //no ongoing transfer, terminal has capacity, delta in sourceroom is more than 10% of maxStorage, sourceroom has more than packetSize
                         if (Game.rooms[r].memory.terminalTransfer == undefined && (_.sum(Game.rooms[r].terminal.store) >= Game.rooms[r].terminal.storeCapacity * 0.70 ||
                             (storageDelta >= (Game.rooms[r].memory.resourceLimits[combinedResources[n]].maxStorage * 0.1) && packetSize <= Game.rooms[r].storage.store[combinedResources[n]] && storageDelta <= Game.rooms[r].storage.store[combinedResources[n]]))) {
                             // Resource can be shared with other rooms if their maxStorage is not reached yet
@@ -720,8 +720,10 @@ module.exports.loop = function() {
                                 || (resource != RESOURCE_ENERGY && terminal.store[resource] >= amount && terminal.store[RESOURCE_ENERGY] >= energyCost)) {
                                 // Amount to be transferred reached and enough energy available -> GO!
                                 if (terminal.send(resource, amount, targetRoom, comment) == OK) {
-                                    delete Game.rooms[r].memory.terminalTransfer;
-                                    delete Game.rooms[r].memory.terminalEnergyCost;
+                                    // delete Game.rooms[r].memory.terminalTransfer;
+                                    // delete Game.rooms[r].memory.terminalEnergyCost;
+                                    info[1] = 0;
+                                    Game.rooms[r].memory.terminalTransfer = info.join(":");
                                     if (global.LOG_TERMINAL == true) {
                                         console.log("<font color=#009bff type='highlight'>" + amount + " " + resource + " has been transferred to room " + targetRoom + " using " + energyCost + " energy: " + comment + "</font>");
                                     }
@@ -780,6 +782,7 @@ module.exports.loop = function() {
             if (Game.cpu.bucket > global.CPU_THRESHOLD && Game.time % global.DELAYPRODUCTION == 0 && Game.rooms[r].memory.innerLabs != undefined && Game.rooms[r].memory.innerLabs[0].labID != "[LAB_ID]" && Game.rooms[r].memory.innerLabs[1].labID != "[LAB_ID]"
             && Game.rooms[r].memory.labOrder == undefined && Game.rooms[r].memory.labTarget == undefined) {
                 for (let res in RESOURCES_ALL) {
+                  //go thru resources, not energy, not power, tier > 0
                     if (RESOURCES_ALL[res] != RESOURCE_ENERGY && RESOURCES_ALL[res] != RESOURCE_POWER && global.mineralDescriptions[RESOURCES_ALL[res]].tier > 0) {
                         var storageLevel;
                         if (Game.rooms[r].storage.store[RESOURCES_ALL[res]] == undefined) {
@@ -788,15 +791,17 @@ module.exports.loop = function() {
                         else {
                             storageLevel = Game.rooms[r].storage.store[RESOURCES_ALL[res]];
                         }
-
+                        //resource in storage is less than minProduction
                         if ((storageLevel) < Game.rooms[r].memory.resourceLimits[RESOURCES_ALL[res]].minProduction) {
                             //Try to produce resource
                             let resource = RESOURCES_ALL[res];
-
+                            //delta is missing amount to reach minProduction
                             let delta = Math.ceil((Game.rooms[r].memory.resourceLimits[resource].minProduction - storageLevel)/10)*10;
-
+                            if(delta > 3000) {delta =3000;}
+                            //delta is bigger than 20% of minProduction or more than 3000
                             if (delta >= Game.rooms[r].memory.resourceLimits[resource].minProduction * 0.2 || delta >= 3000) {
                                 let genuineDelta = delta;
+                                //determine components missing, try to make missing components
                                 var productionTarget = whatIsLackingFor(Game.rooms[r], delta, resource);
                                 let minProductionPacketSize = 100;
 
@@ -1051,7 +1056,7 @@ module.exports.loop = function() {
                                             // Lab ready for boost
                                             let returnCode = boostLab.boostCreep(creep);
                                             if (returnCode == OK) {
-                                                if (creep.memory.boostList.length == 1) {
+                                                if (creep.memory.boostList.length == 1) {1
                                                     delete creep.memory.boostList;
                                                     if (creep.memory.myButler != undefined) {
                                                         let butler = Game.getObjectById(creep.memory.myButler);

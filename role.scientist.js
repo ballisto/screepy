@@ -87,16 +87,16 @@ Creep.prototype.roleScientist = function() {
                                 this.storeAllBut();
                             }
                         }
-                        else if ((this.room.memory.boostLabs == undefined || this.room.memory.boostLabs.indexOf(lab.id) == -1) && lab.energy > 0) {
-                            if (_.sum(this.carry) < this.carryCapacity) {
-                                if (this.withdraw(lab, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                                    this.moveTo(lab, {reusePath: moveReusePath()});
-                                }
-                            }
-                            else {
-                                this.storeAllBut();
-                            }
-                        }
+                        // else if ((this.room.memory.boostLabs == undefined || this.room.memory.boostLabs.indexOf(lab.id) == -1) && lab.energy > 0) {
+                        //     if (_.sum(this.carry) < this.carryCapacity) {
+                        //         if (this.withdraw(lab, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                        //             this.moveTo(lab, {reusePath: moveReusePath()});
+                        //         }
+                        //     }
+                        //     else {
+                        //         this.storeAllBut();
+                        //     }
+                        // }
                         else {
                             emptylabs++;
                         }
