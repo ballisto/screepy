@@ -14,7 +14,7 @@ Creep.prototype.roleRemoteStationaryHarvester = function() {
             if (flag != undefined) {
                 if (flag.pos.roomName != this.room.name) {
                     // Creep not in assigned room
-                    this.moveTo(flag, {reusePath: moveReusePath()});
+                    this.moveTo(flag);
                 }
                 else if (this.pos.isEqualTo(flag) == true) {
                     // Harvesting position reached
@@ -86,7 +86,7 @@ Creep.prototype.roleRemoteStationaryHarvester = function() {
                 }
                 else if (sourceKeeper.length == 0) {
                     // Move to harvesting point
-                    this.moveTo(flag, {reusePath: moveReusePath()});
+                    this.moveTo(flag);
                     //this.useFlowPathTo(flag.pos);
                 }
             }

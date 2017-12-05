@@ -2,7 +2,7 @@ Creep.prototype.towerEmergencyFill = function () {
     var tower = this.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_TOWER && s.energy < s.energyCapacity});
     if (tower != null) {
         if (this.transfer(tower, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-            this.moveTo(tower, {reusePath: moveReusePath()});
+            this.moveTo(tower);
         }
     }
 };
@@ -18,7 +18,7 @@ Creep.prototype.goToHomeRoom = function() {
         }
         else {
             let controller = Game.rooms[this.memory.homeroom].controller;
-            this.moveTo(controller, {reusePath: moveReusePath()});
+            this.moveTo(controller);
         }
         return false;
     }
@@ -45,7 +45,7 @@ Creep.prototype.storeAllBut = function(resource) {
             targetContainer = this.findResource(global.RESOURCE_SPACE,STRUCTURE_CONTAINER);
         }
         if (this.pos.getRangeTo(targetContainer) > 1) {
-            this.moveTo(targetContainer, {reusePath: moveReusePath()});
+            this.moveTo(targetContainer);
         }
         else {
             for (var res in this.carry) {
@@ -74,7 +74,7 @@ Creep.prototype.flee = function (hostilesArray, range) {
 Creep.prototype.gotoFlag = function (flag) {
     if (flag.memory.waypoints == undefined) {
         // No waypoints set -> proceed directly to flag
-        this.moveTo(flag, {reusePath: moveReusePath()});
+        this.moveTo(flag);
     }
     else {
         // Target flag has waypoints set
@@ -87,7 +87,7 @@ Creep.prototype.gotoFlag = function (flag) {
         if (flag.memory.waypoints.length == this.memory.waypointCounter) {
             // Last waypoint reached -> go to final destination
             if (this.pos.getRangeTo(flag) > 2) {
-                this.moveTo(flag, {reusePath: moveReusePath()});
+                this.moveTo(flag);
             }
             else {
                 this.memory.sleep = 3;
@@ -111,12 +111,12 @@ Creep.prototype.gotoFlag = function (flag) {
                         this.memory.waypointCounter++;
                     }
                     else {
-                        this.moveTo(waypointFlag, {reusePath: moveReusePath()});
+                        this.moveTo(waypointFlag);
                     }
                 }
                 else {
                     // Creep not in waypoint room
-                    this.moveTo(waypointFlag, {reusePath: moveReusePath()});
+                    this.moveTo(waypointFlag);
                 }
             }
         }
@@ -170,4 +170,3 @@ Creep.prototype.useFlowPathTo = function (targetPosition) {
     // Move in saved direction
     this.move(Memory.flowPath[this.room.name][targetXY][creepXY]);
 };
-

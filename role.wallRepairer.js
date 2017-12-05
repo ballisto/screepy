@@ -3,7 +3,7 @@ Creep.prototype.roleWallRepairer = function() {
     if (this.room.name != this.memory.homeroom) {
         //return to home room
         var hometarget = Game.getObjectById(this.memory.spawn);
-        this.moveTo(hometarget, {reusePath: moveReusePath()});
+        this.moveTo(hometarget);
     }
     else {
         // if creep is trying to repair something but has no energy left
@@ -29,7 +29,7 @@ Creep.prototype.roleWallRepairer = function() {
                     var buildResult = this.build(constructionSite)
                     if (buildResult == ERR_NOT_IN_RANGE) {
                         // move towards the constructionSite
-                        this.moveTo(constructionSite, {reusePath: moveReusePath()});
+                        this.moveTo(constructionSite);
                     }
                     else if (buildResult == OK) {
                         var builtObject = position.lookFor(LOOK_STRUCTURES);
@@ -56,7 +56,7 @@ Creep.prototype.roleWallRepairer = function() {
                         var result = this.repair(target);
                         if (result == ERR_NOT_IN_RANGE) {
                             // move towards it
-                            this.moveTo(target, {reusePath: moveReusePath()});
+                            this.moveTo(target);
                             this.memory.statusRepairing = target.id;
                         }
                         else if (result == OK) {
@@ -76,7 +76,7 @@ Creep.prototype.roleWallRepairer = function() {
             else {
                 let status = this.repair(Game.getObjectById(this.memory.statusRepairing));
                 if (status == ERR_NOT_IN_RANGE) {
-                    if (this.moveTo(Game.getObjectById(this.memory.statusRepairing), {reusePath: moveReusePath()}) != OK) {
+                    if (this.moveTo(Game.getObjectById(this.memory.statusRepairing)) != OK) {
                         delete this.memory.statusRepairing;
                     }
                 }

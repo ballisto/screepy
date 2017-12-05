@@ -29,11 +29,11 @@ Creep.prototype.roleClaimer = function() {
                 }
             }
             else {
-                this.moveTo(this.room.controller, {reusePath: moveReusePath()});
+                this.moveTo(this.room.controller);
             }
 
             if (returncode == ERR_NOT_IN_RANGE) {
-                this.moveTo(this.room.controller, {reusePath: moveReusePath()});
+                this.moveTo(this.room.controller);
             }
 
             if (this.room.controller.owner != undefined && this.room.controller.owner.username == global.playerUsername) {

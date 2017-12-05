@@ -21,7 +21,7 @@ Creep.prototype.roleTransporter = function () {
                 //Transporter at home
                 var originContainer = this.findResource(resource, STRUCTURE_STORAGE, STRUCTURE_CONTAINER, STRUCTURE_LINK);
                 if (originContainer != null && this.withdraw(originContainer, resource) == ERR_NOT_IN_RANGE) {
-                    this.moveTo(originContainer, {reusePath: moveReusePath()});
+                    this.moveTo(originContainer);
                 }
             }
         }
@@ -47,7 +47,7 @@ Creep.prototype.roleTransporter = function () {
                 if (targetContainer != null) {
                     let result = this.transfer(targetContainer, resource);
                     if (result == ERR_NOT_IN_RANGE) {
-                        this.moveTo(targetContainer, {reusePath: moveReusePath()});
+                        this.moveTo(targetContainer);
                     }
                     else if (result != OK) {
                         delete this.memory.targetContainer;
@@ -55,7 +55,7 @@ Creep.prototype.roleTransporter = function () {
                 }
             }
             else {
-                this.moveTo(destinationFlag, {reusePath: moveReusePath()})
+                this.moveTo(destinationFlag)
             }
         }
     }

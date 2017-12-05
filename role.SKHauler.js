@@ -21,7 +21,7 @@ Creep.prototype.roleSKHauler = function() {
             // Construction sites found, build them!
             let site = this.pos.findClosestByPath(constructionSites);
             if (this.build(site) == ERR_NOT_IN_RANGE) {
-                this.moveTo(site, {reusePath: moveReusePath()});
+                this.moveTo(site);
             }
         }
         else {
@@ -34,13 +34,13 @@ Creep.prototype.roleSKHauler = function() {
                 }
                 else {
                     var spawn = Game.getObjectById(this.memory.spawn);
-                    this.moveTo(spawn, {reusePath: moveReusePath()})
+                    this.moveTo(spawn)
                 }
             }
             else {
                 if (this.room.name != this.memory.homeroom) {
                     // Find exit to spawn room
-                    this.moveTo(Game.getObjectById(this.memory.spawn), {reusePath: moveReusePath()})
+                    this.moveTo(Game.getObjectById(this.memory.spawn))
                 }
                 else {
                     // back in spawn room
@@ -82,7 +82,7 @@ Creep.prototype.roleSKHauler = function() {
             // Find exit to target room
             if (this.room.name != flag.pos.roomName) {
                 //still in old room, go out
-                this.moveTo(flag, {reusePath: moveReusePath()});
+                this.moveTo(flag);
             }
             else {
                 //new room reached, find lair
@@ -132,13 +132,13 @@ Creep.prototype.roleSKHauler = function() {
                             if (container.length > 0 && _.sum(container[0].store) > 0) {
                                 for (let s in container[0].store) {
                                     if (this.withdraw(container[0], s) == ERR_NOT_IN_RANGE) {
-                                        this.moveTo(container[0], {reusePath: moveReusePath()});
+                                        this.moveTo(container[0]);
                                     }
                                 }
                             }
                             else {
                                 if (this.pos.getRangeTo(flag) > 8) {
-                                    this.moveTo(flag, {reusePath: moveReusePath()})
+                                    this.moveTo(flag)
                                 }
                                 else {
                                     this.memory.sleep = 10;

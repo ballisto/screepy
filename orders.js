@@ -161,7 +161,7 @@ module.exports = {
                 if (this.healInRange(creep, 4) == false) {
                     //No damaged creeps around
                     if (creep.pos.getRangeTo(target) > 3) {
-                        creep.moveTo(target, {reusePath: moveReusePath()});
+                        creep.moveTo(target);
                     }
                 }
                 break;

@@ -6,7 +6,7 @@ Creep.prototype.roleDistributor = function() {
         if (_.sum(this.carry) > 0) {
             //Creep full
             if (this.pos.getRangeTo(this.room.terminal) > 1) {
-                this.moveTo(this.room.terminal, {reusePath: moveReusePath()});
+                this.moveTo(this.room.terminal);
             }
             else {
                 // Dump everything into terminal
@@ -22,6 +22,7 @@ Creep.prototype.roleDistributor = function() {
             var transferResource;
             var energyCost;
             var packageVolume;
+            var volumeToCarry;
             var info = this.room.memory.terminalTransfer; // Format: ROOM:AMOUNT:RESOURCE:COMMENT W21S38:100:Z:TestTransfer
             info = info.split(":");
             targetRoom = info[0];
@@ -30,10 +31,10 @@ Creep.prototype.roleDistributor = function() {
             transferAmount = transferAmount - this.room.terminal.store[transferResource];
 
             if (transferAmount > this.carryCapacity) {
-                packageVolume = this.carryCapacity;
+                volumeToCarry = this.carryCapacity;
             }
             else {
-                packageVolume = transferAmount;
+                volumeToCarry = transferAmount;
             }
 
             if (info[3] == "MarketOrder") {
@@ -60,20 +61,20 @@ Creep.prototype.roleDistributor = function() {
                         energyCost = this.carryCapacity;
                     }
                     if(this.withdraw(this.room.storage, RESOURCE_ENERGY, energyCost) == ERR_NOT_IN_RANGE) {
-                        this.moveTo(this.room.storage, {reusePath: moveReusePath()});
+                        this.moveTo(this.room.storage);
                     }
                 }
                 else if (this.room.terminal.store[transferResource] < global.AUTOSELL_PACKETSIZE) {
                     // Get transfer resource
-                    if(this.withdraw(this.room.storage, transferResource, packageVolume) == ERR_NOT_IN_RANGE) {
-                        this.moveTo(this.room.storage, {reusePath: moveReusePath()});
+                    if(this.withdraw(this.room.storage, transferResource, volumeToCarry) == ERR_NOT_IN_RANGE) {
+                        this.moveTo(this.room.storage);
                     }
                 }
             }
             else {
                 // Get transfer resource
-                if(this.withdraw(this.room.storage, transferResource, packageVolume) == ERR_NOT_IN_RANGE) {
-                    this.moveTo(this.room.storage, {reusePath: moveReusePath()});
+                if(this.withdraw(this.room.storage, transferResource, volumeToCarry) == ERR_NOT_IN_RANGE) {
+                    this.moveTo(this.room.storage);
                 }
             }
         }
@@ -84,12 +85,12 @@ Creep.prototype.roleDistributor = function() {
         if (this.storeAllBut(RESOURCE_GHODIUM) == true) {
             if (_.sum(this.carry) < this.carryCapacity && this.room.storage.store[RESOURCE_GHODIUM] > 0) {
                 if (this.withdraw(this.room.storage, RESOURCE_GHODIUM) == ERR_NOT_IN_RANGE) {
-                    this.moveTo(this.room.storage, {reusePath: moveReusePath()});
+                    this.moveTo(this.room.storage);
                 }
             }
             else {
                 if (this.transfer(nuker, RESOURCE_GHODIUM) == ERR_NOT_IN_RANGE) {
-                    this.moveTo(nuker, {reusePath: moveReusePath()});
+                    this.moveTo(nuker);
                 }
             }
         }
@@ -177,7 +178,7 @@ Creep.prototype.roleDistributor = function() {
                             }
 
                             if (this.withdraw(this.room.storage, res, load) == ERR_NOT_IN_RANGE) {
-                                this.moveTo(this.room.storage, {reusePath: moveReusePath()});
+                                this.moveTo(this.room.storage);
                             }
                             breaker = true;
                             break;
@@ -215,7 +216,7 @@ Creep.prototype.roleDistributor = function() {
                                 }
                             }
                             if (containerResource != undefined && this.withdraw(container, containerResource) == ERR_NOT_IN_RANGE) {
-                                this.moveTo(container, {reusePath: moveReusePath()});
+                                this.moveTo(container);
                             }
                         }
                     }

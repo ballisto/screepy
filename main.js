@@ -985,7 +985,7 @@ module.exports.loop = function() {
                 });
                 if (area.length > 0) {
                     let destPos = creep.room.getPositionAt(area[0].x, area[0].y);
-                    creep.moveTo(destPos, {reusePath: moveReusePath()});
+                    creep.moveTo(destPos);
                 }
                 else {
                     console.log("No safe area found in room " + Game.rooms[r].name + ".");
@@ -1045,7 +1045,7 @@ module.exports.loop = function() {
                                     //Wait for boostLab to fill up
                                     let boostLab = Game.getObjectById(creep.memory.myBoostLab);
                                     if (creep.pos.getRangeTo(boostLab) > 1) {
-                                        creep.moveTo(boostLab, {reusePath: moveReusePath()});
+                                        creep.moveTo(boostLab);
                                     }
                                     else {
                                         let bodyPart = global.mineralDescriptions[creep.memory.boostList[0]].bodyPart;
@@ -1106,7 +1106,7 @@ module.exports.loop = function() {
                                     delete creep.memory.jobQueueTask;
                                 }
                                 else if (creep.pickup(source) == ERR_NOT_IN_RANGE) {
-                                    creep.moveTo(source, {reusePath: moveReusePath()});
+                                    creep.moveTo(source);
                                   }
 
                             }
@@ -1142,14 +1142,14 @@ module.exports.loop = function() {
                                                     amount = creep.carryCapacity;
                                                 }
                                                 if (creep.withdraw(creep.room.storage, clientCreep.memory.boostList[0], amount) == ERR_NOT_IN_RANGE) {
-                                                    creep.moveTo(creep.room.storage, {reusePath: moveReusePath()});
+                                                    creep.moveTo(creep.room.storage);
                                                     break;
                                                 }
                                             }
                                             else {
                                                 //Bring minerals to lab
                                                 if (creep.transfer(boostLab, clientCreep.memory.boostList[0]) == ERR_NOT_IN_RANGE) {
-                                                    creep.moveTo(boostLab, {reusePath: moveReusePath()});
+                                                    creep.moveTo(boostLab);
                                                     break;
                                                 }
                                             }

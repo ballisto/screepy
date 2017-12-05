@@ -2,7 +2,7 @@ Creep.prototype.roleMiner = function() {
     if (this.room.name != this.memory.homeroom) {
         //return to home room
         var hometarget = Game.getObjectById(this.memory.spawn);
-        this.moveTo(hometarget, {reusePath: moveReusePath()});
+        this.moveTo(hometarget);
     }
     else {
         if (this.memory.statusHarvesting != undefined && this.memory.statusHarvesting != false) {
@@ -37,7 +37,7 @@ Creep.prototype.roleMiner = function() {
                     }
 
                     if (this.transfer(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                        this.moveTo(container, {reusePath: moveReusePath()});
+                        this.moveTo(container);
                     }
                 }
                 else {
@@ -51,13 +51,13 @@ Creep.prototype.roleMiner = function() {
                         //No storage found in room
                         var container = this.findResource(global.RESOURCE_SPACE, STRUCTURE_CONTAINER);
                         if (this.transfer(container, resource) == ERR_NOT_IN_RANGE) {
-                            this.moveTo(container, {reusePath: moveReusePath()});
+                            this.moveTo(container);
                         }
                     }
                     else {
                         //storage found
                         if (this.transfer(storage, resource) == ERR_NOT_IN_RANGE) {
-                            this.moveTo(storage, {reusePath: moveReusePath()});
+                            this.moveTo(storage);
                         }
                     }
                 }

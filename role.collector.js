@@ -93,13 +93,13 @@ Creep.prototype.roleCollector = function() {
             else if (container.ticksToRegeneration == undefined && (container.energy == undefined || container.energy < 3000)) {
                 //container
                 if (this.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    this.moveTo(container, {reusePath: moveReusePath()});
+                    this.moveTo(container);
                 }
             }
             else {
                 //Source
                 if (this.harvest(container) == ERR_NOT_IN_RANGE) {
-                    this.moveTo(container, {reusePath: moveReusePath()});
+                    this.moveTo(container);
                 }
             }
         }
@@ -119,7 +119,7 @@ Creep.prototype.roleCollector = function() {
                 }
 
                 if (res == ERR_NOT_IN_RANGE) {
-                    this.moveTo(container, {reusePath: moveReusePath()});
+                    this.moveTo(container);
                 }
             }
             else {
