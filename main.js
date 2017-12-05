@@ -10,8 +10,8 @@ global.reqCPU = Game.cpu.getUsed();
 global.start = Game.time;
 console.log('CPU@Initialization: ' + (global.reqCPU - cpu) + " / Tick: " + Game.time + " / Bucket: " + Game.cpu.bucket);
 
-//const profiler = require('screeps-profiler'); // cf. https://www.npmjs.com/package/screeps-profiler
-//profiler.enable() ;
+const profiler = require('screeps-profiler'); // cf. https://www.npmjs.com/package/screeps-profiler
+profiler.enable() ;
 module.exports.loop = function() {
   PathFinder.use(true);
      for (var c in Game.creeps) {
@@ -50,7 +50,7 @@ module.exports.loop = function() {
       // curCreep.memory.spawn = '59ab16632e2fa57887739586';
     }
 
-    //profiler.wrap(function() {
+    profiler.wrap(function() {
     let cpu = Game.cpu.getUsed();
     if (Game.time == global.start) { cpu -= global.reqCPU; }
     if (cpu >= 35) {
@@ -1309,5 +1309,5 @@ module.exports.loop = function() {
     //console.log("Tickli - " + Game.cpu.tickLimit);
     // console.log("main Finish: " + Game.cpu.getUsed());
 
-    //});
+    });
 };
