@@ -13,7 +13,7 @@ console.log('CPU@Initialization: ' + (global.reqCPU - cpu) + " / Tick: " + Game.
 //const profiler = require('screeps-profiler'); // cf. https://www.npmjs.com/package/screeps-profiler
 //profiler.enable() ;
 module.exports.loop = function() {
-
+  PathFinder.use(true);
      for (var c in Game.creeps) {
     //   //c.memory.homeroom = this.room;
        var curCreep = Game.creeps[c];
