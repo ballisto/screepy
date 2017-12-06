@@ -27,7 +27,14 @@ Creep.prototype.roleEnergyTransporter = function() {
             //no dropped energy found
             //find sink link with energy
             if (sourceId == undefined || sourceId == null) {
-              sourceId = this.findEnergySource(STRUCTURE_LINK);
+              var tmpLinkId = this.findEnergySource(STRUCTURE_LINK);
+              //energyTransporter only takes links with prio 1 as source
+              var sourceIdObject = Game.getObjectById(tmpLinkId);
+              if(sourceIdObject != undefined || sourceIdObject != null) {
+                if (sourceIdObject.getObjectType() == "StructureLink" && this.room.memory.links[tmpLinkId].priority == 1 && sourceIdObject.getTargetLink() == undefined) {
+                  sourceId = tmpLinkId;
+                }
+              }
             }
             if (sourceId == undefined || sourceId == null) {
               //no source yet, try Terminal
@@ -42,18 +49,8 @@ Creep.prototype.roleEnergyTransporter = function() {
               sourceId = this.findEnergySource(STRUCTURE_STORAGE);
             }
             if (sourceId != undefined && sourceId != null) {
-              //energyTransporter only takes links with prio 1 as source
-              var sourceIdObject = Game.getObjectById(sourceId);
-              if(sourceIdObject != undefined || sourceIdObject != null) {
-                if (sourceIdObject.getObjectType() == "StructureLink" && (this.room.memory.links[sourceId].priority != 1 || sourceIdObject.getTargetLink() != undefined) {
-                  //nix
-                }
-                else {
-                    this.memory.sourceBuffer = sourceId;
-                }
-              }
+              this.memory.sourceBuffer = sourceId;
             }
-
           }
 
           else {
@@ -106,7 +103,8 @@ Creep.prototype.roleEnergyTransporter = function() {
                   if (tmpTargetLink.getTargetLink() != undefined) {
                     targetId = tmpTargetLinkId;
                   }
-                }                
+                }
+              }
             }
             if (targetId == undefined || targetId == null) {
               targetId = this.findSpaceEnergy(STRUCTURE_STORAGE);

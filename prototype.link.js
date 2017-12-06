@@ -9,7 +9,7 @@ StructureLink.prototype.getPriority =
     };
 StructureLink.prototype.getLinkIdsWithHigherPriority =
     function () {
-      var resultArray = {};
+      var resultArray = [];
       var myPriority = this.getPriority();
 
       for (var linkId in this.room.memory.links) {
@@ -26,19 +26,19 @@ StructureLink.prototype.getTargetLink =
       var targetLinkPriorities = {};
 
       for (var linkId in linkIdsWithHigherPriority) {
-          var link = Game.getObjectById(linkId);
+          var tmpLinkId = linkIdsWithHigherPriority[linkId];
+          var link = Game.getObjectById(tmpLinkId);
           if ( link != undefined) {
-            var tmpPrioArray = { priority: Game.rooms[r].memory.links[linkId].priority, id: linkId };
-            targetLinkPriorities[linkId] = tmpPrioArray;
+            var tmpPrioArray = { priority: this.room.memory.links[tmpLinkId].priority, id: tmpLinkId };
+            targetLinkPriorities[tmpLinkId] = tmpPrioArray;
           }
         }
+        targetLinkPriorities = _.sortBy(targetLinkPriorities, "priority");
+        targetLinkPriorities = targetLinkPriorities.reverse();
+
         if (targetLinkPriorities.length > 0) {
-          targetLinkPriorities = _.sortBy(targetLinkPriorities, "priority");
-          targetLinkPriorities = _.reverse(targetLinkPriorities);
-
-          //loop thru links, high prio to low 
+          //loop thru links, high prio to low
           for(let l=0; l<targetLinkPriorities.length; l++) {
-
             var possibleTarget = Game.getObjectById(targetLinkPriorities[l].id);
             if( (possibleTarget.energyCapacity - possibleTarget.energy) > 50 ) {
               return possibleTarget;
