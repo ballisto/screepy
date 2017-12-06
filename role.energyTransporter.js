@@ -28,6 +28,8 @@ Creep.prototype.roleEnergyTransporter = function() {
             //find sink link with energy
             if (sourceId == undefined || sourceId == null) {
               sourceId = this.findEnergySource(STRUCTURE_LINK);
+              //energyTransporter only takes links with prio 1 as source
+              if (this.room.memory.links[sourceId].priority != 1) {sourceId=null;}
             }
             if (sourceId == undefined || sourceId == null) {
               //no source yet, try Terminal

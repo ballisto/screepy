@@ -577,107 +577,34 @@ module.exports.loop = function() {
 
             // Link code
             if (Game.time % global.DELAYLINK == 0 && Game.rooms[r].memory.links != undefined) {
-
-                var sourceLinks = [];
-
                 var targetLinkPriorities = {};
 
                 for (var linkId in Game.rooms[r].memory.links) {
                     var link = Game.getObjectById(linkId);
+
                     if ( link != undefined) {
-                        if(Game.rooms[r].memory.links[linkId].priority == 0) {
-                          sourceLinks.push(link);
-                        }
-                        else {
-                          var tmpPrioArray = { priority: Game.rooms[r].memory.links[linkId].priority, id: linkId };
-
-                          targetLinkPriorities[linkId] = tmpPrioArray;
-                        }
+                      var tmpPrioArray = { priority: Game.rooms[r].memory.links[linkId].priority, id: linkId };
+                      targetLinkPriorities[linkId] = tmpPrioArray;
                     }
-                }
-                // for (var i = 0; i < targetLinkPriorities.length; i++) {
-                //   console.log("link - " + targetLinkPriorities[i].id + "priority -" + targetLinkPriorities[i].priority);
-                // }
+                  }
+                  targetLinkPriorities = _.sortBy(targetLinkPriorities, "priority");
+                  // targetLinkPriorities = _.reverse(targetLinkPriorities);
 
-                targetLinkPriorities = _.sortBy(targetLinkPriorities, "priority");
-                // console.log("sorted");
-                // for (var i = 0; i < targetLinkPriorities.length; i++) {
-                //   console.log("link - " + targetLinkPriorities[i].id + "priority -" + targetLinkPriorities[i].priority);
-                // }
-                for (var l in sourceLinks) {
-                  if (sourceLinks[l].energy > 0 && sourceLinks[l].cooldown == 0) {
-                    for (var i = 0; i < targetLinkPriorities.length; i++) {
-                      var tmpTargetLink = Game.getObjectById(targetLinkPriorities[i].id);
-                      if ( (tmpTargetLink.energyCapacity - tmpTargetLink.energy) > 50) {
-                        if( sourceLinks[l].transferEnergy(Game.getObjectById(targetLinkPriorities[i].id)) == OK ) { break; }
+
+                  //loop thru links, low prio to high
+                  for(let l=0; l<targetLinkPriorities.length; l++) {
+                    //loop thru links, high prio to low until outer loop is at same indexOf
+                    var sourceLink = Game.getObjectById(targetLinkPriorities[l].id);
+                    if(sourceLink.energy > 50 && sourceLink.cooldown == 0) {
+                      for(let i=targetLinkPriorities.length-1; i>l; i--) {
+                        var targetLink = Game.getObjectById(targetLinkPriorities[i].id);
+                        if( (targetLink.energyCapacity - targetLink.energy) > 50 ) {
+                          if( sourceLink.transferEnergy(targetLink) == OK ) { break; }
+                        }
                       }
+                    }
                   }
                 }
-              }
-            }
-
-            //     if (Game.rooms[r].memory.linksEmpty == undefined) {
-            //         // Prepare link roles
-            //         var emptyArray = [];
-            //         emptyArray.push("[LINK_ID]");
-            //         Game.rooms[r].memory.linksEmpty = emptyArray;
-            //     }
-            //
-            //     for (var link in Game.rooms[r].memory.roomArray.links) {
-            //         if (Game.getObjectById(Game.rooms[r].memory.roomArray.links[link]) != undefined) {
-            //             if (Game.rooms[r].memory.linksEmpty == undefined || Game.rooms[r].memory.linksEmpty.indexOf(Game.rooms[r].memory.roomArray.links[link]) == -1) {
-            //                 fillLinks.push(Game.getObjectById(Game.rooms[r].memory.roomArray.links[link]));
-            //                 targetLevel += Game.getObjectById(Game.rooms[r].memory.roomArray.links[link]).energy;
-            //             }
-            //             else {
-            //                 emptyLinks.push(Game.getObjectById(Game.rooms[r].memory.roomArray.links[link]));
-            //             }
-            //         }
-            //     }
-            //     targetLevel = Math.ceil(targetLevel / fillLinks.length / 100); //Targetlevel is now 0 - 8
-            //     fillLinks = _.sortBy(fillLinks, "energy");
-            //     //Empty emptyLinks
-            //     for (var link in emptyLinks) {
-            //         if (emptyLinks[link].cooldown == 0 && emptyLinks[link].energy > 0) {
-            //             for (var i = 0; i < fillLinks.length; i++) {
-            //                 if (fillLinks[i].energy < 800) {
-            //                     if (fillLinks[i].energy + emptyLinks[link].energy < 799) {
-            //                         emptyLinks[link].transferEnergy(fillLinks[i], emptyLinks[link].energy);
-            //                     }
-            //                     else if (fillLinks[i].energy < 790) {
-            //                         emptyLinks[link].transferEnergy(fillLinks[i], (800 - fillLinks[i].energy));
-            //                     }
-            //                 }
-            //             }
-            //             break;
-            //         }
-            //     }
-            //     fillLinks = _.sortBy(fillLinks, "energy");
-            //
-            //     if (targetLevel > 0 && fillLinks.length > 1) {
-            //         var minLevel = 99;
-            //         var maxLevel = 0;
-            //         var maxLink;
-            //         var minLink;
-            //
-            //         for (var link in fillLinks) {
-            //             if (Math.ceil(fillLinks[link].energy / 100) <= targetLevel && Math.ceil(fillLinks[link].energy / 100) <= minLevel) {
-            //                 //Receiver link
-            //                 minLevel = Math.ceil(fillLinks[link].energy / 100);
-            //                 minLink = fillLinks[link];
-            //             }
-            //             else if (fillLinks[link].cooldown == 0 && Math.ceil(fillLinks[link].energy / 100) >= targetLevel && Math.ceil(fillLinks[link].energy / 100) >= maxLevel) {
-            //                 //Sender link
-            //                 maxLevel = Math.ceil(fillLinks[link].energy / 100);
-            //                 maxLink = fillLinks[link];
-            //             }
-            //         }
-            //
-            //         if (maxLink != undefined && maxLink.id != minLink.id && fillLinks.length > 1 && maxLevel > targetLevel) {
-            //             maxLink.transferEnergy(minLink, (maxLevel - targetLevel) * 100);
-            //         }
-            //     }
-            // }
 
             // Terminal code
             if (CPUdebug == true) {CPUdebugString = CPUdebugString.concat("<br>Starting terminal code: " + Game.cpu.getUsed())}
