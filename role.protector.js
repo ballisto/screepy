@@ -7,10 +7,10 @@ Creep.prototype.roleProtector = function() {
         var target = this.pos.findClosestByPath(hostiles);
 
         if (this.rangedAttack(target) == ERR_NOT_IN_RANGE) {
-            this.moveTo(target, {reusePath: moveReusePath()});
+            this.moveTo(target);
         }
         else if (this.attack(target) == ERR_NOT_IN_RANGE) {
-            this.moveTo(target, {reusePath: moveReusePath()});
+            this.moveTo(target);
         }
     }
     else if (protectorFlag != undefined && protectorFlag.memory.volume > 0) {

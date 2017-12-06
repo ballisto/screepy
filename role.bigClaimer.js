@@ -3,7 +3,7 @@ Creep.prototype.roleBigClaimer = function() {
     let targetController = Game.flags[this.findMyFlag("attackController")];
     if (targetController != undefined && this.room.name != targetController.pos.roomName) {
         //still in wrong room, go out
-        this.moveTo(targetController, {reusePath: moveReusePath()});
+        this.moveTo(targetController);
     }
     else if (targetController != undefined) {
         //new room reached, start reserving / claiming
@@ -21,7 +21,7 @@ Creep.prototype.roleBigClaimer = function() {
             returncode = this.attackController(this.room.controller);
         }
         if (returncode == ERR_NOT_IN_RANGE) {
-            this.moveTo(this.room.controller, {reusePath: moveReusePath()});
+            this.moveTo(this.room.controller);
         }
         if (this.room.controller.owner != undefined && this.room.controller.owner.username == global.playerUsername) {
             //Roomed successfully claimed, now build spawn and remove spawns and extensions from previous owner

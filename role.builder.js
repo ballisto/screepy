@@ -4,7 +4,7 @@ Creep.prototype.roleBuilder = function () {
         //return to home room
         var hometarget = Game.getObjectById(this.memory.spawn);
 
-        this.moveTo(hometarget, {reusePath: moveReusePath()});
+        this.moveTo(hometarget);
     }
     else {
         if (this.memory.statusBuilding != undefined) {
@@ -54,7 +54,7 @@ Creep.prototype.roleBuilder = function () {
                     var result = this.build(constructionSite);
                     if (result == ERR_NOT_IN_RANGE) {
                         // move towards the constructionSite
-                        this.moveTo(constructionSite, {reusePath: moveReusePath()});
+                        this.moveTo(constructionSite);
                     }
                     else if (result == OK) {
                         this.memory.statusBuilding = constructionSite.id;
@@ -69,7 +69,7 @@ Creep.prototype.roleBuilder = function () {
                     else {
                         let spawn = Game.getObjectById(this.memory.spawn);
                         if (spawn.recycleCreep(this) == ERR_NOT_IN_RANGE) {
-                            this.moveTo(spawn, {reusePath: moveReusePath()});
+                            this.moveTo(spawn);
                         }
                     }
                 }

@@ -24,7 +24,7 @@ Creep.prototype.roleUnit = function() {
         if (this.goToHomeRoom() == true) {
             let range = this.pos.getRangeTo(this.room.controller);
             if (range > 1) {
-                this.moveTo(this.room.controller, {reusePath: moveReusePath()});
+                this.moveTo(this.room.controller);
             }
         }
         this.memory.currentFlag = undefined;

@@ -167,7 +167,7 @@ module.exports = {
                             }
                             else if (creep.pos.getRangeTo(flag) > 3) {
                                 // Too far from flag --> move closer
-                                creep.moveTo(flag, {reusePath: moveReusePath()});
+                                creep.moveTo(flag);
                             }
                             else {
                                 let roomHealers = _.filter(this.friendlyCreeps, {filter: (c) => c.memory.role == "healer" && c.memory.homeroom == creep.memory.homeroom});
@@ -189,7 +189,7 @@ module.exports = {
                                     }
                                     //Move to target room
                                     let exitToTarget = flag.pos.findClosestByRange(directionToTargetRoom);
-                                    creep.moveTo(exitToTarget, {reusePath: moveReusePath()});
+                                    creep.moveTo(exitToTarget);
                                 }
                                 else {
                                     // No healers present --> wait for them to appear

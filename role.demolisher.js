@@ -7,10 +7,10 @@ Creep.prototype.roleDemolisher = function() {
             // Hostiles present
             var homespawn = Game.getObjectById(this.memory.spawn);
             if (this.room.name != this.memory.homeroom) {
-                this.moveTo(homespawn), {reusePath: moveReusePath()};
+                this.moveTo(homespawn);
             }
             else if (this.pos.getRangeTo(homespawn) > 5) {
-                this.moveTo(homespawn), {reusePath: moveReusePath()};
+                this.moveTo(homespawn);
             }
             this.memory.fleeing = true;
             return;
@@ -62,7 +62,7 @@ Creep.prototype.roleDemolisher = function() {
 
                     if (this.transfer(structure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                         // move towards it
-                        this.moveTo(structure, {reusePath: moveReusePath()});
+                        this.moveTo(structure);
                     }
                 }
             }
@@ -78,7 +78,7 @@ Creep.prototype.roleDemolisher = function() {
             // Find exit to target room
             if (this.room.name != demolishFlag.pos.roomName) {
                 //still in old room, go out
-                this.moveTo(demolishFlag, {reusePath: moveReusePath()});
+                this.moveTo(demolishFlag);
                 this.memory.oldRoom = true;
             }
             if (this.room.name == demolishFlag.pos.roomName) {
@@ -101,11 +101,11 @@ Creep.prototype.roleDemolisher = function() {
                                     if ((targetlist[i].store != undefined && targetlist[i].store[RESOURCE_ENERGY] > 0) || (targetlist[i].energy != undefined && targetlist[i].energy > 0)) {
                                         //empty structure of energy first
                                         if (this.withdraw(targetlist[i], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                                            this.moveTo(targetlist[i], {reusePath: moveReusePath()});
+                                            this.moveTo(targetlist[i]);
                                         }
                                     }
                                     else if (this.dismantle(targetlist[i]) == ERR_NOT_IN_RANGE) {
-                                        this.moveTo(targetlist[i], {reusePath: moveReusePath()});
+                                        this.moveTo(targetlist[i]);
                                     }
                                     break;
                                 }
@@ -129,7 +129,7 @@ Creep.prototype.roleDemolisher = function() {
                                     //empty structure of energy first
                                     let returnCode = this.withdraw(target, RESOURCE_ENERGY);
                                     if (returnCode == ERR_NOT_IN_RANGE) {
-                                        this.moveTo(target, {reusePath: moveReusePath()});
+                                        this.moveTo(target);
                                     }
                                     else if (returnCode == ERR_NOT_OWNER) {
                                         //Something blocks access to energy
@@ -138,7 +138,7 @@ Creep.prototype.roleDemolisher = function() {
                                             target = ramps[0];
                                             returnCode = this.dismantle(target);
                                             if (returnCode == ERR_NOT_IN_RANGE) {
-                                                this.moveTo(target, {reusePath: moveReusePath()});
+                                                this.moveTo(target);
                                             }
                                             else if (returnCode == OK) {
                                                 this.memory.statusDemolishing = target.id;
@@ -147,7 +147,7 @@ Creep.prototype.roleDemolisher = function() {
                                         else {
                                             let result = this.dismantle(target);
                                             if (result == ERR_NOT_IN_RANGE) {
-                                                this.moveTo(target, {reusePath: moveReusePath()});
+                                                this.moveTo(target);
                                             }
                                             else if (result == OK) {
                                                 this.memory.statusDemolishing = target.id;
@@ -158,7 +158,7 @@ Creep.prototype.roleDemolisher = function() {
                                 else {
                                     let result = this.dismantle(target);
                                     if (result == ERR_NOT_IN_RANGE) {
-                                        this.moveTo(target, {reusePath: moveReusePath()});
+                                        this.moveTo(target);
                                     }
                                     else if (result == OK) {
                                         this.memory.statusDemolishing = target.id;
@@ -171,11 +171,11 @@ Creep.prototype.roleDemolisher = function() {
                                 if (foreignConstructionSites.length > 0) {
                                     let bufferTarget = Game.getObjectById(this.memory.siteTarget);
                                     if (bufferTarget != null) {
-                                        this.moveTo(bufferTarget, {reusePath: moveReusePath()});
+                                        this.moveTo(bufferTarget);
                                     }
                                     else if (foreignConstructionSites.length > 0) {
                                         let siteTarget = this.pos.findClosestByPath(foreignConstructionSites);
-                                        this.moveTo(siteTarget, {reusePath: moveReusePath()});
+                                        this.moveTo(siteTarget);
                                         this.memory.siteTarget = siteTarget.id;
                                     }
                                 }
@@ -231,7 +231,7 @@ Creep.prototype.roleDemolisher = function() {
 
                     if (this.transfer(structure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                         // move towards it
-                        this.moveTo(structure, {reusePath: moveReusePath()});
+                        this.moveTo(structure);
                     }
                 }
             }
