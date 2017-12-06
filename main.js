@@ -582,28 +582,14 @@ module.exports.loop = function() {
                 for (var linkId in Game.rooms[r].memory.links) {
                     var link = Game.getObjectById(linkId);
 
-                    if ( link != undefined) {
-                      var tmpPrioArray = { priority: Game.rooms[r].memory.links[linkId].priority, id: linkId };
-                      targetLinkPriorities[linkId] = tmpPrioArray;
-                    }
-                  }
-                  targetLinkPriorities = _.sortBy(targetLinkPriorities, "priority");
-                  // targetLinkPriorities = _.reverse(targetLinkPriorities);
-
-
-                  //loop thru links, low prio to high
-                  for(let l=0; l<targetLinkPriorities.length; l++) {
-                    //loop thru links, high prio to low until outer loop is at same indexOf
-                    var sourceLink = Game.getObjectById(targetLinkPriorities[l].id);
-                    if(sourceLink.energy > 50 && sourceLink.cooldown == 0) {
-                      for(let i=targetLinkPriorities.length-1; i>l; i--) {
-                        var targetLink = Game.getObjectById(targetLinkPriorities[i].id);
-                        if( (targetLink.energyCapacity - targetLink.energy) > 50 ) {
-                          if( sourceLink.transferEnergy(targetLink) == OK ) { break; }
-                        }
+                    if ( link != undefined && link.energy > 50 && link.cooldown == 0) {
+                      var targetLink = null;
+                      targetLink = link.getTargetLink();
+                      if (targetLink != undefined && targetLink != null) {
+                        link.transferEnergy(targetLink);
                       }
                     }
-                  }
+                  }                  
                 }
 
             // Terminal code

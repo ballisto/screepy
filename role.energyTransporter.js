@@ -45,7 +45,7 @@ Creep.prototype.roleEnergyTransporter = function() {
               //energyTransporter only takes links with prio 1 as source
               var sourceIdObject = Game.getObjectById(sourceId);
               if(sourceIdObject != undefined || sourceIdObject != null) {
-                if (sourceIdObject.getObjectType() == "StructureLink" && this.room.memory.links[sourceId].priority != 1) {
+                if (sourceIdObject.getObjectType() == "StructureLink" && (this.room.memory.links[sourceId].priority != 1 || sourceIdObject.getTargetLink() != undefined) {
                   //nix
                 }
                 else {
@@ -97,6 +97,16 @@ Creep.prototype.roleEnergyTransporter = function() {
             }
             if (targetId == undefined || targetId == null) {
               targetId = this.findSpaceEnergy(STRUCTURE_LAB);
+            }
+            if (targetId == undefined || targetId == null) {
+              var tmpTargetLinkId = this.findSpaceEnergy(STRUCTURE_LINK);
+              var tmpTargetLink = Game.getObjectById(tmpTargetLinkId);
+              if(tmpTargetLink != undefined || tmpTargetLink != null) {
+                if (tmpTargetLink.getObjectType() == "StructureLink" && this.room.memory.links[tmpTargetLinkId].priority == 1 && tmpTargetLink.energy < tmpTargetLink.energyCapacity) {
+                  if (tmpTargetLink.getTargetLink() != undefined) {
+                    targetId = tmpTargetLinkId;
+                  }
+                }                
             }
             if (targetId == undefined || targetId == null) {
               targetId = this.findSpaceEnergy(STRUCTURE_STORAGE);

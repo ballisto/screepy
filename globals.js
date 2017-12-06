@@ -4,6 +4,7 @@ require('prototype.creep.findResource')();
 require('prototype.creep');
 require('prototype.room');
 require('prototype.roomobject');
+require('prototype.link');
 require('functions.creeps');
 require('functions.game');
 require('functions.roles');
