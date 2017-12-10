@@ -1,8 +1,11 @@
+require('config');
 require('prototype.spawn2')();
 require('prototype.creep.findMyFlag')();
 require('prototype.creep.findResource')();
 require('prototype.creep');
 require('prototype.room');
+require('prototype.room.defense');
+require('prototype.roomposition');
 require('prototype.roomobject');
 require('prototype.link');
 require('functions.creeps');

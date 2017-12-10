@@ -353,6 +353,8 @@ module.exports.loop = function() {
             Game.rooms[r].setDefaultResourceLimits();
 
             Game.rooms[r].manageRamparts();
+
+            Game.rooms[r].handleNukeAttack();
             //Build RCL8 installations
             // if (Game.time % global.DELAYRCL8INSTALLATION == 0 && Game.rooms[r].controller != undefined && Game.rooms[r].controller.level == 8 && Game.rooms[r].controller.owner.username == global.playerUsername) {
             //     let structures = Game.rooms[r].find(FIND_MY_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_NUKER || s.structureType == STRUCTURE_TERMINAL || s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_TOWER || s.structureType == STRUCTURE_STORAGE});
@@ -589,7 +591,7 @@ module.exports.loop = function() {
                         link.transferEnergy(targetLink);
                       }
                     }
-                  }                  
+                  }
                 }
 
             // Terminal code
