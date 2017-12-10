@@ -202,6 +202,14 @@ Creep.prototype.findSpaceEnergy =
                                   IDBasket.push(container);
                               }
                           }
+                  case STRUCTURE_NUKER:
+                          tempArray = this.room.memory.roomArray.nukers;
+                          for (var s in tempArray) {
+                              let container = Game.getObjectById(tempArray[s]);
+                              if (Game.getObjectById(tempArray[s]) != null && container.energy < container.energyCapacity) {
+                                  IDBasket.push(container);
+                              }
+                          }
                       break;
               }
           }
