@@ -108,7 +108,7 @@ Creep.prototype.roleEnergyTransporter = function() {
             }
 
             if (targetId == undefined || targetId == null) {
-              targetId = this.findSpaceEnergy(STRUCTURE_NUKER);              
+              targetId = this.findSpaceEnergy(STRUCTURE_NUKER);
             }
             if (targetId == undefined || targetId == null) {
               targetId = this.findSpaceEnergy(STRUCTURE_STORAGE);
@@ -129,6 +129,14 @@ Creep.prototype.roleEnergyTransporter = function() {
             }
             else {
               var targetBufferObjectType = targetBufferObject.getObjectType();
+              if(targetBufferObjectType == 'StructureTower') {
+                if(targetBufferObject.energy > (targetBufferObject.energyCapacity/10)*8) {
+                  delete this.memory.targetBuffer;
+                  if (this.carry.energy < 50) {this.memory.working = false;}
+                  return false;
+                }
+              }
+
               var result = this.transfer(targetBufferObject, RESOURCE_ENERGY);
               if (result == ERR_NOT_IN_RANGE) {
                   this.moveTo(targetBufferObject);
