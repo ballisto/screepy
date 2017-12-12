@@ -167,7 +167,7 @@ Creep.prototype.findSpaceEnergy =
                           tempArray = this.room.memory.roomArray.towers;
                           for (var s in tempArray) {
                               let container = Game.getObjectById(tempArray[s]);
-                              if (Game.getObjectById(tempArray[s]) != null && container.energy < (container.energyCapacity/10)*9) {
+                              if (Game.getObjectById(tempArray[s]) != null && container.energy < (container.energyCapacity/10)*8) {
                                   IDBasket.push(container);
                               }
                           }
