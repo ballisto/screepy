@@ -15,6 +15,11 @@
 //   global.friends = [];
 // }
 
+global.economy = {
+  stock: {},
+
+};
+
 global.config = {
   profiler: {
     enabled: false,

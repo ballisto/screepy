@@ -1,4 +1,5 @@
 require('config');
+require('global.economy');
 require('prototype.spawn2')();
 require('prototype.creep.findMyFlag')();
 require('prototype.creep.findResource')();
@@ -43,7 +44,7 @@ global.LOG_EXPIRE = true;
 global.LOG_PANICFLAG = true;
 global.LOG_INFO = true;
 
-global.playerUsername = "ballisto";
+global.playerUsername = global.playerUsername || _.chain(Game.rooms).map('controller').flatten().filter('my').map('owner.username').first().value();
 global.allies = [""];
 //global.myroomlist = _.filter(Game.rooms, {controller: { owner: { username: global.playerUsername}}});
 global.myroomlist = _.values(Game.rooms).filter (r => _.get(r, ['controller','owner','username'],undefined) === global.playerUsername);

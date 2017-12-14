@@ -14,6 +14,10 @@ const profiler = require('screeps-profiler'); // cf. https://www.npmjs.com/packa
 profiler.enable() ;
 module.exports.loop = function() {
   PathFinder.use(true);
+
+
+  economy.resetStock();
+  economy.takestock();
      for (var c in Game.creeps) {
     //   //c.memory.homeroom = this.room;
        var curCreep = Game.creeps[c];
