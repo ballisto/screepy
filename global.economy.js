@@ -2,13 +2,14 @@
 
 economy.resetStock= function() {
   economy.stock = {};
-  for (curResource in RESOURCES_ALL) {
+  for (var curResourceIndex in RESOURCES_ALL) {
+    var curResource = RESOURCES_ALL[curResourceIndex];
     economy.stock[curResource] = 0;
   }
 };
 economy.takestockCount = function(store) {
-  for (var curStorageResource in store.store) {
-    economy.stock[curStorageResource] += store.store[curStorageResource];
+  for (var curStorageResource in store) {
+    economy.stock[curStorageResource] += store[curStorageResource];
   }
 };
 economy.takestock = function() {
@@ -26,9 +27,10 @@ economy.printStock = function() {
   var resourceTable = [];
   var total = [];
 
-  for (curResource in RESOURCES_ALL) {
+  for (var curResourceIndex in RESOURCES_ALL) {
+     var curResource = RESOURCES_ALL[curResourceIndex];
     if(economy.stock[curResource] > 0) {
-      color = "#aaffff";
+      var color = "#aaffff";
       returnstring = returnstring.concat("<tr></tr><td>" + curResource + "  </td>");
 
       returnstring = returnstring.concat("<td><font color='" + color + "'>" + prettyInt(economy.stock[curResource]) + "  </font></td>");
@@ -36,9 +38,6 @@ economy.printStock = function() {
       returnstring = returnstring.concat("</tr>");
     }
   }
-
-
-
   returnstring = returnstring.concat("</tr></table>");
   return returnstring;
 };
