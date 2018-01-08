@@ -1,5 +1,7 @@
 require('config');
 require('global.economy');
+require('global.operator');
+require('global.root.memory');
 require('prototype.spawn2')();
 require('prototype.creep.findMyFlag')();
 require('prototype.creep.findResource')();
@@ -14,6 +16,7 @@ require('functions.game');
 require('functions.roles');
 require('tower');
 
+global.SERIALIZATION_DELIMITER = "|";
 global.DELAYFLOWROOMCHECK = 313;
 global.DELAYMARKETAUTOSELL = 7;
 global.DELAYMARKETBUY = 3;
@@ -92,6 +95,9 @@ global.mineralDescriptions.XZH2O = {tier: 3, component1: "X", component2: "ZH2O"
 global.mineralDescriptions.XZHO2 = {tier: 3, component1: "X", component2: "ZHO2", bodyPart: MOVE };
 global.mineralDescriptions.XGH2O = {tier: 3, component1: "X", component2: "GH2O", bodyPart: WORK };
 global.mineralDescriptions.XGHO2 = {tier: 3, component1: "X", component2: "GHO2", bodyPart: TOUGH };
+
+global.jobTemplates = {};
+global.jobTemplates.loadEnergy = {task: "transfer", resourceType: RESOURCE_ENERGY, bodyRequirements: "02300000" };
 
 global.buildingPlans = {
     miniharvester: [

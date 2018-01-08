@@ -18,22 +18,6 @@ function Job(jobid) {
     }
   }
 
-  Job.prototype.initFromMemory = function() {
-
-  }
-
-  Job.prototype.writeToMemory = function() {
-    if(Memory.jobs == undefined) {Memory.jobs = {};}
-    if(Memory.jobs[this.id] == undefined) {Memory.jobs[this.id] = {};}
-
-    Memory.jobs[this.id].created = this.created;
-    Memory.jobs[this.id].created = this.targetId;
-    Memory.jobs[this.id].task = this.task;
-    Memory.jobs[this.id]. = this.targetId;
-
-    
-  }
-
 
 
 module.exports = Job;

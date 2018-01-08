@@ -1,6 +1,6 @@
 'use strict';
 
-economy.resetStock= function() {
+economy.resetStock = function() {
   economy.stock = {};
   for (var curResourceIndex in RESOURCES_ALL) {
     var curResource = RESOURCES_ALL[curResourceIndex];

@@ -14,6 +14,13 @@
 // } catch (e) {
 //   global.friends = [];
 // }
+global.root = {
+  stats: {},
+};
+
+global.operator = {
+  bla: {},
+};
 
 global.economy = {
   stock: {},

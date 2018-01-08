@@ -1191,6 +1191,6 @@ module.exports.loop = function() {
     }
     //console.log("Tickli - " + Game.cpu.tickLimit);
     // console.log("main Finish: " + Game.cpu.getUsed());
-
+    root.saveMemorySegments();
     });
 };
