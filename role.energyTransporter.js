@@ -73,7 +73,7 @@ Creep.prototype.roleEnergyTransporter = function() {
                       result = this.withdraw(sourceBufferObject, RESOURCE_ENERGY);
                     }
                     if (result == ERR_NOT_IN_RANGE) {
-                        this.moveTo(sourceBufferObject);
+                        this.moveToMy(sourceBufferObject, 1);
                     }
                 }
               }
@@ -139,7 +139,7 @@ Creep.prototype.roleEnergyTransporter = function() {
 
               var result = this.transfer(targetBufferObject, RESOURCE_ENERGY);
               if (result == ERR_NOT_IN_RANGE) {
-                  this.moveTo(targetBufferObject);
+                  this.moveToMy(targetBufferObject, 1);
               }
               else if (result != OK) {
                   delete this.memory.targetBuffer;

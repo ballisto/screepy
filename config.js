@@ -4,16 +4,19 @@
 //   stats: {},
 // };
 // global.roles = {};
-// global.cache = {
-//   rooms: {},
-//   segments: {},
-// };
+
 //
 // try {
 //   global.friends = require('friends'); // eslint-disable-line global-require
 // } catch (e) {
 //   global.friends = [];
 // }
+
+global.cache = {
+  rooms: {},
+  segments: {},
+};
+
 global.root = {
   stats: {},
 };

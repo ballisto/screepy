@@ -10,6 +10,56 @@ var roles = {
     lorry: require('role.lorry')
 };
 
+/*
+ * Log creep message based on debug config
+ *
+ * `config.debug.creepLog.roles` and `config.debug.creepLog.rooms` define
+ * logging on common methods
+ *
+ * @param messages The message to log
+ */
+Creep.prototype.creepLog = function(...messages) {
+  if (config.debug.creepLog.roles.indexOf(this.memory.role) < 0) {
+    return;
+  }
+  if (config.debug.creepLog.rooms.indexOf(this.room.name) < 0) {
+    return;
+  }
+  this.log(messages);
+};
+
+
+Creep.prototype.moveToMy = function(target, range) {
+  range = range || 1;
+  const search = PathFinder.search(
+    this.pos, {
+      pos: target,
+      range: range,
+    }, {
+      roomCallback: this.room.getCostMatrixCallback(target, true, this.pos.roomName === (target.pos || target).roomName),
+      maxRooms: 0,
+      swampCost: config.layout.swampCost,
+      plainCost: config.layout.plainCost,
+    }
+  );
+
+  if (config.visualizer.enabled && config.visualizer.showPathSearches) {
+    visualizer.showSearch(search);
+  }
+
+  this.creepLog('moveToMy search:', JSON.stringify(search));
+  // Fallback to moveTo when the path is incomplete and the creep is only switching positions
+  if (search.path.length < 2 && search.incomplete) {
+    // this.log(`fallback ${JSON.stringify(target)} ${JSON.stringify(search)}`);
+    this.moveTo(target);
+    return false;
+  }
+  return this.move(this.pos.getDirectionTo(search.path[0] || target.pos || target));
+};
+
+
+
+
 Creep.prototype.runRole =
     function () {
         roles[this.memory.role].run(this);
