@@ -7,6 +7,8 @@ require('prototype.creep.findMyFlag')();
 require('prototype.creep.findResource')();
 require('prototype.creep');
 require('prototype.room');
+require('prototype.room.memory');
+require('prototype.room.costmatrix');
 require('prototype.room.defense');
 require('prototype.roomposition');
 require('prototype.roomobject');
