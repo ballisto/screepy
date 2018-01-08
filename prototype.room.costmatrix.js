@@ -9,7 +9,12 @@ Room.prototype.setCostMatrixStructures = function(costMatrix, structures, value)
 Room.prototype.getCostMatrixCallback = function(end, excludeStructures, oneRoom, allowExits) {
   const costMatrix = this.getMemoryCostMatrix();
   if (!costMatrix) {
-    this.updatePosition();
+    this.checkCache();
+    delete this.memory.routing;
+    delete this.memory.summaryCenter;
+
+    const costMatrixBase = this.getCostMatrix();
+    this.setMemoryCostMatrix(costMatrixBase);
   }
 
   const callbackInner = (roomName) => {
