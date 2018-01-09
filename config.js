@@ -26,7 +26,7 @@ global.operator = {
 };
 
 global.jobs = {
-  segmentId = 1,
+  segmentId: 1,
 };
 
 global.economy = {
