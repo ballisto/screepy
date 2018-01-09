@@ -1,4 +1,5 @@
 require('config');
+require('global.utils');
 require('global.economy');
 require('global.operator');
 require('global.root.memory');
