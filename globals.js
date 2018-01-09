@@ -101,7 +101,7 @@ global.mineralDescriptions.XGH2O = {tier: 3, component1: "X", component2: "GH2O"
 global.mineralDescriptions.XGHO2 = {tier: 3, component1: "X", component2: "GHO2", bodyPart: TOUGH };
 
 global.jobTemplates = {};
-global.jobTemplates.loadEnergy = {task: "transfer", resourceType: RESOURCE_ENERGY, bodyRequirements: "02300000" };
+global.jobTemplates.loadEnergy = {task: "transfer", priority: 201, entitity: creep, resType: RESOURCE_ENERGY, bodyReq: "02300000" };
 
 global.buildingPlans = {
     miniharvester: [

@@ -25,6 +25,10 @@ global.operator = {
   bla: {},
 };
 
+global.jobs = {
+  segmentId = 1,
+};
+
 global.economy = {
   stock: {},
 

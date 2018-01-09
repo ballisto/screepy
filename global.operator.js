@@ -18,5 +18,5 @@ operator.run = function() {
 };
 
 operator.loadEnergy = function() {
-  
+  var towersNeedingEnergy = Game.structures
 };
