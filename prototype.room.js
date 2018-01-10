@@ -1,9 +1,9 @@
 Room.prototype.log = function(...messages) {
-  console.log(`${Game.time} ${this.name.rpad(' ', 27)} ${messages.join(' ')}`);
+  console.log(`${Game.time} ${this.name.padEnd(27)} ${messages.join(' ')}`);
 };
 
 RoomObject.prototype.log = function(...messages) {
-  console.log(`${Game.time} ${this.room.name.rpad(' ', 6)} ${this.name.rpad(' ', 20)} ${this.pos} ${messages.join(' ')}`);
+  console.log(`${Game.time} ${this.room.name.padEnd(6)} ${this.name.padEnd(20)} ${this.pos} ${messages.join(' ')}`);
 };
 
 Room.prototype.exectueEveryTicks = function(ticks) {
