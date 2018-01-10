@@ -11,6 +11,7 @@ require('prototype.room');
 require('prototype.room.utils');
 require('prototype.room.memory');
 require('prototype.room.costmatrix');
+require('prototype.room.init');
 require('prototype.room.defense');
 require('prototype.roomposition');
 require('prototype.roomobject');
