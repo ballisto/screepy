@@ -30,7 +30,8 @@ Creep.prototype.creepLog = function(...messages) {
 
 Creep.prototype.setCacheKey = function(key, value) {
   if(cache.creeps[this.id] == undefined) { cache.creeps[this.id] = {};}
-  cache.creeps[this.id].key = value;
+  var tmpCacheArray = cache.creeps[this.id];
+    tmpCacheArray[key] = value;  
 };
 Creep.prototype.getCacheKey = function(key) {
   if(cache.creeps[this.id] == undefined) { return undefined;}
