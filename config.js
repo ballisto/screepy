@@ -15,6 +15,7 @@
 global.cache = {
   rooms: {},
   segments: {},
+  creeps: {},
 };
 
 global.root = {

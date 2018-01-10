@@ -28,8 +28,24 @@ Creep.prototype.creepLog = function(...messages) {
   this.log(messages);
 };
 
+Creep.prototype.setCacheKey = function(key, value) {
+  if(cache.creeps[this.id] == undefined) { cache.creeps[this.id] = {};}
+  cache.creeps[this.id].key = value;
+};
+Creep.prototype.getCacheKey = function(key) {
+  if(cache.creeps[this.id] == undefined) { return undefined;}
+  return cache.creeps[this.id].key;
+};
 
 Creep.prototype.moveToMy = function(target, range) {
+  const didNotMoveSinceLastTick = false;
+  if(this.getCacheKey("lastModifiedTick") != undefined && Game.time - this.getCacheKey("lastModifiedTick") < 3) {
+      if(this.getCacheKey("lastPosition") != undefined && JSON.stringify(this.pos) == this.getCacheKey("lastPosition")) {
+        didNotMoveSinceLastTick = true;
+        this.creepLog('moveToMy ', "I did not move");
+      }
+  }
+
   range = range || 1;
   const search = PathFinder.search(
     this.pos, {
@@ -56,6 +72,10 @@ Creep.prototype.moveToMy = function(target, range) {
   }
   const moveReturnCode = this.move(this.pos.getDirectionTo(search.path[0] || target.pos || target));
   if (moveReturnCode != 0 ) {this.creepLog('moveToMy move, err code:', moveReturnCode );}
+
+  this.setCacheKey("lastModifiedTick", Game.time);
+  this.setCacheKey("lastPosition", JSON.stringify(this.pos));
+  this.setCacheKey("lastTargetPosition", JSON.stringify(search.path[0]));
 
   return moveReturnCode;
 };
