@@ -20,6 +20,7 @@ Room.prototype.initSetSources = function() {
     if (sourcer) {
       const link = sourcer.getFirstNearPosition();
       this.memory.position.structure.link.push(link);
+      costMatrix.set(sourcer.x, sourcer.y, config.layout.structureAvoid);
       costMatrix.set(link.x, link.y, config.layout.structureAvoid);
       this.setMemoryCostMatrix(costMatrix);
     }

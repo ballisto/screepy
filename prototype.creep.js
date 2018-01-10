@@ -54,7 +54,10 @@ Creep.prototype.moveToMy = function(target, range) {
     this.moveTo(target);
     return false;
   }
-  return this.move(this.pos.getDirectionTo(search.path[0] || target.pos || target));
+  const moveReturnCode = this.move(this.pos.getDirectionTo(search.path[0] || target.pos || target));
+  if (moveReturnCode != 0 ) {this.creepLog('moveToMy move, err code:', moveReturnCode );}
+
+  return moveReturnCode;
 };
 
 
