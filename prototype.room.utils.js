@@ -138,7 +138,7 @@ Room.pathToString = function(path) {
   }
 
   let result = path[0].roomName + ':';
-  result += path[0].x.toString().lpad('0', 2) + path[0].y.toString().lpad('0', 2);
+  result += path[0].x.toString().padStart(2, '0') + path[0].y.toString().padStart(2, '0');
   let last;
   for (const pos of path) {
     if (!last) {
