@@ -15,9 +15,14 @@ profiler.enable() ;
 module.exports.loop = function() {
   PathFinder.use(true);
 
+  operator.init();
+  polier.init();
 
   economy.resetStock();
   economy.takestock();
+
+  operator.run();
+
      for (var c in Game.creeps) {
     //   //c.memory.homeroom = this.room;
        var curCreep = Game.creeps[c];

@@ -2,21 +2,18 @@
 
 operator.init = function() {
   if(Memory.operator == undefined) {Memory.operator = {};}
-  if(Memory.operator.jobsSegment == undefined) {Memory.operator.jobsSegment = root.getNextSegmentId();}
-  operator.jobsSegment = Memory.operator.jobsSegment;
-  if(Memory.operator.maxjobid == undefined) {Memory.operator.maxjobid = 0;}
-
-  operator.jobs = [];
-  for (const key of root.getSegmentKeys(operator.jobsSegment)) {
-      operator.jobs[key] = root.getSegmentObject(operator.jobsSegment, key);
-  }
 };
 
 operator.run = function() {
   operator.init();
-
+  operator.loadEnergy();
 };
 
 operator.loadEnergy = function() {
-  var towersNeedingEnergy = Game.structures
+  var structuresNeedingEnergy = _.filter(Game.structures, (a) => a.energy < a.energyCapacity && a.structureType != STRUCTURE_LINK);
+  var structuresNeedingEnergyWithoutOpenJob = _.filter(structuresNeedingEnergy, function(s) { return polier.jobForStructureExists(s.target, s.task);});
+
+  for(const s in structuresNeedingEnergyWithoutOpenJob) {
+    polier.addJobWithTemplate(jobTemplates.loadEnergy, structuresNeedingEnergyWithoutOpenJob[s], structuresNeedingEnergyWithoutOpenJob[s].energyCapacity - structuresNeedingEnergyWithoutOpenJob[s].energy);
+  }
 };

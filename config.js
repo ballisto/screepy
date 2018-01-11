@@ -36,6 +36,10 @@ global.economy = {
 };
 
 global.config = {
+  polier: {
+    jobsSegment: 0,
+  }
+
   profiler: {
     enabled: false,
   },

@@ -106,6 +106,10 @@ root.checkSegmentActive = function(id, noThrow = false) {
       ids.delete(oldestSegmentId);
     }
     ids.add(id);
+    // add id 0 for jobs storage
+    if(id != 0) {
+      ids.add(0);
+    }
     for (let i = 0; i < config.memory.segments && ids.size < 10; ++i) {
       ids.add(i);
     }
