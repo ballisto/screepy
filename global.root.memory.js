@@ -170,7 +170,7 @@ const types = {
   },
   costmatrix: {
     stringify: (o) => JSON.stringify(o.serialize()),
-    parse: (s) => PathFinder.CostMatrix.deserialize(JSON.parse(s)),
+    parse: (s) => PathFinder.CostMatrix.deserialize(JSON.parse(LZString.decompress(s))),
   },
   path: {
     stringify: (o) => Room.serializePath(o),
@@ -247,7 +247,7 @@ root.saveMemorySegments = function() {
           segment[key].value = types[segment[key].type].stringify(object);
         }
       }
-      RawMemory.segments[id] = JSON.stringify(segment);
+      RawMemory.segments[id] = LZString.compress(JSON.stringify(segment));
       Memory.segments[id].length = RawMemory.segments[id].length;
     }
   }

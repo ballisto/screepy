@@ -35,19 +35,41 @@ Creep.prototype.setCacheKey = function(key, value) {
     tmpCacheArray[key] = value;
 };
 Creep.prototype.getCacheKey = function(key) {
+  if(cache.creeps == undefined) { cache.creeps = {};}
   if(cache.creeps[this.id] == undefined) { return undefined;}
-  return cache.creeps[this.id].key;
+  var tmpCacheArray = cache.creeps[this.id];
+  return tmpCacheArray[key];
 };
 
 Creep.prototype.moveToMy = function(target, range) {
-  const didNotMoveSinceLastTick = false;
-  if(this.getCacheKey("lastModifiedTick") != undefined && Game.time - this.getCacheKey("lastModifiedTick") < 3) {
-      if(this.getCacheKey("lastPosition") != undefined && JSON.stringify(this.pos) == this.getCacheKey("lastPosition")) {
-        didNotMoveSinceLastTick = true;
-        this.creepLog('moveToMy ', "I did not move");
-      }
-  }
 
+  var notMovedSince = 0;
+  //creep has a history of path conflicts in cache
+  if(this.getCacheKey("notMovedSince") != undefined && this.getCacheKey("notMovedSince") > 2) {
+    this.moveTo(target);
+    return false;
+  }
+  else {
+
+    if(this.getCacheKey("lastModifiedTick") != undefined && Game.time - this.getCacheKey("lastModifiedTick") < 10) {
+        if(this.getCacheKey("lastPosition") != undefined) {
+          if(JSON.stringify(this.pos) == this.getCacheKey("lastPosition")) {
+            if(this.getCacheKey("notMovedSince") != undefined) {
+              var tmpCacheValue = this.getCacheKey("notMovedSince");
+              this.setCacheKey("notMovedSince", tmpCacheValue += 1);
+            }
+            else {
+              this.setCacheKey("notMovedSince", 1);
+            }
+            notMovedSince = this.getCacheKey("notMovedSince");
+            this.creepLog('moveToMy notMovedSince', notMovedSince);
+          }
+          else {
+
+          }
+        }
+    }
+  }
   range = range || 1;
   const search = PathFinder.search(
     this.pos, {
@@ -67,7 +89,7 @@ Creep.prototype.moveToMy = function(target, range) {
 
   this.creepLog('moveToMy search:', JSON.stringify(search));
   // Fallback to moveTo when the path is incomplete and the creep is only switching positions
-  if (search.path.length < 2 && search.incomplete) {
+  if ((search.path.length < 2 && search.incomplete) || notMovedSince > 2) {
     // this.log(`fallback ${JSON.stringify(target)} ${JSON.stringify(search)}`);
     this.moveTo(target);
     return false;
