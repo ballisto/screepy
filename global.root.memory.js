@@ -142,7 +142,7 @@ root.getSegment = function(id) {
   if (Memory.segments[id].lastModifiedTick > cache.segments[id].lastParsedTick) {
     root.checkSegmentActive(id);
     cache.segments[id].lastParsedTick = Game.time;
-    cache.segments[id].value = RawMemory.segments[id] ? JSON.parse(RawMemory.segments[id]) : {};
+    cache.segments[id].value = RawMemory.segments[id] ? JSON.parse(LZString.decompress(RawMemory.segments[id])) : {};
   }
   return cache.segments[id].value;
 };
@@ -170,7 +170,7 @@ const types = {
   },
   costmatrix: {
     stringify: (o) => JSON.stringify(o.serialize()),
-    parse: (s) => PathFinder.CostMatrix.deserialize(JSON.parse(LZString.decompress(s))),
+    parse: (s) => PathFinder.CostMatrix.deserialize(JSON.parse(s)),
   },
   path: {
     stringify: (o) => Room.serializePath(o),
