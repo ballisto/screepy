@@ -142,7 +142,15 @@ root.getSegment = function(id) {
   if (Memory.segments[id].lastModifiedTick > cache.segments[id].lastParsedTick) {
     root.checkSegmentActive(id);
     cache.segments[id].lastParsedTick = Game.time;
-    cache.segments[id].value = RawMemory.segments[id] ? JSON.parse(LZString.decompress(RawMemory.segments[id])) : {};
+
+    cache.segments[id].value = {};
+    if(RawMemory.segments[id] != undefined) {
+      var tmpDecompressedRawMemory = JSON.parse(LZString.decompressFromBase64(RawMemory.segments[id]));
+      if (tmpDecompressedRawMemory != undefined && tmpDecompressedRawMemory != null) {
+        cache.segments[id].value = tmpDecompressedRawMemory;
+      }
+    }
+    // cache.segments[id].value = RawMemory.segments[id] ? JSON.parse(LZString.decompress(RawMemory.segments[id])) : {};
   }
   return cache.segments[id].value;
 };
@@ -247,7 +255,7 @@ root.saveMemorySegments = function() {
           segment[key].value = types[segment[key].type].stringify(object);
         }
       }
-      RawMemory.segments[id] = LZString.compress(JSON.stringify(segment));
+      RawMemory.segments[id] = LZString.compressToBase64(JSON.stringify(segment));
       Memory.segments[id].length = RawMemory.segments[id].length;
     }
   }
