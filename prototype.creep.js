@@ -29,9 +29,10 @@ Creep.prototype.creepLog = function(...messages) {
 };
 
 Creep.prototype.setCacheKey = function(key, value) {
+  if(cache.creeps == undefined) { cache.creeps = {};}
   if(cache.creeps[this.id] == undefined) { cache.creeps[this.id] = {};}
   var tmpCacheArray = cache.creeps[this.id];
-    tmpCacheArray[key] = value;  
+    tmpCacheArray[key] = value;
 };
 Creep.prototype.getCacheKey = function(key) {
   if(cache.creeps[this.id] == undefined) { return undefined;}
