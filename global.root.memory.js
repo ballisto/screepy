@@ -28,7 +28,7 @@ const currentSegment = {};
 root.getNextSegmentId = function() {
   if (currentSegment.time !== Game.time || currentSegment.segment === undefined) {
     currentSegment.time = Game.time;
-    currentSegment.segment = Math.floor(Math.random() * config.memory.segments);
+    currentSegment.segment = getRandomInt(3, config.memory.segments);
   }
   return currentSegment.segment;
 };
