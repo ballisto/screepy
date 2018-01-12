@@ -12,7 +12,7 @@ jobs.run = function() {
 };
 
 jobs.jobForStructureExists = function(structureId, task) {
-  var openJobsForStructure = _.filter(getSegmentObject(config.jobs.jobsSegment, config.jobs.jobsKey), (j) => j.target == structureId && j.task == task && j.status != 'done');
+  var openJobsForStructure = _.filter(root.getSegmentObject(config.jobs.jobsSegment, config.jobs.jobsKey), (j) => j.target == structureId && j.task == task && j.status != 'done');
   if(openJobsForStructure.length > 0) {
     return true;
   }

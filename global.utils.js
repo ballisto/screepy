@@ -184,7 +184,11 @@ global.utils = {
     return arrayParts;
   },
 };
-
+global.getRandomInt = function(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
+}
   // Copyright (c) 2013 Pieroxy <pieroxy@pieroxy.net>
   // This work is free. You can redistribute it and/or modify it
   // under the terms of the WTFPL, Version 2

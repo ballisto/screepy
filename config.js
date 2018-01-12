@@ -30,13 +30,17 @@ global.polier = {
   segmentId: 1,
 };
 
+global.jobs = {
+  segmentId: 1,
+};
+
 global.economy = {
   stock: {},
 
 };
 
 global.config = {
-  polier: {
+  jobs: {
     jobsSegment: 0,
     jobsKey: "jobs",
   },

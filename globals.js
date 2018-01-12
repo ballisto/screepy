@@ -2,6 +2,7 @@ require('config');
 require('global.utils');
 require('global.root.memory');
 require('global.economy');
+require('global.jobs');
 require('global.operator');
 require('global.polier');
 require('prototype.spawn2')();
@@ -103,7 +104,7 @@ global.mineralDescriptions.XGH2O = {tier: 3, component1: "X", component2: "GH2O"
 global.mineralDescriptions.XGHO2 = {tier: 3, component1: "X", component2: "GHO2", bodyPart: TOUGH };
 
 global.jobTemplates = {};
-global.jobTemplates.loadEnergy = {task: "transfer", priority: 201, entitity: "creep", bodyReq: "02300000", status: "new", ttl: 222 };
+global.jobTemplates.transferResource = {task: "transfer", priority: 201, entitity: "creep", bodyReq: "02300000", status: "new", ttl: 222 };
 
 global.buildingPlans = {
     miniharvester: [
