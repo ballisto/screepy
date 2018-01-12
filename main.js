@@ -22,6 +22,7 @@ module.exports.loop = function() {
   economy.takestock();
 
   // operator.run();
+  // polier.run();
 
      for (var c in Game.creeps) {
     //   //c.memory.homeroom = this.room;
