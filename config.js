@@ -27,8 +27,7 @@ global.operator = {
 };
 
 global.polier = {
-  segmentId: 1,
-  bodyHitpointsMatrix = [100,200,400,800,1200,1600,2000,3000,5000]
+  segmentId: 1,  
 };
 
 global.jobs = {

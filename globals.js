@@ -103,8 +103,11 @@ global.mineralDescriptions.XZHO2 = {tier: 3, component1: "X", component2: "ZHO2"
 global.mineralDescriptions.XGH2O = {tier: 3, component1: "X", component2: "GH2O", bodyPart: WORK };
 global.mineralDescriptions.XGHO2 = {tier: 3, component1: "X", component2: "GHO2", bodyPart: TOUGH };
 
+
 global.jobTemplates = {};
-global.jobTemplates.transferResource = {task: "transfer", priority: 201, entitity: "creep", bodyReq: "02300000", status: "new", ttl: 222 };
+global.jobTemplates.transferResource = {task: "transfer", priority: 201, entitity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
+
+global.bodyHitpointsMatrix = [100,200,400,800,1200,1600,2000,3000,5000];
 
 global.buildingPlans = {
     miniharvester: [

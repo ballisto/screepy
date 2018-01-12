@@ -10,14 +10,12 @@ polier.init = function() {
     var tmpArray = [];
     root.setSegmentObject(config.polier.assignementsSegment, config.polier.assignmentsKey, tmpArray);
   }
-  assignementsSegment: 1,
-  assignmentsKey: "assignments",
 };
 
 polier.run = function() {
-  var tmpjobs = this.getAllUnassignedJobs();
+  var tmpjobs = polier.getAllUnassignedJobs();
   for (const i in tmpjobs) {
-    console.log(tmpjibs[i].jobId);
+    console.log(tmpjobs[i].id);
   }
 };
 
@@ -33,15 +31,15 @@ polier.getAllAssignments = function() {
 };
 
 polier.getAssignmentsForCreep = function(creepId) {
-  return _.filter(this.getAllAssignments(), (a) => a.creepId == creepId);
+  return _.filter(polier.getAllAssignments(), (a) => a.creepId == creepId);
 };
 
 polier.getAssignmentsForJob = function(jobId) {
-  return _.filter(this.getAllAssignments(), (a) => a.jobId == jobId);
+  return _.filter(polier.getAllAssignments(), (a) => a.jobId == jobId);
 };
 
 polier.jobAssignmentExists = function(jobId) {
-  var tmpAssignsForJob = this.getAssignmentsForJob(jobId);
+  var tmpAssignsForJob = polier.getAssignmentsForJob(jobId);
   if(tmpAssignsForJob.length > 0) {
     return true;
   }
@@ -51,11 +49,14 @@ polier.jobAssignmentExists = function(jobId) {
 };
 
 polier.getAllUnassignedJobs = function() {
-  return _.filter(this.getAllUnfinishedJobs(), function(s) { return !this.jobAssignmentExists(s.jobId);} );
+  return _.filter(jobs.getAllUnfinishedJobs(), function(s) { return !polier.jobAssignmentExists(s.id);} );
 };
 
 polier.addAssignment = function(jobId, creepId) {
-  const newAssignmentId = this.getAssignmentId();
+  //check if job already assigned. Abort
+  if(polier.jobAssignmentExists(jobId)) {return false;}
+
+  const newAssignmentId = polier.getAssignmentId();
   var newAssignmentData = {};
 
   newAssignmentData.id = newAssignmentId;
@@ -66,6 +67,7 @@ polier.addAssignment = function(jobId, creepId) {
   var tmpAllAssignments = root.getSegmentObject(config.polier.assignementsSegment, config.polier.assignmentsKey);
   tmpAllAssignments.push(newAssignmentData);
   root.setSegmentObject(config.polier.assignementsSegment, config.polier.assignmentsKey,tmpAllJobs);
+  return true;
 };
 
 jobs.printAssignments = function() {
