@@ -11,9 +11,9 @@ operator.run = function() {
 
 operator.loadEnergy = function() {
   var structuresNeedingEnergy = _.filter(Game.structures, (a) => a.energy < a.energyCapacity && a.structureType != STRUCTURE_LINK);
-  var structuresNeedingEnergyWithoutOpenJob = _.filter(structuresNeedingEnergy, function(s) { return polier.jobForStructureExists(s.target, s.task);});
+  var structuresNeedingEnergyWithoutOpenJob = _.filter(structuresNeedingEnergy, function(s) { return jobs.jobForStructureExists(s.target, s.task);});
 
   for(const s in structuresNeedingEnergyWithoutOpenJob) {
-    polier.addJobWithTemplate(jobTemplates.loadEnergy, structuresNeedingEnergyWithoutOpenJob[s].id, structuresNeedingEnergyWithoutOpenJob[s].energyCapacity - structuresNeedingEnergyWithoutOpenJob[s].energy);
+    jobs.addJobWithTemplate(jobTemplates.loadEnergy, structuresNeedingEnergyWithoutOpenJob[s].id, structuresNeedingEnergyWithoutOpenJob[s].energyCapacity - structuresNeedingEnergyWithoutOpenJob[s].energy);
   }
 };
