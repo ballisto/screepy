@@ -26,7 +26,7 @@ global.operator = {
   bla: {},
 };
 
-global.jobs = {
+global.polier = {
   segmentId: 1,
 };
 
