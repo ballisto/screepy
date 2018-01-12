@@ -14,6 +14,6 @@ operator.loadEnergy = function() {
   var structuresNeedingEnergyWithoutOpenJob = _.filter(structuresNeedingEnergy, function(s) { return polier.jobForStructureExists(s.target, s.task);});
 
   for(const s in structuresNeedingEnergyWithoutOpenJob) {
-    polier.addJobWithTemplate(jobTemplates.loadEnergy, structuresNeedingEnergyWithoutOpenJob[s], structuresNeedingEnergyWithoutOpenJob[s].energyCapacity - structuresNeedingEnergyWithoutOpenJob[s].energy);
+    polier.addJobWithTemplate(jobTemplates.loadEnergy, structuresNeedingEnergyWithoutOpenJob[s].id, structuresNeedingEnergyWithoutOpenJob[s].energyCapacity - structuresNeedingEnergyWithoutOpenJob[s].energy);
   }
 };

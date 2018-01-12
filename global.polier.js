@@ -32,17 +32,22 @@ polier.getNewJobId = function() {
 
 polier.addJobWithTemplate = function(template, targetId, amount) {
   const newJobId = this.getNewJobId();
-  var newJobData = template.slice();
-  newJobData.push(id: newJobId);
-  newJobData.push(target: targetId);
-  newJobData.push(resAmount: amount);
-  newJobData.push(created: Game.time);
+  var newJobData = {};
 
-  root.setSegmentObject(config.polier.jobsSegment,newJobId,newJobData);
+  newJobData.id = newJobId;
+  newJobData.target = targetId;
+  newJobData.resAmount = amount;
+  newJobData.created = Game.time;
+
+  for(const k in template) {
+    newJobData[k] = template[k];
+  }
+
+  root.setSegmentObject(config.polier.jobsSegment,config.polier.jobsKey,newJobData);
 };
 
 polier.printJobs = function() {
-    const tmpJobs = root.getSegment(config.polier.jobsSegment);
+    const tmpJobs = root.getSegmentObject(config.polier.jobsSegment, config.polier.jobsKey);
     for(const key in tmpJobs) {
       console.log(JSON.stringify(tmpJobs[key]));
     }
