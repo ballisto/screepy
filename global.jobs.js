@@ -5,6 +5,11 @@ jobs.init = function() {
   if(Memory.jobs.maxJobId == undefined) {Memory.jobs.maxJobId = 1;}
 
   jobs.maxJobId = Memory.jobs.maxJobId;
+
+  if(!Array.isArray(root.getSegmentObject(config.jobs.jobsSegment, config.jobs.jobsKey))) {
+    var tmpArray = [];
+    root.setSegmentObject(config.jobs.jobsSegment, config.jobs.jobsKey, tmpArray);
+  }
 };
 
 jobs.run = function() {
@@ -41,8 +46,9 @@ jobs.addJobWithTemplate = function(template, targetId,resourceType, amount) {
   for(const k in template) {
     newJobData[k] = template[k];
   }
-
-  root.setSegmentObject(config.jobs.jobsSegment,config.jobs.jobsKey,newJobData);
+  var tmpAllJobs = root.getSegmentObject(config.jobs.jobsSegment, config.jobs.jobsKey);
+  tmpAllJobs.push(newJobData);
+  root.setSegmentObject(config.jobs.jobsSegment,config.jobs.jobsKey,tmpAllJobs);
 };
 
 jobs.printJobs = function() {
