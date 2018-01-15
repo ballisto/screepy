@@ -6,17 +6,18 @@ polier.init = function() {
 
   polier.maxAssignId = Memory.polier.maxAssignId;
 
-  if(!Array.isArray(root.getSegmentObject(config.polier.assignementsSegment, config.polier.assignmentsKey))) {
+  if(!Array.isArray(root.getSegmentObject(config.polier.assignmentsSegment, config.polier.assignmentsKey))) {
     var tmpArray = [];
-    root.setSegmentObject(config.polier.assignementsSegment, config.polier.assignmentsKey, tmpArray);
+    root.setSegmentObject(config.polier.assignmentsSegment, config.polier.assignmentsKey, tmpArray);
   }
 };
 
 polier.run = function() {
-  var tmpjobs = polier.getAllUnassignedJobs();
-  for (const i in tmpjobs) {
-    console.log(tmpjobs[i].id);
-  }
+  polier.assignJobs();
+  // var tmpjobs = polier.getAllUnassignedJobs();
+  // for (const i in tmpjobs) {
+  //   console.log(tmpjobs[i].id);
+  // }
 };
 
 polier.getAssignmentId = function() {
@@ -27,7 +28,7 @@ polier.getAssignmentId = function() {
   return result;
 };
 polier.getAllAssignments = function() {
-  return root.getSegmentObject(config.polier.assignementsSegment, config.polier.assignmentsKey);
+  return root.getSegmentObject(config.polier.assignmentsSegment, config.polier.assignmentsKey);
 };
 
 polier.getAssignmentsForCreep = function(creepId) {
@@ -64,20 +65,67 @@ polier.addAssignment = function(jobId, creepId) {
   newAssignmentData.creepId = creepId;
   newAssignmentData.created = Game.time;
 
-  var tmpAllAssignments = root.getSegmentObject(config.polier.assignementsSegment, config.polier.assignmentsKey);
+  var tmpAllAssignments = root.getSegmentObject(config.polier.assignmentsSegment, config.polier.assignmentsKey);
   tmpAllAssignments.push(newAssignmentData);
-  root.setSegmentObject(config.polier.assignementsSegment, config.polier.assignmentsKey,tmpAllJobs);
+  root.setSegmentObject(config.polier.assignmentsSegment, config.polier.assignmentsKey,tmpAllJobs);
   return true;
 };
 
-jobs.printAssignments = function() {
-    const tmpAssigns = root.getSegmentObject(config.polier.assignementsSegment, config.polier.assignmentsKey);
+polier.creepMatchesBodyReq = function(creepId, bodyReqString) {
+  if(bodyReqString.length != 8) {return false;}
+  const creepObject = Game.getObjectById(creepId);
+  if(creepObject == undefined) {return false;}
+
+  var result = true;
+  const creepBodyMatrix = creepObject.bodyMatrix();
+  const bodyReqMatrix = polier.bodyReqString2Hitpoints(bodyReqString);
+
+  for (let m = 0; m < 8; m++) {
+    if(creepBodyMatrix[m] < bodyReqMatrix[m]) {
+      result = false;
+    }
+  }
+  return result;
+};
+polier.bodyReqString2Hitpoints = function(bodyReqString) {
+  if(bodyReqString.length != 8) {return false;}
+  var result = [];
+  for (let i = 0; i < 8; i++) {
+      result[i] = bodyHitpointsMatrix[bodyReqString.charAt(i)];
+  }
+  return result;
+};
+
+polier.findCreepForJob = function(jobData) {
+  const targetStructure = Game.getObjectById(jobData.target);
+  if(targetStructure == undefined) {return false;}
+
+  var creepsInRoom = _.filter(Game.creeps, (c) => c.room.name == targetStructure.room.name);
+  var creepsInRoomMatchingBodyReq = _.filter(creepsInRoom, function(c) {return polier.creepMatchesBodyReq(c.id, jobData.bodyReq);});
+  // TODO - make an intelligent choice if multiple candidates found
+  var creepWithLessAssignments = _.minBy(creepsInRoomMatchingBodyReq, function(c) { return polier.getAssignmentsForCreep(c.id).length;});
+  if(creepWithLessAssignments.length > 0) {return creepWithLessAssignments[0];}
+  else {return false;}
+};
+
+polier.assignJobs = function() {
+  var unassignedJobs = polier.getAllUnassignedJobs();
+  for(const j in unassignedJobs) {
+    tmpCreepForJob = polier.findCreepForJob(unassignedJobs[j]);
+    if(tmpCreepForJob) {
+      polier.addAssignment(unassignedJobs[j].id, tmpCreepForJob.id);
+    }
+  }
+};
+
+polier.printAssignments = function() {
+    const tmpAssigns = root.getSegmentObject(config.polier.assignmentsSegment, config.polier.assignmentsKey);
     for(const key in tmpAssigns) {
       console.log(JSON.stringify(tmpAssigns[key]));
     }
 };
 
-jobs.resetMemory = function() {
+polier.resetMemory = function() {
   var tmpArray = [];
-  root.setSegmentObject(config.polier.assignementsSegment, config.polier.assignmentsKey, tmpArray);
+  root.setSegmentObject(config.polier.assignmentsSegment, config.polier.assignmentsKey, tmpArray);
 };

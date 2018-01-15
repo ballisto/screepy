@@ -27,7 +27,7 @@ global.operator = {
 };
 
 global.polier = {
-  segmentId: 1,  
+  segmentId: 1,
 };
 
 global.jobs = {
@@ -45,7 +45,7 @@ global.config = {
     jobsKey: "jobs",
   },
   polier: {
-    assignementsSegment: 1,
+    assignmentsSegment: 1,
     assignmentsKey: "assignments",
     maxAssignmentsPerWorker: 5,
   },

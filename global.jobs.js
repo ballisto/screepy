@@ -20,7 +20,7 @@ jobs.getAllJobs = function() {
   return root.getSegmentObject(config.jobs.jobsSegment, config.jobs.jobsKey);
 };
 jobs.getAllUnfinishedJobs = function() {
-  return _.filter(this.getAllJobs(), (j) => j.status != 'done');
+  return _.filter(jobs.getAllJobs(), (j) => j.status != 'done');
 };
 
 jobs.jobForStructureExists = function(structureId, task) {
@@ -41,7 +41,7 @@ jobs.getNewJobId = function() {
 };
 
 jobs.addJobWithTemplate = function(template, targetId,resourceType, amount) {
-  const newJobId = this.getNewJobId();
+  const newJobId = jobs.getNewJobId();
   var newJobData = {};
 
   newJobData.id = newJobId;
@@ -53,7 +53,7 @@ jobs.addJobWithTemplate = function(template, targetId,resourceType, amount) {
   for(const k in template) {
     newJobData[k] = template[k];
   }
-  var tmpAllJobs = this.getAllJobs();
+  var tmpAllJobs = jobs.getAllJobs();
   tmpAllJobs.push(newJobData);
   root.setSegmentObject(config.jobs.jobsSegment,config.jobs.jobsKey,tmpAllJobs);
 };
@@ -61,8 +61,16 @@ jobs.addJobWithTemplate = function(template, targetId,resourceType, amount) {
 
 
 jobs.printJobs = function() {
-    for(const key in this.getAllJobs()) {
-      console.log(JSON.stringifyopenJobsForStructure(tmpJobs[key]));
+    const tmpJobs = jobs.getAllJobs();
+    for(const key in tmpJobs) {
+      console.log(JSON.stringify(tmpJobs[key]));
+    }
+};
+jobs.printJobsForRoom = function(roomName) {
+    const tmpJobs = jobs.getAllJobs();
+    const tmpJobsForRoom = _.filter(tmpJobs, function(j) {return Game.getObjectById(j.target).room.name == roomName;})
+    for(const key in tmpJobsForRoom) {
+      console.log(JSON.stringify(tmpJobsForRoom[key]));
     }
 };
 
