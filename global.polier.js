@@ -13,6 +13,7 @@ polier.init = function() {
 };
 
 polier.run = function() {
+  polier.cleanup();
   polier.assignJobs();
   // var tmpjobs = polier.getAllUnassignedJobs();
   // for (const i in tmpjobs) {
@@ -32,7 +33,16 @@ polier.getAllAssignments = function() {
 };
 
 polier.getAssignmentsForCreep = function(creepId) {
-  return _.filter(polier.getAllAssignments(), (a) => a.creepId == creepId);
+  var tmpAssignsForCreep = _.filter(polier.getAllAssignments(), (a) => a.creepId == creepId);
+  return _.sortBy(tmpAssignsForCreep, function(a) { jobs.getJobData(a.jobId).priority; });
+};
+
+polier.getCurTaskForCreep = function(creepId) {
+  var tmpAssignsForCreep = getAssignmentsForCreep(creepId);
+  if(Array.isArray(tmpAssignsForCreep)) {
+    return tmpAssignsForCreep[0];
+  }
+  else {return undefined;}
 };
 
 polier.getAssignmentsForJob = function(jobId) {
@@ -69,6 +79,23 @@ polier.addAssignment = function(jobId, creepId) {
   tmpAllAssignments.push(newAssignmentData);
   root.setSegmentObject(config.polier.assignmentsSegment, config.polier.assignmentsKey,tmpAllAssignments);
   return true;
+};
+
+polier.deleteAssignment = function(assignmentId) {
+  var tmpAllAssignments = _.filter(root.getSegmentObject(config.polier.assignmentsSegment, config.polier.assignmentsKey), (a) => a.id != assignmentId);
+  root.setSegmentObject(config.polier.assignmentsSegment, config.polier.assignmentsKey,tmpAllAssignments);
+};
+
+polier.modifyAssignment = function(assigmentData) {
+  var tmpAllAssignments = _.filter(root.getSegmentObject(config.polier.assignmentsSegment, config.polier.assignmentsKey), (a) => a.id != assigmentData.id);
+  tmpAllAssignments.push(assigmentData);
+  root.setSegmentObject(config.polier.assignmentsSegment, config.polier.assignmentsKey,tmpAllAssignments);
+};
+
+polier.cleanup = function() {
+  //delete all assignments for done jobs and nonexistent jobs
+  var tmpAllAssignments = _.filter(root.getSegmentObject(config.polier.assignmentsSegment, config.polier.assignmentsKey), function(a) { return jobs.getJobData(a.jobId) ? jobs.getJobData(a.jobId).status != 'done' : false; }
+  root.setSegmentObject(config.polier.assignmentsSegment, config.polier.assignmentsKey,tmpAllAssignments);
 };
 
 polier.creepMatchesBodyReq = function(creepId, bodyReqString) {
@@ -110,6 +137,7 @@ polier.findCreepForJob = function(jobData) {
 
 polier.assignJobs = function() {
   var unassignedJobs = polier.getAllUnassignedJobs();
+  var unassignedJobsForCreeps = _.filter(unassignedJobs, (j) => j.entity == 'creep');
   for(const j in unassignedJobs) {
     const tmpCreepForJob = polier.findCreepForJob(unassignedJobs[j]);
     if(tmpCreepForJob) {

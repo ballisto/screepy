@@ -104,8 +104,35 @@ Creep.prototype.moveToMy = function(target, range) {
   return moveReturnCode;
 };
 
+Creep.prototype.moveToParking = function() {
+  if(this.room.store != undefined) {
+    this.moveToMy(this.room.store, 1);
+  }
+};
 
+Creep.prototype.run = function() {
+  var curAssignment = polier.getCurTaskForCreep(this.id);
+  if( curAssignment == undefined ) {
+    this.moveToParking();
+    return true;
+  }
+  var curJobData = jobs.getJobData(curAssignment.jobId);
 
+  switch (curJobData.task) {
+    case "transfer":
+    case "withdraw":
+    case "build":
+    case "repair":
+    case "upgradeController":
+      
+
+    break;
+
+    default:
+    break;
+  }
+
+};
 
 Creep.prototype.runRole =
     function () {

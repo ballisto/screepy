@@ -23,6 +23,13 @@ jobs.getAllUnfinishedJobs = function() {
   return _.filter(jobs.getAllJobs(), (j) => j.status != 'done');
 };
 
+jobs.getJobData = function(jobId) {
+    var tmpResult = _.filter(jobs.getAllJobs(), (j) => j.id == jobId);
+    if(Array.isArray(tmpResult)) {
+        return tmpResult[0];
+    }
+    else {return undefined;}
+};
 jobs.jobForStructureExists = function(structureId, task) {
   var openJobsForStructure = _.filter(root.getSegmentObject(config.jobs.jobsSegment, config.jobs.jobsKey), (j) => j.target == structureId && j.task == task && j.status != 'done');
   if(openJobsForStructure.length > 0) {
