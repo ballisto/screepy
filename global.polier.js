@@ -94,7 +94,7 @@ polier.modifyAssignment = function(assigmentData) {
 
 polier.cleanup = function() {
   //delete all assignments for done jobs and nonexistent jobs
-  var tmpAllAssignments = _.filter(root.getSegmentObject(config.polier.assignmentsSegment, config.polier.assignmentsKey), function(a) { return jobs.getJobData(a.jobId) ? jobs.getJobData(a.jobId).status != 'done' : false; }
+  var tmpAllAssignments = _.filter(root.getSegmentObject(config.polier.assignmentsSegment, config.polier.assignmentsKey), function(a) { return jobs.getJobData(a.jobId) ? jobs.getJobData(a.jobId).status != 'done' : false; });
   root.setSegmentObject(config.polier.assignmentsSegment, config.polier.assignmentsKey,tmpAllAssignments);
 };
 
