@@ -67,7 +67,7 @@ polier.addAssignment = function(jobId, creepId) {
 
   var tmpAllAssignments = root.getSegmentObject(config.polier.assignmentsSegment, config.polier.assignmentsKey);
   tmpAllAssignments.push(newAssignmentData);
-  root.setSegmentObject(config.polier.assignmentsSegment, config.polier.assignmentsKey,tmpAllJobs);
+  root.setSegmentObject(config.polier.assignmentsSegment, config.polier.assignmentsKey,tmpAllAssignments);
   return true;
 };
 
@@ -103,15 +103,15 @@ polier.findCreepForJob = function(jobData) {
   var creepsInRoom = _.filter(Game.creeps, (c) => c.room.name == targetStructure.room.name);
   var creepsInRoomMatchingBodyReq = _.filter(creepsInRoom, function(c) {return polier.creepMatchesBodyReq(c.id, jobData.bodyReq);});
   // TODO - make an intelligent choice if multiple candidates found
-  var creepWithLessAssignments = _.minBy(creepsInRoomMatchingBodyReq, function(c) { return polier.getAssignmentsForCreep(c.id).length;});
-  if(creepWithLessAssignments.length > 0) {return creepWithLessAssignments[0];}
+  var creepWithLessAssignments = _.min(creepsInRoomMatchingBodyReq, function(c) { return polier.getAssignmentsForCreep(c.id).length;});
+  if(creepWithLessAssignments) {return creepWithLessAssignments;}
   else {return false;}
 };
 
 polier.assignJobs = function() {
   var unassignedJobs = polier.getAllUnassignedJobs();
   for(const j in unassignedJobs) {
-    tmpCreepForJob = polier.findCreepForJob(unassignedJobs[j]);
+    const tmpCreepForJob = polier.findCreepForJob(unassignedJobs[j]);
     if(tmpCreepForJob) {
       polier.addAssignment(unassignedJobs[j].id, tmpCreepForJob.id);
     }

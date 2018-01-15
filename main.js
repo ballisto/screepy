@@ -147,8 +147,8 @@ module.exports.loop = function() {
             var left = info[0];
             var order =Game.market.getOrderById(info[1]);
             if (order != null) {
-                if (left > 500) {
-                    left = 500;
+                if (left > 1000) {
+                    left = 1000;
                 }
                 if (left > order.amount) {
                     left = order.amount;
