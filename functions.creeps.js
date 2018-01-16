@@ -40,31 +40,28 @@ Creep.prototype.storeAllBut = function(resource) {
     if (this.isEmpty()) {
         return true;
     }
-    if (arguments.length == 1 && (_.sum(this.carry) == this.carry[resource] || _.sum(this.carry) == 0)) {
+    if (arguments.length == 1 && (_.sum(this.carry) == this.carry[resource])) {
         return true;
     }
 
-    if (_.sum(this.carry) > 0) {
-        var targetContainer = this.findResource(global.RESOURCE_SPACE,STRUCTURE_STORAGE);
-        if (targetContainer == null) {
-            targetContainer = this.findResource(global.RESOURCE_SPACE,STRUCTURE_CONTAINER);
-        }
-        if (this.pos.getRangeTo(targetContainer) > 1) {
-            this.moveTo(targetContainer);
-        }
-        else {
-            for (var res in this.carry) {
-                if (arguments.length == 1 && resource == res) {
-                    //keep this stuff
-                }
-                else {
-                    this.transfer(targetContainer,res);
-                }
+    var targetContainer = this.findResource(global.RESOURCE_SPACE,STRUCTURE_STORAGE);
+    if (targetContainer == null) {
+        targetContainer = this.findResource(global.RESOURCE_SPACE,STRUCTURE_CONTAINER);
+    }
+    if (this.pos.getRangeTo(targetContainer) > 1) {
+        this.moveTo(targetContainer);
+    }
+    else {
+        for (var res in this.carry) {
+            if (arguments.length == 1 && resource == res) {
+                //keep this stuff
+            }
+            else {
+                this.transfer(targetContainer,res);
             }
         }
-        return false;
     }
-    else {return true;}
+    return false;
 };
 
 Creep.prototype.flee = function (hostilesArray, range) {
