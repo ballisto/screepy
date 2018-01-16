@@ -25,6 +25,11 @@ Creep.prototype.goToHomeRoom = function() {
     else {return true;}
 };
 
+Creep.prototype.isEmpty = function() {
+  if(_.sum(this.carry) == 0) { return true;}
+  else { return false;}
+};
+
 Creep.prototype.checkTerminalLimits = function(resource) {
     return checkTerminalLimits(this.room, resource);
 };
@@ -32,7 +37,7 @@ Creep.prototype.checkTerminalLimits = function(resource) {
 Creep.prototype.storeAllBut = function(resource) {
     // send creep to storage to empty itself into it, keeping one resource type. Use null to drop all resource types.
     // returns true if only carrying allowed resource
-    if (arguments.length == 0 && _.sum(this.carry) == 0) {
+    if (this.isEmpty()) {
         return true;
     }
     if (arguments.length == 1 && (_.sum(this.carry) == this.carry[resource] || _.sum(this.carry) == 0)) {
@@ -121,52 +126,4 @@ Creep.prototype.gotoFlag = function (flag) {
             }
         }
     }
-};
-
-Creep.prototype.useFlowPathTo = function (targetPosition) {
-    // Data structure: Memory.flowPath.room.target x/y.source x/y = direction
-    // flowMarker Hash: Memory.flowPath.room.roomHash
-    let PathFinderDefaults = {plainCost: 1, swampCost: 5, maxOps: 10000, costCallback: roomCallback, ignoreCreeps: true};
-
-    let targetXY = targetPosition.roomName + "/" + targetPosition.x + "/" + targetPosition.y;
-    let creepXY = this.pos.x + "/" + this.pos.y;
-
-    // Prepare memory
-    if (Memory.flowPath == undefined) {
-        Memory.flowPath = {};
-    }
-    if (Memory.flowPath[this.room.name] == undefined) {
-        Memory.flowPath[this.room.name] = {};
-    }
-    if (Memory.flowPath[this.room.name][targetXY] == undefined) {
-        Memory.flowPath[this.room.name][targetXY] = {};
-    }
-
-    if (Memory.flowPath[this.room.name][targetXY][creepXY] == undefined) {
-        // Get path
-        let myPath = this.pos.findPathTo(targetPosition, PathFinderDefaults);
-        console.log(this.room.name + ": New flow path calculated");
-        if (myPath.length == 0) {
-            return false;
-        }
-
-        // Save direction to flowPath memory
-        for (let step in myPath) {
-            let savePos;
-            if (step == 0) {
-                savePos = creepXY;
-            }
-            else {
-                savePos = myPath[step - 1].x + "/" + myPath[step - 1].y;
-            }
-            Memory.flowPath[this.room.name][targetXY][savePos] = myPath[step].direction;
-        }
-    }
-
-    if (Memory.flowPath[this.room.name][targetXY][creepXY] == undefined) {
-        return false;
-    }
-
-    // Move in saved direction
-    this.move(Memory.flowPath[this.room.name][targetXY][creepXY]);
 };

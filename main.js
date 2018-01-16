@@ -428,37 +428,7 @@ module.exports.loop = function() {
                                 tempFlag.remove();
                                 delete flag.room.memory.panicFlag;
                             }
-                        }
-
-                        if (Memory.flowPath[flag.pos.roomName] != undefined && (Memory.flowPath[flag.pos.roomName].roomHash == undefined || Game.time % global.DELAYFLOWROOMCHECK == 0)) {
-                            //Save flow path markers
-                            let markerString = "";
-                            let flowMarker = flag.room.find(FIND_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_ROAD || s.structureType == STRUCTURE_WALL || s.structureType == STRUCTURE_CONTAINER});
-                            for (m in flowMarker) {
-                                if (flowMarker[m].pos.x < 10) {
-                                    markerString = markerString + "0";
-                                }
-                                markerString = markerString + flowMarker[m].pos.x;
-
-                                if (flowMarker[m].pos.y < 10) {
-                                    markerString = markerString + "0";
-                                }
-                                markerString = markerString + flowMarker[m].pos.y;
-                            }
-                            if (Memory.flowPath[flag.pos.roomName].roomHash == undefined) {
-                                //First hash of the room
-                                Memory.flowPath[flag.pos.roomName].roomHash = markerString.hashCode();
-                            }
-                            else {
-                                //Compare with existing hash
-                                let newHash = markerString.hashCode();
-                                if (newHash != Memory.flowPath[flag.pos.roomName].roomHash) {
-                                    console.log("<font color=#ffff00 type='highlight'>" + flag.room.name + ": FlowPaths will be recalculated!</font>");
-                                    Memory.flowPath[flag.pos.roomName].roomHash = newHash;
-                                    delete Memory.flowPath[flag.pos.roomName];
-                                }
-                            }
-                        }
+                        }                        
                     }
                 }
             }

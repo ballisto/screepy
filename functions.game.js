@@ -838,11 +838,6 @@ String.prototype.hashCode = function(){
     return hash;
 };
 
-global.deleteFlowPath = function () {
-    delete Memory.flowPath;
-    return "OK";
-};
-
 global.roomCallback = function (roomName) {
     let room = Game.rooms[roomName];
     if (!room) {

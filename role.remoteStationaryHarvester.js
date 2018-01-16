@@ -87,7 +87,7 @@ Creep.prototype.roleRemoteStationaryHarvester = function() {
                 else if (sourceKeeper.length == 0) {
                     // Move to harvesting point
                     this.moveTo(flag);
-                    //this.useFlowPathTo(flag.pos);
+                    //this.moveTo(flag.pos);
                 }
             }
             else {

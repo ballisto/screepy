@@ -45,7 +45,7 @@ Creep.prototype.roleEnergyHauler = function() {
                 if (this.room.name != this.memory.homeroom) {
                     // Find exit to spawn room
                     //this.moveTo(Game.getObjectById(this.memory.spawn))
-                    this.useFlowPathTo(Game.getObjectById(this.memory.spawn).pos);
+                    this.moveTo(Game.getObjectById(this.memory.spawn).pos);
                 }
                 else {
                     // back in spawn room
@@ -141,7 +141,7 @@ Creep.prototype.roleEnergyHauler = function() {
                         for (let s in container[0].store) {
                             if (this.withdraw(container[0], s) == ERR_NOT_IN_RANGE) {
                                 //this.moveTo(container[0]);
-                                this.useFlowPathTo(container[0].pos);
+                                this.moveTo(container[0].pos);
                             }
                         }
                     }
