@@ -113,21 +113,41 @@ Creep.prototype.moveToParking = function() {
 Creep.prototype.run = function() {
   var curAssignment = polier.getCurTaskForCreep(this.id);
   if( curAssignment == undefined ) {
-    this.moveToParking();
-    return true;
+    if(this.storeAllBut()) {
+      this.moveToParking();
+      return true;
+    }
   }
   var curJobData = jobs.getJobData(curAssignment.jobId);
 
   switch (curJobData.task) {
     case "transfer":
-    case "withdraw":
     case "build":
     case "repair":
     case "upgradeController":
-      
+      if(this.carry[curJobData.resType] == undefined || this.carry[curJobData.resType] < curJobData.resAmount) {
+        var creepCarriesSomethingElse = false;
+        for(const c in this.carry) {
+          if(c != curJobData.resType && this.carry[c] > 0) { creepCarriesSomethingElse = true;}
+        }
+        if(creepCarriesSomethingElse) {
+          this.storeAllBut();
+          }
+        else {
+          this.getResource(curJobData.resType);
+        }
+      }
+      else {
+        const targetObject = Game.getObjectById(curJobData.target);
+        if(this[curJobData.task] == ERR_NOT_IN_RANGE) {
+
+        }
+      }
+
 
     break;
-
+    case "withdraw":
+    break;
     default:
     break;
   }
