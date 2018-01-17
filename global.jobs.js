@@ -30,6 +30,16 @@ jobs.getJobData = function(jobId) {
     }
     else {return undefined;}
 };
+
+jobs.getTargetObject = function(jobId) {
+  const jobData = jobs.getJobData(jobId);
+  if(jobData) {
+    const targetObject = Game.getObjectById(jobData.target);
+    return targetObject ? targetObject : null;
+  }
+  return null;
+}
+
 jobs.jobForStructureExists = function(structureId, task) {
   var openJobsForStructure = _.filter(root.getSegmentObject(config.jobs.jobsSegment, config.jobs.jobsKey), (j) => j.target == structureId && j.task == task && j.status != 'done');
   if(openJobsForStructure.length > 0) {
