@@ -18,6 +18,10 @@ var roles = {
  *
  * @param messages The message to log
  */
+Creep.prototype.role = function() {
+  return this.memory.role;
+};
+
 Creep.prototype.creepLog = function(...messages) {
   if (config.debug.creepLog.roles.indexOf(this.memory.role) < 0) {
     return;
