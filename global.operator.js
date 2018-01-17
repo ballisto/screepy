@@ -23,12 +23,17 @@ operator.loadEnergy = function() {
 };
 operator.unloadLinkDrain = function() {
   // var allLinks = _.filter(Game.structures, (a) => a.structureType == STRUCTURE_LINK && a.energy > 100);
-  var allLinks = _.filter(Game.structures, (a) => a.structureType == STRUCTURE_LINK && a.energy > 400);
-  var drainLinks = _.filter(allLinks, function(l) {return l.isDrain();});
+  var allLinks = _.filter(Game.structures, (a) => a.structureType == STRUCTURE_LINK);
+  var drainLinks = _.filter(allLinks, (l) => l.takeEnergy() && l.energy >= 400 );
+  var linksNeedEnergy = _.filter(allLinks, (l) => l.bringEnergy() && l.energy < (l.energyCapacity) );
 
   var drainLinksWithoutOpenJob = _.filter(drainLinks, function(s) { return !jobs.jobForStructureExists(s.id, jobTemplates.withdrawResource.task );});
+  var linksNeedEnergyWithoutOpenJob = _.filter(linksNeedEnergy, function(s) { return !jobs.jobForStructureExists(s.id, jobTemplates.transferResource.task );});
 
-  for(const d in drainLinks) {
-    jobs.addJobWithTemplate(jobTemplates.withdrawResource, drainLinks[d].id, RESOURCE_ENERGY, 0);
+  for(const d in drainLinksWithoutOpenJob) {
+    jobs.addJobWithTemplate(jobTemplates.withdrawResource, drainLinksWithoutOpenJob[d].id, RESOURCE_ENERGY, 0);
+  }
+  for(const e in linksNeedEnergyWithoutOpenJob) {
+    jobs.addJobWithTemplate(jobTemplates.transferResource, linksNeedEnergyWithoutOpenJob[e].id, RESOURCE_ENERGY, (linksNeedEnergyWithoutOpenJob[e].energyCapacity - linksNeedEnergyWithoutOpenJob[e].energy) );
   }
 };

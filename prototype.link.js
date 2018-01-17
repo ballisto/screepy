@@ -19,9 +19,18 @@ StructureLink.prototype.getLinkIdsWithHigherPriority =
         }
       return resultArray;
     };
-StructureLink.prototype.isDrain =
+StructureLink.prototype.takeEnergy =
     function () {
       if(this.getPriority() == 1 && this.getTargetLink() == undefined) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+StructureLink.prototype.bringEnergy =
+    function () {
+      if(this.getPriority() == 1 && this.getTargetLink() != undefined) {
         return true;
       }
       else {
