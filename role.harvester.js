@@ -22,11 +22,11 @@ Creep.prototype.roleHarvester = function() {
 
             if (this.room.memory.hostiles.length > 0 && this.room.find(FIND_MY_CREEPS, {filter: (s) => (s.memory.role == "protector")}).length == 0) {
                 //no tower refill;
-                structure = this.findResource(global.RESOURCE_SPACE, STRUCTURE_SPAWN, STRUCTURE_EXTENSION);
+                structure = this.findResourceOLD(global.RESOURCE_SPACE, STRUCTURE_SPAWN, STRUCTURE_EXTENSION);
             }
             else {
                 //towers included in energy distribution
-                structure = this.findResource(global.RESOURCE_SPACE, STRUCTURE_SPAWN, STRUCTURE_EXTENSION, STRUCTURE_TOWER);
+                structure = this.findResourceOLD(global.RESOURCE_SPACE, STRUCTURE_SPAWN, STRUCTURE_EXTENSION, STRUCTURE_TOWER);
             }
             var nuker;
             var powerSpawn;
@@ -84,9 +84,9 @@ Creep.prototype.roleHarvester = function() {
 
                 if (labBreaker == false) {
                     //Nothing needs energy -> store it
-                    var container = this.findResource(global.RESOURCE_SPACE, STRUCTURE_STORAGE);
+                    var container = this.findResourceOLD(global.RESOURCE_SPACE, STRUCTURE_STORAGE);
                     if (container == null || container == undefined) {
-                        container = this.findResource(global.RESOURCE_SPACE, STRUCTURE_CONTAINER);
+                        container = this.findResourceOLD(global.RESOURCE_SPACE, STRUCTURE_CONTAINER);
                     }
 
                     if ((container == null || container == undefined) && this.getActiveBodyparts(WORK) > 0) {

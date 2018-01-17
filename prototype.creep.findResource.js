@@ -1,7 +1,64 @@
 module.exports = function() {
     // find nearest requested resource and return object, otherwise return null
+	Creep.prototype.findSpace = function(structures) {
+		var selectedStructureTypes = {};
+		if(arguments.length == 0) {
+			selectedStructureTypes = [STRUCTURE_STORAGE, STRUCTURE_TERMINAL, STRUCTURE_CONTAINER];
+		}
+		else {
+			selectedStructureTypes = arguments;
+		}
+		for (let argcounter = 0; argcounter < selectedStructureTypes.length; argcounter++) {
+				// Go through requested sourceTypes
+				switch (selectedStructureTypes[argcounter]) {
+					case STRUCTURE_STORAGE:
+							if (this.room.storage != undefined && this.room.storage.storeCapacity - _.sum(this.room.storage.store) > 0) {
+									return this.room.storage;
+							}
+					break;
+					case STRUCTURE_TERMINAL:
+							if (this.room.terminal != undefined && this.room.terminal.storeCapacity - _.sum(this.room.terminal.store) > this.room.terminal.storeCapacity * 0.75) {
+									return this.room.terminal;
+							}
+					break;
+					case STRUCTURE_CONTAINER:
+					var tempContainers = _.filter(Game.structures, (s) => s.structureType != STRUCTURE_CONTAINER && s.room.name == this.room.name && _.sum(s.store) < s.storeCapacity );
+					if(tempContainers.length > 0) {
+						return tempContainers[0];
+					}
+					break;
+				}
+			}
+			return null;
+	};
+	Creep.prototype.findResource = function(resource) {
+		var selectedStructureTypes = [STRUCTURE_STORAGE, STRUCTURE_TERMINAL, STRUCTURE_CONTAINER];
 
-	Creep.prototype.findResource =
+		for (let argcounter = 0; argcounter < selectedStructureTypes.length; argcounter++) {
+				// Go through requested sourceTypes
+				switch (selectedStructureTypes[argcounter]) {
+					case STRUCTURE_STORAGE:
+							if (this.room.storage != undefined && this.room.storage.store[resource] > 0) {
+									return this.room.storage;
+							}
+					break;
+					case STRUCTURE_TERMINAL:
+							if (this.room.terminal != undefined && this.room.terminal.store[resource] > 0) {
+									return this.room.terminal;
+							}
+					break;
+					case STRUCTURE_CONTAINER:
+					var tempContainers = _.filter(Game.structures, (s) => s.structureType != STRUCTURE_CONTAINER && s.room.name == this.room.name && s.store[resource] > 0 );
+					if(tempContainers.length > 0) {
+						return tempContainers[0];
+					}
+					break;
+				}
+			}
+			return null;
+	};
+	
+	Creep.prototype.findResourceOLD =
 	function(resource, sourceTypes) {
 	    if (this.memory.targetBuffer != undefined) {
             let tempTarget = Game.getObjectById(this.memory.targetBuffer);

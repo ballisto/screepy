@@ -22,7 +22,12 @@ module.exports.loop = function() {
   economy.takestock();
 
   // operator.run();
+  // jobs.run();
   // polier.run();
+
+  // jobs.resetMemory();
+  // polier.resetMemory();
+
 
      for (var c in Game.creeps) {
     //   //c.memory.homeroom = this.room;
@@ -428,7 +433,7 @@ module.exports.loop = function() {
                                 tempFlag.remove();
                                 delete flag.room.memory.panicFlag;
                             }
-                        }                        
+                        }
                     }
                 }
             }
@@ -1075,7 +1080,8 @@ module.exports.loop = function() {
                             creep.roleDemolisher();
                         }
                         else if (creep.memory.role == 'energyTransporter') {
-                            creep.roleEnergyTransporter();
+                            if(creep.room.name == 'W57S4') { creep.run(); }
+                            else {creep.roleEnergyTransporter();}
                         }
                         else if (creep.memory.role == 'energyHauler') {
                             creep.roleEnergyHauler();

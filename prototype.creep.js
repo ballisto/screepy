@@ -106,7 +106,7 @@ Creep.prototype.moveToMy = function(target, range) {
 
 Creep.prototype.moveToParking = function() {
   if(this.room.store != undefined) {
-    this.moveToMy(this.room.store, 1);
+    this.moveToMy(this.room.store.pos, 1);
   }
 };
 
@@ -134,17 +134,32 @@ Creep.prototype.run = function() {
           this.storeAllBut();
           }
         else {
-          this.getResource(curJobData.resType);
+          this.getResource(curJobData.resType, curJobData.resAmount);
         }
       }
       else {
         const targetObject = Game.getObjectById(curJobData.target);
-        if(this[curJobData.task] == ERR_NOT_IN_RANGE) {
-
+        if(targetObject != undefined) {
+          if (this.pos.getRangeTo(targetObject) > 1) {
+            this.moveToMy(targetObject, 1);
+          }
+          else {
+          switch (curJobData.task) {
+            case "transfer":
+              const result = this.transfer(targetObject, curJobData.resType);
+              if(result == OK || result == ERR_FULL) {
+                jobs.setDone(curJobData.id);
+              }
+              else {
+                this.say("I F'Up!");
+              }
+              break;
+              default:
+              break;
+          }
         }
       }
-
-
+    }
     break;
     case "withdraw":
     break;

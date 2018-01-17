@@ -30,7 +30,7 @@ Creep.prototype.roleMiner = function() {
                 if (this.carry[RESOURCE_ENERGY] > 0) {
                     //somehow picked up energy
                     if (this.room.storage == undefined) {
-                        var container = this.findResource(global.RESOURCE_SPACE, STRUCTURE_CONTAINER, STRUCTURE_LINK)
+                        var container = this.findResourceOLD(global.RESOURCE_SPACE, STRUCTURE_CONTAINER, STRUCTURE_LINK)
                     }
                     else {
                         var container = this.room.storage;
@@ -49,7 +49,7 @@ Creep.prototype.roleMiner = function() {
                     }
                     if (storage == null) {
                         //No storage found in room
-                        var container = this.findResource(global.RESOURCE_SPACE, STRUCTURE_CONTAINER);
+                        var container = this.findResourceOLD(global.RESOURCE_SPACE, STRUCTURE_CONTAINER);
                         if (this.transfer(container, resource) == ERR_NOT_IN_RANGE) {
                             this.moveTo(container);
                         }

@@ -13,7 +13,7 @@ jobs.init = function() {
 };
 
 jobs.run = function() {
-
+  jobs.cleanup();
 };
 
 jobs.getAllJobs = function() {
@@ -65,7 +65,28 @@ jobs.addJobWithTemplate = function(template, targetId,resourceType, amount) {
   root.setSegmentObject(config.jobs.jobsSegment,config.jobs.jobsKey,tmpAllJobs);
 };
 
+jobs.deleteJob = function(jobId) {
+  var tmpJobs = _.filter(jobs.getAllJobs(), (j) => j.id != jobId);
+  root.setSegmentObject(config.jobs.jobsSegment,config.jobs.jobsKey,tmpJobs);
+};
 
+jobs.modifyJob = function(jobData) {
+  var tmpJobs = _.filter(jobs.getAllJobs(), (j) => j.id != jobData.id);
+  tmpJobs.push(jobData);
+  root.setSegmentObject(config.jobs.jobsSegment,config.jobs.jobsKey,tmpJobs);
+};
+
+jobs.setDone = function(jobId) {
+  var tmpJobData = jobs.getJobData(jobId);
+  tmpJobData.status = 'done';
+  jobs.modifyJob(tmpJobData);
+};
+
+jobs.cleanup = function() {
+  //delete all jobs that are done
+  var tmpActiveJobs = _.filter(jobs.getAllJobs(), (j) => j.status != 'done');
+  root.setSegmentObject(config.jobs.jobsSegment,config.jobs.jobsKey,tmpActiveJobs);
+};
 
 jobs.printJobs = function() {
     const tmpJobs = jobs.getAllJobs();

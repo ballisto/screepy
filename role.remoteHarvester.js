@@ -43,7 +43,7 @@ Creep.prototype.roleRemoteHarvester = function() {
                     else {
                         // back in spawn room
                         // find closest spawn, extension, tower or container which is not full
-                        var structure = this.findResource(global.RESOURCE_SPACE, STRUCTURE_SPAWN, STRUCTURE_TOWER, STRUCTURE_LINK, STRUCTURE_CONTAINER, STRUCTURE_STORAGE, STRUCTURE_EXTENSION);
+                        var structure = this.findResourceOLD(global.RESOURCE_SPACE, STRUCTURE_SPAWN, STRUCTURE_TOWER, STRUCTURE_LINK, STRUCTURE_CONTAINER, STRUCTURE_STORAGE, STRUCTURE_EXTENSION);
 
                         // if we found one
                         if (structure != null) {

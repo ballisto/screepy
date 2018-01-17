@@ -19,7 +19,7 @@ Creep.prototype.roleTransporter = function () {
 
             if (this.goToHomeRoom() == true) {
                 //Transporter at home
-                var originContainer = this.findResource(resource, STRUCTURE_STORAGE, STRUCTURE_CONTAINER, STRUCTURE_LINK);
+                var originContainer = this.findResourceOLD(resource, STRUCTURE_STORAGE, STRUCTURE_CONTAINER, STRUCTURE_LINK);
                 if (originContainer != null && this.withdraw(originContainer, resource) == ERR_NOT_IN_RANGE) {
                     this.moveTo(originContainer);
                 }
@@ -31,7 +31,7 @@ Creep.prototype.roleTransporter = function () {
                 let targetContainer;
                 if (this.memory.targetContainer == undefined || this.memory.targetContainer == null || Game.time % 8 == 0) {
                     if (this.room.controller.owner != undefined && this.room.controller.owner.username == global.playerUsername) {
-                        targetContainer = this.findResource(global.RESOURCE_SPACE, STRUCTURE_CONTAINER);
+                        targetContainer = this.findResourceOLD(global.RESOURCE_SPACE, STRUCTURE_CONTAINER);
                     }
                     else {
                         targetContainer = this.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_CONTAINER && _.sum(s.store) < s.storeCapacity});

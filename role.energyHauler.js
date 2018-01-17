@@ -55,12 +55,12 @@ Creep.prototype.roleEnergyHauler = function() {
                     // }
                     if (_.sum(this.carry) == this.carry[RESOURCE_ENERGY]) {
                         //Creep has only energy loaded
-                        // structure = this.findResource(global.RESOURCE_SPACE, STRUCTURE_SPAWN, STRUCTURE_TOWER, STRUCTURE_LINK, STRUCTURE_STORAGE, STRUCTURE_EXTENSION);
-                        structure = this.findResource(global.RESOURCE_SPACE, STRUCTURE_LINK, STRUCTURE_STORAGE);
+                        // structure = this.findResourceOLD(global.RESOURCE_SPACE, STRUCTURE_SPAWN, STRUCTURE_TOWER, STRUCTURE_LINK, STRUCTURE_STORAGE, STRUCTURE_EXTENSION);
+                        structure = this.findResourceOLD(global.RESOURCE_SPACE, STRUCTURE_LINK, STRUCTURE_STORAGE);
                     }
                     else {
                         //Creep has minerals loaded
-                        structure = this.findResource(global.RESOURCE_SPACE, STRUCTURE_CONTAINER);
+                        structure = this.findResourceOLD(global.RESOURCE_SPACE, STRUCTURE_CONTAINER);
                     }
                     if (structure == undefined) {
                       structure = Game.getObjectById(this.memory.spawn);

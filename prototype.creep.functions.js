@@ -44,24 +44,46 @@ Creep.prototype.storeAllBut = function(resource) {
         return true;
     }
 
-    var targetContainer = this.findResource(global.RESOURCE_SPACE,STRUCTURE_STORAGE);
-    if (targetContainer == null) {
-        targetContainer = this.findResource(global.RESOURCE_SPACE,STRUCTURE_CONTAINER);
-    }
-    if (this.pos.getRangeTo(targetContainer) > 1) {
-        this.moveTo(targetContainer);
+    var targetContainer = this.findSpace();
+    if(targetContainer != null) {
+      if (this.pos.getRangeTo(targetContainer) > 1) {
+          this.moveToMy(targetContainer.pos, 1);
+      }
+      else {
+          for (var res in this.carry) {
+              if (arguments.length == 1 && resource == res) {
+                  //keep this stuff
+              }
+              else {
+                  this.transfer(targetContainer,res);
+              }
+          }
+      }
     }
     else {
-        for (var res in this.carry) {
-            if (arguments.length == 1 && resource == res) {
-                //keep this stuff
-            }
-            else {
-                this.transfer(targetContainer,res);
-            }
-        }
+      this.say("NO SPACE!");
     }
     return false;
+};
+
+Creep.prototype.getResource = function(resource, amount) {
+  if (this.carry[resource] != undefined && this.carry[resource] >= amount)) {
+      return true;
+  }
+  var targetContainer = this.findResource(resource);
+  if(targetContainer != null) {
+    if (this.pos.getRangeTo(targetContainer) > 1) {
+        this.moveToMy(targetContainer.pos,1);
+    }
+    else {
+      this.withdraw(targetContainer, resource);
+    }
+  }
+  else {
+    this.say("NO " + resource + "!");
+  }
+  return false;
+
 };
 
 Creep.prototype.flee = function (hostilesArray, range) {

@@ -8,19 +8,19 @@ Creep.prototype.roleCollector = function() {
                 if (this.room.memory.terminalTransfer == undefined && this.checkTerminalLimits(RESOURCE_ENERGY).amount > 0) {
                     //spawn not full, terminal transfer ongoing -> find source, container or storage if available
                     if (this.memory.role == "harvester") {
-                        container = this.findResource(RESOURCE_ENERGY, FIND_SOURCES, STRUCTURE_LINK, STRUCTURE_CONTAINER, STRUCTURE_STORAGE, STRUCTURE_TERMINAL);
+                        container = this.findResourceOLD(RESOURCE_ENERGY, FIND_SOURCES, STRUCTURE_LINK, STRUCTURE_CONTAINER, STRUCTURE_STORAGE, STRUCTURE_TERMINAL);
                     }
                     if (this.memory.role == "energyTransporter" || this.memory.role == "distributor" || this.memory.role == "scientist") {
-                        container = this.findResource(RESOURCE_ENERGY, STRUCTURE_LINK, STRUCTURE_CONTAINER, STRUCTURE_STORAGE, STRUCTURE_TERMINAL);
+                        container = this.findResourceOLD(RESOURCE_ENERGY, STRUCTURE_LINK, STRUCTURE_CONTAINER, STRUCTURE_STORAGE, STRUCTURE_TERMINAL);
                     }
                 }
                 else {
                     //spawn not full, no terminal transfer ongoing -> find source, container, terminal or storage if available
                     if (this.memory.role == "harvester") {
-                        container = this.findResource(RESOURCE_ENERGY, FIND_SOURCES, STRUCTURE_LINK, STRUCTURE_CONTAINER, STRUCTURE_STORAGE);
+                        container = this.findResourceOLD(RESOURCE_ENERGY, FIND_SOURCES, STRUCTURE_LINK, STRUCTURE_CONTAINER, STRUCTURE_STORAGE);
                     }
                     if (this.memory.role == "energyTransporter" || this.memory.role == "distributor" || this.memory.role == "scientist") {
-                        container = this.findResource(RESOURCE_ENERGY, STRUCTURE_LINK, STRUCTURE_CONTAINER, STRUCTURE_STORAGE);
+                        container = this.findResourceOLD(RESOURCE_ENERGY, STRUCTURE_LINK, STRUCTURE_CONTAINER, STRUCTURE_STORAGE);
                     }
                 }
 
@@ -29,37 +29,37 @@ Creep.prototype.roleCollector = function() {
                 if (this.room.memory.terminalTransfer == undefined && this.checkTerminalLimits(RESOURCE_ENERGY).amount > 0) {
                     //spawn full and storage with space exists or towers need energy
                     if (this.memory.role == "harvester") {
-                        container = this.findResource(RESOURCE_ENERGY, FIND_SOURCES, STRUCTURE_LINK, STRUCTURE_CONTAINER, STRUCTURE_TERMINAL);
+                        container = this.findResourceOLD(RESOURCE_ENERGY, FIND_SOURCES, STRUCTURE_LINK, STRUCTURE_CONTAINER, STRUCTURE_TERMINAL);
                     }
                     if (this.memory.role == "energyTransporter" || this.memory.role == "distributor" || this.memory.role == "scientist") {
-                        container = this.findResource(RESOURCE_ENERGY, STRUCTURE_LINK, STRUCTURE_CONTAINER, STRUCTURE_TERMINAL);
+                        container = this.findResourceOLD(RESOURCE_ENERGY, STRUCTURE_LINK, STRUCTURE_CONTAINER, STRUCTURE_TERMINAL);
                     }
                 }
                 else {
                     //spawn full and storage with space exists or towers need energy
                     if (this.memory.role == "harvester") {
-                        container = this.findResource(RESOURCE_ENERGY, FIND_SOURCES, STRUCTURE_LINK, STRUCTURE_CONTAINER);
+                        container = this.findResourceOLD(RESOURCE_ENERGY, FIND_SOURCES, STRUCTURE_LINK, STRUCTURE_CONTAINER);
                     }
                     if (this.memory.role == "energyTransporter" || this.memory.role == "distributor" || this.memory.role == "scientist") {
-                        container = this.findResource(RESOURCE_ENERGY, STRUCTURE_LINK, STRUCTURE_CONTAINER);
+                        container = this.findResourceOLD(RESOURCE_ENERGY, STRUCTURE_LINK, STRUCTURE_CONTAINER);
                     }
                 }
             }
             else {
                 if (this.room.memory.terminalTransfer == undefined && this.checkTerminalLimits(RESOURCE_ENERGY).amount > 0) {
                     if (this.memory.role == "harvester") {
-                        container = this.findResource(RESOURCE_ENERGY, FIND_SOURCES, STRUCTURE_LINK, STRUCTURE_TERMINAL);
+                        container = this.findResourceOLD(RESOURCE_ENERGY, FIND_SOURCES, STRUCTURE_LINK, STRUCTURE_TERMINAL);
                     }
                     if (this.memory.role == "energyTransporter" || this.memory.role == "distributor" || this.memory.role == "scientist") {
-                        container = this.findResource(RESOURCE_ENERGY, STRUCTURE_LINK, STRUCTURE_TERMINAL);
+                        container = this.findResourceOLD(RESOURCE_ENERGY, STRUCTURE_LINK, STRUCTURE_TERMINAL);
                     }
                 }
                 else {
                     if (this.memory.role == "harvester") {
-                        container = this.findResource(RESOURCE_ENERGY, FIND_SOURCES, STRUCTURE_LINK);
+                        container = this.findResourceOLD(RESOURCE_ENERGY, FIND_SOURCES, STRUCTURE_LINK);
                     }
                     if (this.memory.role == "energyTransporter" || this.memory.role == "distributor" || this.memory.role == "scientist") {
-                        container = this.findResource(RESOURCE_ENERGY, STRUCTURE_LINK);
+                        container = this.findResourceOLD(RESOURCE_ENERGY, STRUCTURE_LINK);
                     }
                 }
             }
@@ -107,10 +107,10 @@ Creep.prototype.roleCollector = function() {
             //no room harvester role
             // find closest source
             if (this.room.terminal != undefined && this.room.memory.terminalTransfer == undefined && this.checkTerminalLimits(RESOURCE_ENERGY).amount > 0) {
-                container = this.findResource(RESOURCE_ENERGY, FIND_SOURCES, STRUCTURE_LINK, STRUCTURE_CONTAINER, STRUCTURE_STORAGE, STRUCTURE_TERMINAL);
+                container = this.findResourceOLD(RESOURCE_ENERGY, FIND_SOURCES, STRUCTURE_LINK, STRUCTURE_CONTAINER, STRUCTURE_STORAGE, STRUCTURE_TERMINAL);
             }
             else {
-                container = this.findResource(RESOURCE_ENERGY, FIND_SOURCES, STRUCTURE_LINK, STRUCTURE_CONTAINER, STRUCTURE_STORAGE);
+                container = this.findResourceOLD(RESOURCE_ENERGY, FIND_SOURCES, STRUCTURE_LINK, STRUCTURE_CONTAINER, STRUCTURE_STORAGE);
             }
             if (container != undefined) {
                 let res = this.withdraw(container, RESOURCE_ENERGY);

@@ -55,7 +55,7 @@ Creep.prototype.roleDemolisher = function() {
                     structure = this.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => (s.structureType == STRUCTURE_CONTAINER || s.structureType == STRUCTURE_STORAGE) && s.storeCapacity > _.sum(s.store) && s.pos.isEqualTo(demolishFlag.pos) == false});
                 }
                 else {
-                    structure = this.findResource(global.RESOURCE_SPACE, STRUCTURE_CONTAINER, STRUCTURE_LINK, STRUCTURE_TOWER, STRUCTURE_STORAGE, STRUCTURE_SPAWN);
+                    structure = this.findResourceOLD(global.RESOURCE_SPACE, STRUCTURE_CONTAINER, STRUCTURE_LINK, STRUCTURE_TOWER, STRUCTURE_STORAGE, STRUCTURE_SPAWN);
                 }
                 if (structure != null) {
                     // try to transfer energy, if it is not in range
@@ -117,7 +117,7 @@ Creep.prototype.roleDemolisher = function() {
                         else if (demolishFlag.memory.target == "room") {
                             //demolish all structures in room
                             // find structures with energy
-                            let target = this.findResource(RESOURCE_ENERGY, STRUCTURE_SPAWN, STRUCTURE_EXTENSION, STRUCTURE_TERMINAL, STRUCTURE_STORAGE, STRUCTURE_TOWER, STRUCTURE_LINK, STRUCTURE_LAB);
+                            let target = this.findResourceOLD(RESOURCE_ENERGY, STRUCTURE_SPAWN, STRUCTURE_EXTENSION, STRUCTURE_TERMINAL, STRUCTURE_STORAGE, STRUCTURE_TOWER, STRUCTURE_LINK, STRUCTURE_LAB);
                             if (target == null) {
                                 target = this.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => s.structureType != STRUCTURE_ROAD && s.structureType != STRUCTURE_WALL && s.structureType != STRUCTURE_CONTAINER && s.structureType != STRUCTURE_CONTROLLER});
                             }
@@ -224,7 +224,7 @@ Creep.prototype.roleDemolisher = function() {
                     structure = this.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => (s.structureType == STRUCTURE_CONTAINER || s.structureType == STRUCTURE_STORAGE) && s.storeCapacity > _.sum(s.store) && s.pos.isEqualTo(demolishFlag.pos) == false});
                 }
                 else {
-                    structure = this.findResource(global.RESOURCE_SPACE, STRUCTURE_CONTAINER, STRUCTURE_LINK, STRUCTURE_TOWER, STRUCTURE_STORAGE, STRUCTURE_SPAWN);
+                    structure = this.findResourceOLD(global.RESOURCE_SPACE, STRUCTURE_CONTAINER, STRUCTURE_LINK, STRUCTURE_TOWER, STRUCTURE_STORAGE, STRUCTURE_SPAWN);
                 }
                 if (structure != null) {
                     // try to transfer energy, if it is not in range
