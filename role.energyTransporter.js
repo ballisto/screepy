@@ -1,4 +1,6 @@
 Creep.prototype.roleEnergyTransporter = function() {
+  if(this.room.name == 'W57S4') {this.run;}
+        else {
         // if creep is bringing energy to a structure but has no energy left
         if (this.carry.energy == 0 && this.memory.working == true) {
           // switch state to harvesting
@@ -149,4 +151,5 @@ Creep.prototype.roleEnergyTransporter = function() {
           }
 
         }
+      }
 };

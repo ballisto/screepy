@@ -21,9 +21,9 @@ module.exports.loop = function() {
   economy.resetStock();
   economy.takestock();
 
-  // operator.run();
-  // jobs.run();
-  // polier.run();
+  operator.run();
+  jobs.run();
+  polier.run();
 
   // jobs.resetMemory();
   // polier.resetMemory();
@@ -1080,8 +1080,7 @@ module.exports.loop = function() {
                             creep.roleDemolisher();
                         }
                         else if (creep.memory.role == 'energyTransporter') {
-                            if(creep.room.name == 'W57S4') { creep.run(); }
-                            else {creep.roleEnergyTransporter();}
+                            creep.roleEnergyTransporter();
                         }
                         else if (creep.memory.role == 'energyHauler') {
                             creep.roleEnergyHauler();

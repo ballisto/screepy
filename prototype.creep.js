@@ -142,7 +142,7 @@ Creep.prototype.run = function() {
           const targetObject = Game.getObjectById(curJobData.target);
           if(targetObject != undefined) {
             if (this.pos.getRangeTo(targetObject) > 1) {
-              this.moveToMy(targetObject, 1);
+              this.moveToMy(targetObject.pos, 1);
             }
             else {
             switch (curJobData.task) {
@@ -163,6 +163,32 @@ Creep.prototype.run = function() {
       }
       break;
       case "withdraw":
+        if(this.carry[curJobData.resType] == undefined || this.carry[curJobData.resType] < curJobData.resAmount) {
+          var creepCarriesSomethingElse = false;
+          for(const c in this.carry) {
+            if(c != curJobData.resType && this.carry[c] > 0) { creepCarriesSomethingElse = true;}
+          }
+          if(creepCarriesSomethingElse) {
+            this.storeAllBut();
+            }
+          }
+          else {
+            const targetObject = Game.getObjectById(curJobData.target);
+            if(targetObject != undefined) {
+              if (this.pos.getRangeTo(targetObject) > 1) {
+                this.moveToMy(targetObject.pos, 1);
+              }
+              else {
+                const result = this.withdraw(targetObject, curJobData.resType);
+                if(result == OK || result == ERR_FULL) {
+                  jobs.setDone(curJobData.id);
+                }
+                else {
+                  this.say("I F'Up!");
+                }
+              }
+            }
+          }
       break;
       default:
       break;
