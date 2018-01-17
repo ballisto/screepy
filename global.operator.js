@@ -13,7 +13,7 @@ operator.run = function() {
 
 operator.loadEnergy = function() {
   // var structuresNeedingEnergy = _.filter(Game.structures, (a) => a.energy < a.energyCapacity && a.structureType != STRUCTURE_LINK);
-  var structuresNeedingEnergy = _.filter(Game.structures, (a) => a.room.name == 'W57S4' && a.energy < a.energyCapacity && a.structureType != STRUCTURE_LINK);
+  var structuresNeedingEnergy = _.filter(Game.structures, (a) => a.energy < a.energyCapacity && a.structureType != STRUCTURE_LINK);
   var structuresNeedingEnergyWithoutOpenJob = _.filter(structuresNeedingEnergy, function(s) { return !jobs.jobForStructureExists(s.id, jobTemplates.transferResource.task );});
 
   for(const s in structuresNeedingEnergyWithoutOpenJob) {
@@ -22,7 +22,7 @@ operator.loadEnergy = function() {
 };
 operator.unloadLinkDrain = function() {
   // var allLinks = _.filter(Game.structures, (a) => a.structureType == STRUCTURE_LINK && a.energy > 100);
-  var allLinks = _.filter(Game.structures, (a) => a.room.name == 'W57S4' && a.structureType == STRUCTURE_LINK && a.energy > 400);
+  var allLinks = _.filter(Game.structures, (a) => a.structureType == STRUCTURE_LINK && a.energy > 400);
   var drainLinks = _.filter(allLinks, function(l) {return l.isDrain();});
 
   var drainLinksWithoutOpenJob = _.filter(drainLinks, function(s) { return !jobs.jobForStructureExists(s.id, jobTemplates.withdrawResource.task );});

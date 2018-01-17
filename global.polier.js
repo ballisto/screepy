@@ -19,6 +19,7 @@ polier.run = function() {
   // for (const i in tmpjobs) {
   //   console.log(tmpjobs[i].id);
   // }
+   console.log(polier.summary());
 };
 
 polier.getAssignmentId = function() {
@@ -160,7 +161,7 @@ polier.summary = function() {
   var sortedJobList = _.sortBy(jobs.getAllJobs(), function(j) { return Game.getObjectById(j.target).room.name; });
 
   var returnstring = "Jobs summary\n"
-  returnstring = returnstring.concat("<table><tr><th>Room  </th><th>Job  </th><th>Task  </th><th>Target  </th><th>Status  </th></tr>");
+  returnstring = returnstring.concat("<table><tr><th>Room  </th><th>Job  </th><th>Task  </th><th>Target  </th><th>Status  </th><th>Age  </th><th>TTL  </th></tr>");
   var resourceTable = [];
   var total = [];
 
@@ -174,11 +175,13 @@ polier.summary = function() {
       returnstring = returnstring.concat("<td><font color='" + color + "'>" + jobData.task + "  </font></td>");
       returnstring = returnstring.concat("<td><font color='" + color + "'>" + curJobTargetObject.structureType + "  </font></td>");
       returnstring = returnstring.concat("<td><font color='" + color + "'>" + jobData.status + "  </font></td>");
+      returnstring = returnstring.concat("<td><font color='" + color + "'>" + (Game.time - jobData.created) + "  </font></td>");
+      returnstring = returnstring.concat("<td><font color='" + color + "'>" + (jobData.ttl - (Game.time - jobData.created)) + "  </font></td>");
 
       returnstring = returnstring.concat("</tr>");
 
   }
-  const curAssignments = polier.getAssignmentsForJob(jobData.id);
+  const curAssignments = polier.getAllAssignments();
   if(curAssignments.length > 0) {
     returnstring = returnstring.concat("<table><tr><th>Creep  </th><th>Id  </th></tr>");
     for(const curassign in curAssignments) {

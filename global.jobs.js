@@ -89,13 +89,14 @@ jobs.modifyJob = function(jobData) {
 jobs.setDone = function(jobId) {
   var tmpJobData = jobs.getJobData(jobId);
   tmpJobData.status = 'done';
+  tmpJobData.ttl = 20;
   jobs.modifyJob(tmpJobData);
 };
 
 jobs.cleanup = function() {
   //delete all jobs that are done
   // var tmpActiveJobs = _.filter(jobs.getAllJobs(), (j) => j.status != 'done');
-  var tmpActiveJobs = _.filter(jobs.getAllJobs(), function(j) { return (Game.time - j.created) > j.ttl; });
+  var tmpActiveJobs = _.filter(jobs.getAllJobs(), function(j) { return (Game.time - j.created) < j.ttl; });
   root.setSegmentObject(config.jobs.jobsSegment,config.jobs.jobsKey,tmpActiveJobs);
 };
 
