@@ -94,7 +94,8 @@ jobs.setDone = function(jobId) {
 
 jobs.cleanup = function() {
   //delete all jobs that are done
-  var tmpActiveJobs = _.filter(jobs.getAllJobs(), (j) => j.status != 'done');
+  // var tmpActiveJobs = _.filter(jobs.getAllJobs(), (j) => j.status != 'done');
+  var tmpActiveJobs = _.filter(jobs.getAllJobs(), function(j) { return (Game.time - j.created) > j.ttl; });
   root.setSegmentObject(config.jobs.jobsSegment,config.jobs.jobsKey,tmpActiveJobs);
 };
 

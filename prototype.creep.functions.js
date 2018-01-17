@@ -30,6 +30,11 @@ Creep.prototype.isEmpty = function() {
   else { return false;}
 };
 
+Creep.prototype.isFull = function() {
+  if(_.sum(this.carry) == this.carryCapacity) { return true;}
+  else { return false;}
+};
+
 Creep.prototype.checkTerminalLimits = function(resource) {
     return checkTerminalLimits(this.room, resource);
 };

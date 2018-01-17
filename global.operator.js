@@ -22,8 +22,10 @@ operator.loadEnergy = function() {
 };
 operator.unloadLinkDrain = function() {
   // var allLinks = _.filter(Game.structures, (a) => a.structureType == STRUCTURE_LINK && a.energy > 100);
-  var allLinks = _.filter(Game.structures, (a) => a.room.name == 'W57S4' && a.structureType == STRUCTURE_LINK && a.energy > 100);
+  var allLinks = _.filter(Game.structures, (a) => a.room.name == 'W57S4' && a.structureType == STRUCTURE_LINK && a.energy > 400);
   var drainLinks = _.filter(allLinks, function(l) {return l.isDrain();});
+
+  var drainLinksWithoutOpenJob = _.filter(drainLinks, function(s) { return !jobs.jobForStructureExists(s.id, jobTemplates.withdrawResource.task );});
 
   for(const d in drainLinks) {
     jobs.addJobWithTemplate(jobTemplates.withdrawResource, drainLinks[d].id, RESOURCE_ENERGY, 0);

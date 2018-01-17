@@ -143,6 +143,8 @@ polier.assignJobs = function() {
     const tmpCreepForJob = polier.findCreepForJob(unassignedJobs[j]);
     if(tmpCreepForJob) {
       polier.addAssignment(unassignedJobs[j].id, tmpCreepForJob.id);
+      unassignedJobs[j].status = 'assigned';
+      jobs.modifyJob(unassignedJobs[j]);
     }
   }
 };
@@ -174,19 +176,21 @@ polier.summary = function() {
       returnstring = returnstring.concat("<td><font color='" + color + "'>" + jobData.status + "  </font></td>");
 
       returnstring = returnstring.concat("</tr>");
-      const curAssignments = polier.getAssignmentsForJob(jobData.id);
-      if(curAssignments.length > 0) {
-        returnstring = returnstring.concat("<table><tr><th>Creep  </th><th>Id  </th></tr>");
-        for(const curassign in curAssignments) {
-          const assignedCreep = Game.getObjectById(curAssignments[curassign].creepId);
-          if (assignedCreep) {
-            returnstring = returnstring.concat("<tr></tr><td>" + assignedCreep.name + "  </td>");
-            returnstring = returnstring.concat("<td><font color='" + color + "'>" + curAssignments[curassign].creepId + "  </font></td>");
-          }
-        }
-          returnstring = returnstring.concat("</tr>");
-      }
+
   }
+  const curAssignments = polier.getAssignmentsForJob(jobData.id);
+  if(curAssignments.length > 0) {
+    returnstring = returnstring.concat("<table><tr><th>Creep  </th><th>Id  </th></tr>");
+    for(const curassign in curAssignments) {
+      const assignedCreep = Game.getObjectById(curAssignments[curassign].creepId);
+      if (assignedCreep) {
+        returnstring = returnstring.concat("<tr></tr><td>" + assignedCreep.name + "  </td>");
+        returnstring = returnstring.concat("<td><font color='" + color + "'>" + curAssignments[curassign].creepId + "  </font></td>");
+      }
+    }
+      returnstring = returnstring.concat("</tr>");
+  }
+
   returnstring = returnstring.concat("</tr></table>");
   return returnstring;
 };

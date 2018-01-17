@@ -21,7 +21,7 @@ StructureLink.prototype.getLinkIdsWithHigherPriority =
     };
 StructureLink.prototype.isDrain =
     function () {
-      if(this.getPriority == 1 && this.getTargetLink == undefined) {
+      if(this.getPriority() == 1 && this.getTargetLink() == undefined) {
         return true;
       }
       else {
