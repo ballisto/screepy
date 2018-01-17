@@ -38,7 +38,7 @@ polier.getAssignmentsForCreep = function(creepId) {
 };
 
 polier.getCurTaskForCreep = function(creepId) {
-  var tmpAssignsForCreep = getAssignmentsForCreep(creepId);
+  var tmpAssignsForCreep = polier.getAssignmentsForCreep(creepId);
   if(Array.isArray(tmpAssignsForCreep)) {
     return tmpAssignsForCreep[0];
   }

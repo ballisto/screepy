@@ -67,7 +67,7 @@ Creep.prototype.storeAllBut = function(resource) {
 };
 
 Creep.prototype.getResource = function(resource, amount) {
-  if (this.carry[resource] != undefined && this.carry[resource] >= amount)) {
+  if (this.carry[resource] != undefined && this.carry[resource] >= amount) {
       return true;
   }
   var targetContainer = this.findResource(resource);

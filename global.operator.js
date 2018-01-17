@@ -8,6 +8,7 @@ operator.init = function() {
 operator.run = function() {
   operator.init();
   operator.loadEnergy();
+  operator.unloadLinkDrain();
 };
 
 operator.loadEnergy = function() {
@@ -16,5 +17,13 @@ operator.loadEnergy = function() {
 
   for(const s in structuresNeedingEnergyWithoutOpenJob) {
     jobs.addJobWithTemplate(jobTemplates.transferResource, structuresNeedingEnergyWithoutOpenJob[s].id, RESOURCE_ENERGY, structuresNeedingEnergyWithoutOpenJob[s].energyCapacity - structuresNeedingEnergyWithoutOpenJob[s].energy);
+  }
+};
+operator.unloadLinkDrain = function() {
+  var allLinks = _.filter(Game.structures, (a) => a.structureType == STRUCTURE_LINK && a.energy > 100);
+  var drainLinks = _.filter(allLinks, function(l) {return l.isDrain();});
+
+  for(const d in drainLinks) {
+    jobs.addJobWithTemplate(jobTemplates.withdrawResource, drainLinks[d].id, RESOURCE_ENERGY, 0);
   }
 };

@@ -118,55 +118,56 @@ Creep.prototype.run = function() {
       return true;
     }
   }
-  var curJobData = jobs.getJobData(curAssignment.jobId);
-
-  switch (curJobData.task) {
-    case "transfer":
-    case "build":
-    case "repair":
-    case "upgradeController":
-      if(this.carry[curJobData.resType] == undefined || this.carry[curJobData.resType] < curJobData.resAmount) {
-        var creepCarriesSomethingElse = false;
-        for(const c in this.carry) {
-          if(c != curJobData.resType && this.carry[c] > 0) { creepCarriesSomethingElse = true;}
-        }
-        if(creepCarriesSomethingElse) {
-          this.storeAllBut();
+  else {
+    var curJobData = jobs.getJobData(curAssignment.jobId);
+    this.say("job " +  curAssignment.jobId);
+    switch (curJobData.task) {
+      case "transfer":
+      case "build":
+      case "repair":
+      case "upgradeController":
+        if(this.carry[curJobData.resType] == undefined || this.carry[curJobData.resType] < curJobData.resAmount) {
+          var creepCarriesSomethingElse = false;
+          for(const c in this.carry) {
+            if(c != curJobData.resType && this.carry[c] > 0) { creepCarriesSomethingElse = true;}
           }
-        else {
-          this.getResource(curJobData.resType, curJobData.resAmount);
-        }
-      }
-      else {
-        const targetObject = Game.getObjectById(curJobData.target);
-        if(targetObject != undefined) {
-          if (this.pos.getRangeTo(targetObject) > 1) {
-            this.moveToMy(targetObject, 1);
-          }
+          if(creepCarriesSomethingElse) {
+            this.storeAllBut();
+            }
           else {
-          switch (curJobData.task) {
-            case "transfer":
-              const result = this.transfer(targetObject, curJobData.resType);
-              if(result == OK || result == ERR_FULL) {
-                jobs.setDone(curJobData.id);
-              }
-              else {
-                this.say("I F'Up!");
-              }
-              break;
-              default:
-              break;
+            this.getResource(curJobData.resType, curJobData.resAmount);
+          }
+        }
+        else {
+          const targetObject = Game.getObjectById(curJobData.target);
+          if(targetObject != undefined) {
+            if (this.pos.getRangeTo(targetObject) > 1) {
+              this.moveToMy(targetObject, 1);
+            }
+            else {
+            switch (curJobData.task) {
+              case "transfer":
+                const result = this.transfer(targetObject, curJobData.resType);
+                if(result == OK || result == ERR_FULL) {
+                  jobs.setDone(curJobData.id);
+                }
+                else {
+                  this.say("I F'Up!");
+                }
+                break;
+                default:
+                break;
+            }
           }
         }
       }
+      break;
+      case "withdraw":
+      break;
+      default:
+      break;
     }
-    break;
-    case "withdraw":
-    break;
-    default:
-    break;
   }
-
 };
 
 Creep.prototype.runRole =

@@ -8,7 +8,7 @@ require('global.polier');
 require('prototype.spawn2')();
 require('prototype.creep.functions');
 require('prototype.creep.findMyFlag')();
-require('prototype.creep.findResourceOLD')();
+require('prototype.creep.findResource')();
 require('prototype.creep');
 require('prototype.room');
 require('prototype.room.utils');
@@ -106,6 +106,7 @@ global.mineralDescriptions.XGHO2 = {tier: 3, component1: "X", component2: "GHO2"
 
 global.jobTemplates = {};
 global.jobTemplates.transferResource = {task: "transfer", priority: 201, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
+global.jobTemplates.withdrawResource = {task: "withdraw", priority: 201, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
 
 global.bodyHitpointsMatrix = [0,100,200,400,800,1200,1600,2000,3000];
 

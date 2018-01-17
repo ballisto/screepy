@@ -19,6 +19,15 @@ StructureLink.prototype.getLinkIdsWithHigherPriority =
         }
       return resultArray;
     };
+StructureLink.prototype.isDrain =
+    function () {
+      if(this.getPriority == 1 && this.getTargetLink == undefined) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
 StructureLink.prototype.getTargetLink =
     function () {
       var linkIdsWithHigherPriority = this.getLinkIdsWithHigherPriority();
