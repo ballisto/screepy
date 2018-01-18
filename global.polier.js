@@ -129,7 +129,7 @@ polier.findCreepForJob = function(jobData) {
   const targetStructure = Game.getObjectById(jobData.target);
   if(targetStructure == undefined) {return false;}
 
-  var creepsInRoom = _.filter(Game.creeps, (c) => c.room.name == targetStructure.room.name && !c.spawning && c.role() != 'miner' );
+  var creepsInRoom = _.filter(Game.creeps, (c) => c.room.name == targetStructure.room.name && !c.spawning && ( c.role() == 'energyTransporter' || c.role() == 'distributor' ) );
   var creepsInRoomMatchingBodyReq = _.filter(creepsInRoom, function(c) {return polier.creepMatchesBodyReq(c.id, jobData.bodyReq);});
   // TODO - make an intelligent choice if multiple candidates found
   var creepWithLessAssignments = _.min(creepsInRoomMatchingBodyReq, function(c) { return polier.getAssignmentsForCreep(c.id).length;});
