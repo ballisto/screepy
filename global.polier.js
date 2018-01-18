@@ -19,7 +19,7 @@ polier.run = function() {
   // for (const i in tmpjobs) {
   //   console.log(tmpjobs[i].id);
   // }
-   console.log(polier.summary());
+  //  console.log(polier.summary());
 };
 
 polier.getAssignmentId = function() {
