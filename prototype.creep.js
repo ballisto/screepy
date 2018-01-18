@@ -135,7 +135,7 @@ Creep.prototype.run = function() {
       case "build":
       case "repair":
       case "upgradeController":
-        if(this.carry[curJobData.resType] == undefined || this.carry[curJobData.resType] < curJobData.resAmount) {
+        if(this.carry[curJobData.resType] == undefined || (this.carry[curJobData.resType] < curJobData.resAmount &&  this.carry[curJobData.resType] < this.carryCapacity) ) {
           var creepCarriesSomethingElse = false;
           for(const c in this.carry) {
             if(c != curJobData.resType && this.carry[c] > 0) { creepCarriesSomethingElse = true;}

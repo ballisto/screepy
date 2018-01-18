@@ -259,30 +259,35 @@ Room.prototype.saveHostiles =
     };
 Room.prototype.manageRamparts =
     function () {
-      //Manage ramparts
-      let roomCreeps = this.find(FIND_MY_CREEPS);
-      var hostiles = this.find(FIND_HOSTILE_CREEPS);
-      let enemies = _.filter(hostiles, function (e) {return (isHostile(e))});
-
-      if (this.controller != undefined && this.controller.owner != undefined && this.controller.owner.username == global.playerUsername) {
-          if (this.memory.roomArray != undefined && enemies.length == 0) {
-              //Allied creeps in room and no hostile creeps
-              for (let x in this.memory.roomArray.ramparts) {
-                  let ramp = Game.getObjectById(this.memory.roomArray.ramparts[x]);
-                  if (ramp != null) {
-                      ramp.setPublic(true)
-                  }
-              }
-          }
-          else if (this.memory.roomArray != undefined) {
-              for (let x in this.memory.roomArray.ramparts) {
-                  let ramp = Game.getObjectById(this.memory.roomArray.ramparts[x]);
-                  if (ramp != null) {
-                      ramp.setPublic(false)
-                  }
-              }
-          }
+      var publicRamparts = _.filter(Game.structures, (s) => s.structureType == STRUCTURE_RAMPART && s.owner == global.playerUsername && s.isPublic == true);
+      for(const r in publicRamparts) {
+        publicRamparts[r].setPublic(false);
       }
+      //Manage ramparts
+
+      // let roomCreeps = this.find(FIND_MY_CREEPS);
+      // var hostiles = this.find(FIND_HOSTILE_CREEPS);
+      // let enemies = _.filter(hostiles, function (e) {return (isHostile(e))});
+      //
+      // if (this.controller != undefined && this.controller.owner != undefined && this.controller.owner.username == global.playerUsername) {
+      //     if (this.memory.roomArray != undefined && enemies.length == 0) {
+      //         //Allied creeps in room and no hostile creeps
+      //         for (let x in this.memory.roomArray.ramparts) {
+      //             let ramp = Game.getObjectById(this.memory.roomArray.ramparts[x]);
+      //             if (ramp != null) {
+      //                 ramp.setPublic(true)
+      //             }
+      //         }
+      //     }
+      //     else if (this.memory.roomArray != undefined) {
+      //         for (let x in this.memory.roomArray.ramparts) {
+      //             let ramp = Game.getObjectById(this.memory.roomArray.ramparts[x]);
+      //             if (ramp != null) {
+      //                 ramp.setPublic(false)
+      //             }
+      //         }
+      //     }
+      // }
     };
 
     Room.prototype.getCreepPositionForId = function(to) {

@@ -1080,7 +1080,7 @@ module.exports.loop = function() {
                             creep.roleDemolisher();
                         }
                         else if (creep.memory.role == 'energyTransporter') {
-                            creep.roleEnergyTransporter();
+                            creep.run();
                         }
                         else if (creep.memory.role == 'energyHauler') {
                             creep.roleEnergyHauler();

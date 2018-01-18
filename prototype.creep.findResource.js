@@ -17,7 +17,7 @@ module.exports = function() {
 							}
 					break;
 					case STRUCTURE_TERMINAL:
-							if (this.room.terminal != undefined && this.room.terminal.storeCapacity - _.sum(this.room.terminal.store) > this.room.terminal.storeCapacity * 0.75) {
+							if (this.room.terminal != undefined && this.room.terminal.storeCapacity - _.sum(this.room.terminal.store) < this.room.terminal.storeCapacity * 0.75) {
 									return this.room.terminal;
 							}
 					break;
@@ -57,7 +57,7 @@ module.exports = function() {
 			}
 			return null;
 	};
-	
+
 	Creep.prototype.findResourceOLD =
 	function(resource, sourceTypes) {
 	    if (this.memory.targetBuffer != undefined) {
