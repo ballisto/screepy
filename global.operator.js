@@ -37,3 +37,25 @@ operator.unloadLinkDrain = function() {
     jobs.addJobWithTemplate(jobTemplates.transferResource, linksNeedEnergyWithoutOpenJob[e].id, RESOURCE_ENERGY, (linksNeedEnergyWithoutOpenJob[e].energyCapacity - linksNeedEnergyWithoutOpenJob[e].energy) );
   }
 };
+
+operator.pickupResources = function() {
+  // var structuresNeedingEnergy = _.filter(Game.structures, (a) => a.energy < a.energyCapacity && a.structureType != STRUCTURE_LINK);
+  // var structuresNeedingEnergy = _.filter(Game.structures, (a) => a.structureType != STRUCTURE_LINK && ( (a.energy < a.energyCapacity && a.structureType != STRUCTURE_TOWER) || (a.energy < a.energyCapacity * 0.8 && a.structureType == STRUCTURE_TOWER) ));
+  //
+  // var structuresNeedingEnergyWithoutOpenJob = _.filter(structuresNeedingEnergy, function(s) { return !jobs.jobForStructureExists(s.id, jobTemplates.transferResource.task );});
+  //
+  // tempArray = this.room.find(FIND_DROPPED_RESOURCES);
+  // for (var s in tempArray) {
+  //     if (tempArray[s].energy != undefined) {
+  //       if (tempArray[s].energy > 0) {
+  //         IDBasket.push(tempArray[s]);
+  //       }
+  //     }
+  // }
+  // break;
+  //
+  //
+  // for(const s in structuresNeedingEnergyWithoutOpenJob) {
+  //   jobs.addJobWithTemplate(jobTemplates.transferResource, structuresNeedingEnergyWithoutOpenJob[s].id, RESOURCE_ENERGY, structuresNeedingEnergyWithoutOpenJob[s].energyCapacity - structuresNeedingEnergyWithoutOpenJob[s].energy);
+  // }
+};

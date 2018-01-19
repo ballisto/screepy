@@ -107,6 +107,7 @@ global.mineralDescriptions.XGHO2 = {tier: 3, component1: "X", component2: "GHO2"
 global.jobTemplates = {};
 global.jobTemplates.transferResource = {task: "transfer", priority: 201, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
 global.jobTemplates.withdrawResource = {task: "withdraw", priority: 201, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
+global.jobTemplates.pickupResource = {task: "pickup", priority: 555, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
 
 global.bodyHitpointsMatrix = [0,100,200,400,800,1200,1600,2000,3000];
 

@@ -372,7 +372,7 @@ global.checkTerminalLimits = function (room, resource) {
         delta.amount = room.terminal.store[resource] - roomLimits[resource].minTerminal;
     }
     else if (room.terminal.store[resource] == undefined) {
-        delta.amount = roomLimits[resource].minTerminal;
+        delta.amount = 0 - roomLimits[resource].minTerminal;
     }
     else {
         delta.amount = 0

@@ -28,7 +28,14 @@ module.exports.loop = function() {
   // jobs.resetMemory();
   // polier.resetMemory();
 
-
+  var tmpObserver = Game.getObjectById('5a5ff577175ef20d0b3d0c9e');
+  tmpObserver.observeRoom('W57S3');
+  var strucs = Game.structures;
+  var strucCount = 0;
+  for(const s in strucs) {
+    strucCount++;
+  }
+  // console.log(strucCount);
      for (var c in Game.creeps) {
     //   //c.memory.homeroom = this.room;
        var curCreep = Game.creeps[c];
