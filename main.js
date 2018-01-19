@@ -378,20 +378,17 @@ module.exports.loop = function() {
 
             Game.rooms[r].handleNukeAttack();
             //Build RCL8 installations
-            // if (Game.time % global.DELAYRCL8INSTALLATION == 0 && Game.rooms[r].controller != undefined && Game.rooms[r].controller.level == 8 && Game.rooms[r].controller.owner.username == global.playerUsername) {
-            //     let structures = Game.rooms[r].find(FIND_MY_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_NUKER || s.structureType == STRUCTURE_TERMINAL || s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_TOWER || s.structureType == STRUCTURE_STORAGE});
-            //     for (let s in structures) {
-            //         let foundStructures = structures[s].pos.lookFor(LOOK_STRUCTURES);
-            //         foundStructures = foundStructures.concat(structures[s].pos.lookFor(LOOK_CONSTRUCTION_SITES));
-            //         let ramparts = _.filter(foundStructures, function (s) { return s.structureType == STRUCTURE_RAMPART});
-            //         if (ramparts.length > 0) {
-            //             for(let ramp in ramparts) {
-            //               ramp.remove();
-            //             }
-            //             //structures[s].pos.createConstructionSite(STRUCTURE_RAMPART);
-            //         }
-            //     }
-            // }
+            if (Game.time % DELAYRCL8INSTALLATION == 0 && Game.rooms[r].controller != undefined && Game.rooms[r].controller.level == 8 && Game.rooms[r].controller.owner.username == playerUsername) {
+                let structures = Game.rooms[r].find(FIND_MY_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_NUKER || s.structureType == STRUCTURE_TERMINAL || s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_TOWER || s.structureType == STRUCTURE_STORAGE});
+                for (let s in structures) {
+                    let foundStructures = structures[s].pos.lookFor(LOOK_STRUCTURES);
+                    foundStructures = foundStructures.concat(structures[s].pos.lookFor(LOOK_CONSTRUCTION_SITES));
+                    let ramparts = _.filter(foundStructures, function (s) { return s.structureType == STRUCTURE_RAMPART});
+                    if (ramparts.length == 0) {
+                        structures[s].pos.createConstructionSite(STRUCTURE_RAMPART);
+                    }
+                }
+            }
           //Panic flag code
             if (CPUdebug == true) {CPUdebugString = CPUdebugString.concat("<br>Starting flag code: " + Game.cpu.getUsed())}
             if (Game.time % global.DELAYPANICFLAG == 0) {

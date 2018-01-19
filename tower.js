@@ -64,7 +64,7 @@ module.exports = {
                            //Find the closest damaged Structure
                            var closestDamagedStructure = towers[i].pos.findClosestByRange(FIND_STRUCTURES, {filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL && s.structureType != STRUCTURE_RAMPART});
                            if(!closestDamagedStructure) {
-                             if(roomIndex == 'W58S4' && towers[i].room.storage.store[RESOURCE_ENERGY] > 250000) {
+                             if(towers[i].room.storage.store[RESOURCE_ENERGY] > 50000) {
                                //var closestDamagedStructure = towers[i].pos.findClosestByRange(FIND_STRUCTURES, {filter: (s) => s.hits < s.hitsMax});
                                var target = undefined;
                                var ramparts = Game.rooms[roomIndex].find(FIND_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_RAMPART});
@@ -81,7 +81,10 @@ module.exports = {
                                }
 
                                // if we find a wall that has to be repaired
-                               if (target != undefined && target.hits < 100000000) {
+                               if (target != undefined && target.hits < 100000) {
+                                   var result = towers[i].repair(target);
+                                 }
+                               else if (towers[i].room.storage.store[RESOURCE_ENERGY] > 250000 && target != undefined && target.hits < 10000000) {
                                    var result = towers[i].repair(target);
                                  }
                               }
@@ -95,9 +98,5 @@ module.exports = {
                    }
                 }
             }
-
-
-
-
             }
         };

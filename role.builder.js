@@ -36,7 +36,7 @@ Creep.prototype.roleBuilder = function () {
                         constructionSite = this.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES, {filter: (s) => s.structureType == STRUCTURE_EXTENSION});
                     }
                     if (constructionSite == null) {
-                        constructionSite = this.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES, {filter: (s) => s.structureType != STRUCTURE_RAMPART});
+                        constructionSite = this.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES);
                     }
                     if (constructionSite != null && constructionSite != undefined) {
                         this.memory.myConstructionSite = constructionSite.id;
