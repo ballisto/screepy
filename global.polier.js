@@ -125,14 +125,19 @@ polier.bodyReqString2Hitpoints = function(bodyReqString) {
   return result;
 };
 
-polier.findCreepForJob = function(jobData) {
+polier.findCandidatesForJob = function(jobData) {
   const targetStructure = Game.getObjectById(jobData.target);
   if(targetStructure == undefined) {return false;}
 
   var creepsInRoom = _.filter(Game.creeps, (c) => c.room.name == targetStructure.room.name && !c.spawning && ( c.role() == 'energyTransporter' || c.role() == 'distributor' ) );
   var creepsInRoomMatchingBodyReq = _.filter(creepsInRoom, function(c) {return polier.creepMatchesBodyReq(c.id, jobData.bodyReq);});
+  return creepsInRoomMatchingBodyReq;
+};
+
+polier.findCreepForJob = function(jobData) {
+  var candidatesForJob = polier.findCandidatesForJob(jobData);
   // TODO - make an intelligent choice if multiple candidates found
-  var creepWithLessAssignments = _.min(creepsInRoomMatchingBodyReq, function(c) { return polier.getAssignmentsForCreep(c.id).length;});
+  var creepWithLessAssignments = _.min(candidatesForJob, function(c) { return polier.getAssignmentsForCreep(c.id).length;});
   if(creepWithLessAssignments) {return creepWithLessAssignments;}
   else {return false;}
 };
@@ -150,8 +155,14 @@ polier.assignJobs = function() {
   }
 };
 
+polier.balanceAssignments = function() {
+  var assignmentsByCreep = _.indexBy(polier.getAllAssignments(), 'creepId');
+  
+
+};
+
 polier.printAssignments = function() {
-    const tmpAssigns = root.getSegmentObject(config.polier.assignmentsSegment, config.polier.assignmentsKey);
+    const tmpAssigns = polier.getAllAssignments();
     for(const key in tmpAssigns) {
       console.log(JSON.stringify(tmpAssigns[key]));
     }

@@ -9,6 +9,7 @@ operator.run = function() {
   operator.init();
   operator.loadEnergy();
   operator.unloadLinkDrain();
+  operator.pickupResources();
 };
 
 operator.loadEnergy = function() {
@@ -39,23 +40,17 @@ operator.unloadLinkDrain = function() {
 };
 
 operator.pickupResources = function() {
-  // var structuresNeedingEnergy = _.filter(Game.structures, (a) => a.energy < a.energyCapacity && a.structureType != STRUCTURE_LINK);
-  // var structuresNeedingEnergy = _.filter(Game.structures, (a) => a.structureType != STRUCTURE_LINK && ( (a.energy < a.energyCapacity && a.structureType != STRUCTURE_TOWER) || (a.energy < a.energyCapacity * 0.8 && a.structureType == STRUCTURE_TOWER) ));
-  //
-  // var structuresNeedingEnergyWithoutOpenJob = _.filter(structuresNeedingEnergy, function(s) { return !jobs.jobForStructureExists(s.id, jobTemplates.transferResource.task );});
-  //
-  // tempArray = this.room.find(FIND_DROPPED_RESOURCES);
-  // for (var s in tempArray) {
-  //     if (tempArray[s].energy != undefined) {
-  //       if (tempArray[s].energy > 0) {
-  //         IDBasket.push(tempArray[s]);
-  //       }
-  //     }
-  // }
-  // break;
-  //
-  //
-  // for(const s in structuresNeedingEnergyWithoutOpenJob) {
-  //   jobs.addJobWithTemplate(jobTemplates.transferResource, structuresNeedingEnergyWithoutOpenJob[s].id, RESOURCE_ENERGY, structuresNeedingEnergyWithoutOpenJob[s].energyCapacity - structuresNeedingEnergyWithoutOpenJob[s].energy);
-  // }
+  var allStorages = _.filter(Game.structures, (a) => a.structureType == STRUCTURE_STORAGE);
+  for(const s in allStorages) {
+    var droppedResources = allStorages[s].room.find(FIND_DROPPED_RESOURCES);
+    var droppedResourcesWithoutOpenJob = _.filter(droppedResources, function(s) { return !jobs.jobForStructureExists(s.id, jobTemplates.pickupResource.task ) && s.amount > 150;});
+    for(const e in droppedResourcesWithoutOpenJob) {
+      jobs.addJobWithTemplate(jobTemplates.pickupResource, droppedResourcesWithoutOpenJob[e].id, droppedResourcesWithoutOpenJob[e].resourceType, droppedResourcesWithoutOpenJob[e].amount );
+    }
+  }
+};
+
+operator.resourceBalancing = function() {
+
+
 };

@@ -134,6 +134,7 @@ Creep.prototype.run = function() {
       case "transfer":
       case "build":
       case "repair":
+
       case "upgradeController":
         if(this.carry[curJobData.resType] == undefined || (this.carry[curJobData.resType] < curJobData.resAmount &&  this.carry[curJobData.resType] < this.carryCapacity) ) {
           var creepCarriesSomethingElse = false;
@@ -164,40 +165,53 @@ Creep.prototype.run = function() {
                   this.say("I F'Up!");
                 }
                 break;
-                default:
-                break;
-            }
-          }
-        }
-      }
-      break;
-      case "withdraw":
-        if(this.carry[curJobData.resType] == undefined || this.carry[curJobData.resType] < curJobData.resAmount || this.isFull()) {
-          var creepCarriesSomethingElse = false;
-          for(const c in this.carry) {
-            if(c != curJobData.resType && this.carry[c] > 0) { creepCarriesSomethingElse = true;}
-          }
-          if(creepCarriesSomethingElse || this.isFull()) {
-            this.storeAllBut();
-            }
-          }
-          else {
-            const targetObject = Game.getObjectById(curJobData.target);
-            if(targetObject != undefined) {
-              if (this.pos.getRangeTo(targetObject) > 1) {
-                this.moveToMy(targetObject.pos, 1);
-              }
-              else {
-                const result = this.withdraw(targetObject, curJobData.resType);
-                if(result == OK || result == ERR_FULL || result == ERR_NOT_ENOUGH_RESOURCES	) {
+              case "pickup":
+                const pickupResult = this.pickup(targetObject);
+                if(pickupResult == OK || pickupResult == ERR_FULL) {
                   jobs.setDone(curJobData.id);
                 }
                 else {
                   this.say("I F'Up!");
                 }
+                break;
+                default:
+                break;
+            }
+          }
+        }
+        else {
+          jobs.setDone(curJobData.id);
+        }
+      }
+      break;
+      case "withdraw":
+      case "pickup":
+        if(this.storeAllBut()) {
+          const targetObject = Game.getObjectById(curJobData.target);
+          if(targetObject != undefined) {
+            if (this.pos.getRangeTo(targetObject) > 1) {
+              this.moveToMy(targetObject.pos, 1);
+            }
+            else {
+              var result = "";
+              if(curJobData.task == 'pickup') {
+                 result = this.pickup(targetObject);
+              }
+              else if(curJobData.task == 'withdraw'){
+                 result = this.withdraw(targetObject, curJobData.resType);
+              }
+              if(result == OK || result == ERR_FULL || result == ERR_NOT_ENOUGH_RESOURCES	) {
+                jobs.setDone(curJobData.id);
+              }
+              else {
+                this.say("I F'Up!");
               }
             }
           }
+          else {
+            jobs.setDone(curJobData.id);
+          }
+        }
       break;
       default:
       break;

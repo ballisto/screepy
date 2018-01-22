@@ -41,7 +41,7 @@ jobs.getTargetObject = function(jobId) {
 }
 
 jobs.jobForStructureExists = function(structureId, task) {
-  var openJobsForStructure = _.filter(root.getSegmentObject(config.jobs.jobsSegment, config.jobs.jobsKey), (j) => j.target == structureId && j.task == task && j.status != 'done');
+  var openJobsForStructure = _.filter(jobs.getAllUnfinishedJobs(), (j) => j.target == structureId && j.task == task);
   if(openJobsForStructure.length > 0) {
     return true;
   }
@@ -49,6 +49,12 @@ jobs.jobForStructureExists = function(structureId, task) {
     return false;
   }
 };
+
+jobs.getOpenJobsForStructure = function(structureId) {
+  var openJobsForStructure = _.filter(jobs.getAllUnfinishedJobs(), (j) => j.target == structureId);
+  return openJobsForStructure;
+};
+
 jobs.getNewJobId = function() {
   const result = jobs.maxJobId;
   jobs.maxJobId++;
