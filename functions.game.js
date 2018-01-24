@@ -639,24 +639,25 @@ global.produce = function (roomName, amount, resource) {
     return "OK";
 };
 
-global.addBoostLab = function (roomName, labID) {
+global.addBoostLab = function (roomName, labID, mineralType) {
     if (arguments.length == 0) {
-        return "addBoostLab (roomName, labID)";
+        return "addBoostLab (roomName, labID, mineralType)";
     }
     var lab = Game.getObjectById(labID);
-    if (lab != null) {
+    const mineralDetails = mineralDescriptions[mineralType];
+
+    if (lab != null && mineralDetails != undefined && mineralDetails.bodyPart != undefined ) {
 
         var boostLabList;
         var room = Game.rooms[roomName];
         if (room.memory.boostLabs == undefined) {
-            boostLabList = [];
+            room.memory.boostLabs = {};
         }
-        else {
-            boostLabList = room.memory.boostLabs;
-        }
-        boostLabList.push(labID);
-        room.memory.boostLabs = boostLabList;
+        room.memory.boostLabs[labID] = mineralType;
         return "Lab added as boost lab.";
+    }
+    else {
+      return "Error";
     }
 };
 
