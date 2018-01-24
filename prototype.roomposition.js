@@ -109,6 +109,10 @@ RoomPosition.prototype.checkForWall = function() {
   return this.lookFor(LOOK_TERRAIN)[0] === 'wall';
 };
 
+RoomPosition.prototype.checkForStructure = function(structureType) {
+  return this.lookFor(LOOK_STRUCTURES).some((s) => s.structureType == structureType);
+};
+
 RoomPosition.prototype.checkForObstacleStructure = function() {
   return this.lookFor(LOOK_STRUCTURES).some((s) => OBSTACLE_OBJECT_TYPES.includes(s.structureType));
 };

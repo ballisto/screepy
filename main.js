@@ -35,6 +35,10 @@ module.exports.loop = function() {
   for(const s in strucs) {
     strucCount++;
   }
+
+  var tmpFactory = new Factory('W59S4']);
+  
+
   // console.log(strucCount);
      for (var c in Game.creeps) {
     //   //c.memory.homeroom = this.room;
