@@ -368,7 +368,7 @@ module.exports.loop = function() {
         // Cycle through rooms
         for (var r in Game.rooms) {
           var roomFactory = Game.rooms[r].factory();
-          roomFactory.summary();
+          // console.log(roomFactory.summary);
             //Save hostile creeps in room
             let roomCreeps = Game.rooms[r].find(FIND_MY_CREEPS);
             var hostiles = Game.rooms[r].find(FIND_HOSTILE_CREEPS);
