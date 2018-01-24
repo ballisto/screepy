@@ -37,7 +37,10 @@ module.exports.loop = function() {
   }
 
   var tmpFactory = new Factory('W59S4');
-
+  var publicRamparts = _.filter(Game.structures, (s) => s.structureType == STRUCTURE_RAMPART && s.owner == global.playerUsername && s.isPublic == true);
+  for(const r in publicRamparts) {
+    publicRamparts[r].setPublic(false);
+  }
 
   // console.log(strucCount);
      for (var c in Game.creeps) {

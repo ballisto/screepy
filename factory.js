@@ -4,19 +4,34 @@ global.Factory = class Factory {
     var curRoom = Game.rooms[roomName];
     if (!curRoom) { return null;}
     this.room = curRoom;
-    var labs = _.filter(Game.structures, (a) => a.structureType == STRUCTURE_LAB && a.room.name == roomName);
-    this.size = labs.length;
-    if(labs.length > 2) {
-      var sortedByIdLabs = _.sortBy(labs, function(l) {return l.id;})
 
-      var sortedByNeighboringLabs = _.sortBy(sortedByIdLabs, function(n) {return n.getLabsInRange().length;});
+    curRoom.checkCache();
+    var curRoomFactoryCache = cache.rooms[roomName].factory;
+    if(curRoomFactoryCache.size != undefined) {
+      this.size = curRoomFactoryCache.size;
+      this.innerLab1 = curRoomFactoryCache.innerLab1;
+      this.innerLab2 = curRoomFactoryCache.innerLab2;
+    }
+    else {
+      var labs = _.filter(Game.structures, (a) => a.structureType == STRUCTURE_LAB && a.room.name == roomName);
 
-      var reversedSortedByNeighboringLabs = sortedByNeighboringLabs.reverse();
+      this.size = labs.length;
+      curRoomFactoryCache.size = this.size;
 
-      this.innerLab1 = reversedSortedByNeighboringLabs[0];
-      this.innerLab2 = reversedSortedByNeighboringLabs[1];
-      for(const l in reversedSortedByNeighboringLabs) {
-        // console.log(reversedSortedByNeighboringLabs[l].id + ' - ' + reversedSortedByNeighboringLabs[l].getLabsInRange().length);
+      if(labs.length > 2) {
+        var sortedByIdLabs = _.sortBy(labs, function(l) {return l.id;})
+
+        var sortedByNeighboringLabs = _.sortBy(sortedByIdLabs, function(n) {return n.getLabsInRange().length;});
+
+        var reversedSortedByNeighboringLabs = sortedByNeighboringLabs.reverse();
+
+        this.innerLab1 = reversedSortedByNeighboringLabs[0];
+        curRoomFactoryCache.innerLab1 = this.innerLab1;
+        this.innerLab2 = reversedSortedByNeighboringLabs[1];
+        curRoomFactoryCache.innerLab2 = this.innerLab2;
+        for(const l in reversedSortedByNeighboringLabs) {
+          // console.log(reversedSortedByNeighboringLabs[l].id + ' - ' + reversedSortedByNeighboringLabs[l].getLabsInRange().length);
+        }
       }
     }
   }
@@ -29,5 +44,13 @@ global.Factory = class Factory {
       result += 'Inner lab 2: ' + this.innerLab2.id + '\n';
     }
     return result;
+  }
+
+  get isBusy() {
+
+  }
+
+  run() {
+    console.log("RUN");
   }
 };

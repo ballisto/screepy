@@ -265,10 +265,7 @@ Room.prototype.saveHostiles =
     };
 Room.prototype.manageRamparts =
     function () {
-      var publicRamparts = _.filter(Game.structures, (s) => s.structureType == STRUCTURE_RAMPART && s.owner == global.playerUsername && s.isPublic == true);
-      for(const r in publicRamparts) {
-        publicRamparts[r].setPublic(false);
-      }
+      
       //Manage ramparts
 
       // let roomCreeps = this.find(FIND_MY_CREEPS);

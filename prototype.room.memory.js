@@ -77,6 +77,7 @@ Room.prototype.checkCache = function() {
       find: {},
       routing: {},
       costMatrix: {},
+      factory: {},
       created: Game.time,
     };
   }
