@@ -1,6 +1,7 @@
 StructureLink.prototype.getPriority =
     function () {
-      if ( this.room.memory.links[this.id] != undefined && this.room.memory.links[this.id].priority != undefined) {
+
+      if ( this.room.memory != undefined && this.room.memory.links != undefined && this.room.memory.links[this.id] != undefined && this.room.memory.links[this.id].priority != undefined) {
         return this.room.memory.links[this.id].priority;
       }
       else {
@@ -13,7 +14,7 @@ StructureLink.prototype.getLinkIdsWithHigherPriority =
       var myPriority = this.getPriority();
 
       for (var linkId in this.room.memory.links) {
-          if (this.room.memory.links[linkId].priority != undefined && this.room.memory.links[linkId].priority > myPriority) {
+          if ( this.room.memory != undefined && this.room.memory.links != undefined && this.room.memory.links[linkId].priority != undefined && this.room.memory.links[linkId].priority > myPriority) {
             resultArray.push(linkId);
           }
         }

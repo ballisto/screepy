@@ -1048,11 +1048,8 @@ module.exports.loop = function() {
                     if (CPUdebug == true) {
                         CPUdebugString = CPUdebugString.concat("<br>Start creep " + creep.name + "( " + creep.memory.role + "): " + Game.cpu.getUsed())
                     }
-                    if (creep.memory.role != "miner" && creep.memory.role != "distributor" && creep.memory.role != "transporter" && creep.memory.role != "scientist" && _.sum(creep.carry) != creep.carry.energy) {
-                        // Minerals found in creep
-                        creep.storeAllBut(RESOURCE_ENERGY);
-                    }
-                    else {
+
+                    {
                         if (creep.memory.role == 'harvester') {
                             creep.roleHarvester();
                         }

@@ -10,6 +10,7 @@ operator.run = function() {
   operator.loadEnergy();
   operator.unloadLinkDrain();
   operator.pickupResources();
+  operator.loadLabs();
 };
 
 operator.loadEnergy = function() {
@@ -22,6 +23,25 @@ operator.loadEnergy = function() {
     jobs.addJobWithTemplate(jobTemplates.transferResource, structuresNeedingEnergyWithoutOpenJob[s].id, RESOURCE_ENERGY, structuresNeedingEnergyWithoutOpenJob[s].energyCapacity - structuresNeedingEnergyWithoutOpenJob[s].energy);
   }
 };
+
+operator.loadLabs = function() {
+  //load boost labs
+  if(Memory.rooms != undefined) {
+    for(const r in Memory.rooms) {
+      if(Memory.rooms[r].boostLabs != undefined) {
+        for (const l in Memory.rooms[r].boostLabs) {
+          const curLabObject = Game.getObjectById(l);
+          if(curLabObject != undefined && !jobs.jobForStructureExists(l, jobTemplates.transferResource.task) && (curLabObject.mineralCapacity - curLabObject.mineralAmount) > 150) {
+            jobs.addJobWithTemplate(jobTemplates.transferResource, l, Memory.rooms[r].boostLabs[l], curLabObject.mineralCapacity - curLabObject.mineralAmount);
+          }
+        }
+      }
+    }
+  }
+};
+
+
+
 operator.unloadLinkDrain = function() {
   // var allLinks = _.filter(Game.structures, (a) => a.structureType == STRUCTURE_LINK && a.energy > 100);
   var allLinks = _.filter(Game.structures, (a) => a.structureType == STRUCTURE_LINK);

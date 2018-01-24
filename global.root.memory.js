@@ -107,10 +107,13 @@ root.checkSegmentActive = function(id, noThrow = false) {
     }
     ids.add(id);
     // add id 0 for jobs storage
-    if(id != 0) {
+    if(id != 0 && !ids.has(0) && !ids.has("0")) {
       ids.add(0);
     }
-    for (let i = 0; i < config.memory.segments && ids.size < 10; ++i) {
+    if(id != 1 && !ids.has(1) && !ids.has("1")) {
+      ids.add(1);
+    }
+    for (let i = 2; i < config.memory.segments && ids.size < 10; ++i) {
       ids.add(i);
     }
     RawMemory.setActiveSegments(Array.from(ids));

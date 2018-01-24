@@ -1,5 +1,7 @@
 Creep.prototype.roleDistributor = function() {
-    var nuker = Game.getObjectById(this.room.memory.roomArray.nukers[0]);
+    if(this.room.memory != undefined && this.room.memory.roomArray != undefined && this.room.memory.roomArray.nukers != undefined) {
+      var nuker = Game.getObjectById(this.room.memory.roomArray.nukers[0]);
+    }
 
     if (this.room.memory.terminalTransfer != undefined) {
         //ongoing terminal transfer
