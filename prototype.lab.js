@@ -1,11 +1,13 @@
 StructureLab.prototype.getLabsInRange =
     function () {
-      const adjacentPositions = this.pos.getAllAdjacentPositions();
-      var result = [];
+      const adjacentPositions = Array.from(this.pos.getAllAdjacentPositions());
+      var result = new Array();
       for(const p in adjacentPositions) {
-        const curLabInRange = adjacentPositions[p].checkForStructure(STRUCTURE_LAB);
-        if(curLabInRange.length > 0) {
-          result[curLabInRange.id] = curLabInRange;
+        var strucsOnPosition = adjacentPositions[p].lookFor(LOOK_STRUCTURES);
+        const curLabsInRange = _.filter(strucsOnPosition, (l) => l.structureType == STRUCTURE_LAB);
+        if(curLabsInRange.length > 0) {
+          const curLabInRange = curLabsInRange[0];
+          result.push(curLabInRange);
         }
       }
       return result;

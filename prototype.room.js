@@ -9,6 +9,12 @@ RoomObject.prototype.log = function(...messages) {
 Room.prototype.exectueEveryTicks = function(ticks) {
   return (Game.time + this.controller.pos.x + this.controller.pos.y) % ticks === 0;
 };
+
+Room.prototype.factory =
+    function () {
+      return new Factory(this.name);
+    };
+
 Room.prototype.myCreeps =
     function () {
         return this.find(FIND_MY_CREEPS);
@@ -290,127 +296,127 @@ Room.prototype.manageRamparts =
       // }
     };
 
-    Room.prototype.getCreepPositionForId = function(to) {
-      if (this.memory.position && this.memory.position.creep && this.memory.position.creep[to]) {
-        const pos = this.memory.position.creep[to];
-        return new RoomPosition(pos.x, pos.y, this.name);
-      }
+Room.prototype.getCreepPositionForId = function(to) {
+  if (this.memory.position && this.memory.position.creep && this.memory.position.creep[to]) {
+    const pos = this.memory.position.creep[to];
+    return new RoomPosition(pos.x, pos.y, this.name);
+  }
 
-      const target = Game.getObjectById(to);
-      if (target === null) {
-        // this.log('getCreepPositionForId: No object: ' + to);
-        return;
-      }
-      this.memory.position = this.memory.position || {
-        creep: {},
-      };
-      this.memory.position.creep[to] = target.pos.findNearPosition().next().value;
+  const target = Game.getObjectById(to);
+  if (target === null) {
+    // this.log('getCreepPositionForId: No object: ' + to);
+    return;
+  }
+  this.memory.position = this.memory.position || {
+    creep: {},
+  };
+  this.memory.position.creep[to] = target.pos.findNearPosition().next().value;
 
-      let pos = this.memory.position.creep[to];
-      if (!pos) {
-        // this.log('getCreepPositionForId no pos in memory take pos of target: ' + to);
-        pos = Game.getObjectById(to).pos;
-      }
-      return new RoomPosition(pos.x, pos.y, this.name);
-    };
+  let pos = this.memory.position.creep[to];
+  if (!pos) {
+    // this.log('getCreepPositionForId no pos in memory take pos of target: ' + to);
+    pos = Game.getObjectById(to).pos;
+  }
+  return new RoomPosition(pos.x, pos.y, this.name);
+};
 
-    Room.prototype.findRoute = function(from, to) {
-      const routeCallback = function(roomName, fromRoomName) {
-        if (roomName === to) {
-          return 1;
-        }
+Room.prototype.findRoute = function(from, to) {
+  const routeCallback = function(roomName, fromRoomName) {
+    if (roomName === to) {
+      return 1;
+    }
 
-        if (Memory.rooms[roomName] && Memory.rooms[roomName].state === 'Occupied') {
-          //         console.log(`Creep.prototype.getRoute: Do not route through occupied rooms ${roomName}`);
-          if (config.path.allowRoutingThroughFriendRooms && friends.indexOf(Memory.rooms[roomName].player) > -1) {
-            console.log('routing through friendly room' + roomName);
-            return 1;
-          }
-          //         console.log('Not routing through enemy room' + roomName);
-          return Infinity;
-        }
-
-        if (Memory.rooms[roomName] && Memory.rooms[roomName].state === 'Blocked') {
-          //         console.log(`Creep.prototype.getRoute: Do not route through blocked rooms ${roomName}`);
-          return Infinity;
-        }
-
+    if (Memory.rooms[roomName] && Memory.rooms[roomName].state === 'Occupied') {
+      //         console.log(`Creep.prototype.getRoute: Do not route through occupied rooms ${roomName}`);
+      if (config.path.allowRoutingThroughFriendRooms && friends.indexOf(Memory.rooms[roomName].player) > -1) {
+        console.log('routing through friendly room' + roomName);
         return 1;
-      };
-      return Game.map.findRoute(from, to, {
-        routeCallback: routeCallback,
-      });
-    };
+      }
+      //         console.log('Not routing through enemy room' + roomName);
+      return Infinity;
+    }
 
-    Room.prototype.buildPath = function(route, routePos, from, to) {
-      if (!to) {
-        this.log('newmove: buildPath: no to from: ' + from + ' to: ' + to + ' routePos: ' + routePos + ' route: ' + JSON.stringify(route));
-        throw new Error();
-      }
-      let start;
-      if (routePos === 0 || from === 'pathStart') {
-        start = this.getCreepPositionForId(from);
-      } else {
-        start = this.getMyExitTo(from);
-      }
-      let end;
-      if (routePos < route.length - 1) {
-        end = this.getMyExitTo(to);
-      } else {
-        end = this.getCreepPositionForId(to);
-        if (!end) {
-          return;
-        }
-      }
-      const search = PathFinder.search(
-        start, {
-          pos: end,
-          range: 1,
-        }, {
-          roomCallback: this.getCostMatrixCallback(end),
-          maxRooms: 1,
-          swampCost: config.layout.swampCost,
-          plainCost: config.layout.plainCost,
-        }
-      );
+    if (Memory.rooms[roomName] && Memory.rooms[roomName].state === 'Blocked') {
+      //         console.log(`Creep.prototype.getRoute: Do not route through blocked rooms ${roomName}`);
+      return Infinity;
+    }
 
-      search.path.splice(0, 0, start);
-      search.path.push(end);
-      return search.path;
-    };
+    return 1;
+  };
+  return Game.map.findRoute(from, to, {
+    routeCallback: routeCallback,
+  });
+};
 
-    // Providing the targetId is a bit odd
-    Room.prototype.getPath = function(route, routePos, startId, targetId, fixed) {
-      if (!this.memory.position) {
-        this.log('getPath no position');
-        this.updatePosition();
-      }
+Room.prototype.buildPath = function(route, routePos, from, to) {
+  if (!to) {
+    this.log('newmove: buildPath: no to from: ' + from + ' to: ' + to + ' routePos: ' + routePos + ' route: ' + JSON.stringify(route));
+    throw new Error();
+  }
+  let start;
+  if (routePos === 0 || from === 'pathStart') {
+    start = this.getCreepPositionForId(from);
+  } else {
+    start = this.getMyExitTo(from);
+  }
+  let end;
+  if (routePos < route.length - 1) {
+    end = this.getMyExitTo(to);
+  } else {
+    end = this.getCreepPositionForId(to);
+    if (!end) {
+      return;
+    }
+  }
+  const search = PathFinder.search(
+    start, {
+      pos: end,
+      range: 1,
+    }, {
+      roomCallback: this.getCostMatrixCallback(end),
+      maxRooms: 1,
+      swampCost: config.layout.swampCost,
+      plainCost: config.layout.plainCost,
+    }
+  );
 
-      let from = startId;
-      if (routePos > 0) {
-        from = route[routePos - 1].room;
-      }
-      let to = targetId;
-      if (routePos < route.length - 1) {
-        to = route[routePos + 1].room;
-      }
+  search.path.splice(0, 0, start);
+  search.path.push(end);
+  return search.path;
+};
 
-      const pathName = from + '-' + to;
-      if (!this.getMemoryPath(pathName)) {
-        const path = this.buildPath(route, routePos, from, to);
-        if (!path) {
-          // this.log('getPath: No path');
-          return;
-        }
-        this.setMemoryPath(pathName, path, fixed);
-      }
-      return this.getMemoryPath(pathName);
-    };
+// Providing the targetId is a bit odd
+Room.prototype.getPath = function(route, routePos, startId, targetId, fixed) {
+  if (!this.memory.position) {
+    this.log('getPath no position');
+    this.updatePosition();
+  }
 
-    Room.prototype.getMyExitTo = function(room) {
-      // Handle rooms with newbie zone walls
-      const exitDirection = this.findExitTo(room);
-      const nextExits = this.find(exitDirection);
-      const nextExit = nextExits[Math.floor(nextExits.length / 2)];
-      return new RoomPosition(nextExit.x, nextExit.y, this.name);
-    };
+  let from = startId;
+  if (routePos > 0) {
+    from = route[routePos - 1].room;
+  }
+  let to = targetId;
+  if (routePos < route.length - 1) {
+    to = route[routePos + 1].room;
+  }
+
+  const pathName = from + '-' + to;
+  if (!this.getMemoryPath(pathName)) {
+    const path = this.buildPath(route, routePos, from, to);
+    if (!path) {
+      // this.log('getPath: No path');
+      return;
+    }
+    this.setMemoryPath(pathName, path, fixed);
+  }
+  return this.getMemoryPath(pathName);
+};
+
+Room.prototype.getMyExitTo = function(room) {
+  // Handle rooms with newbie zone walls
+  const exitDirection = this.findExitTo(room);
+  const nextExits = this.find(exitDirection);
+  const nextExit = nextExits[Math.floor(nextExits.length / 2)];
+  return new RoomPosition(nextExit.x, nextExit.y, this.name);
+};

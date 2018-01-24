@@ -2,24 +2,32 @@
 global.Factory = class Factory {
   constructor(roomName) {
     var curRoom = Game.rooms[roomName];
-    if (!curRoom) { return false;}
-
+    if (!curRoom) { return null;}
+    this.room = curRoom;
     var labs = _.filter(Game.structures, (a) => a.structureType == STRUCTURE_LAB && a.room.name == roomName);
-    if(labs.length < 3) { return false;}
+    this.size = labs.length;
+    if(labs.length > 2) {
+      var sortedByIdLabs = _.sortBy(labs, function(l) {return l.id;})
 
-    var sortedByIdLabs = _.sortBy(labs, function(l) {return l.id;})
+      var sortedByNeighboringLabs = _.sortBy(sortedByIdLabs, function(n) {return n.getLabsInRange().length;});
 
-    var sortedByNeighboringLabs = _.sortBy(sortedByIdLabs, function(n) {return n.getLabsInRange().length;})
-    for(const l in sortedByNeighboringLabs) {
-      console.log(sortedByNeighboringLabs[l].id + ' - ' + sortedByNeighboringLabs[l].getLabsInRange().length);
+      var reversedSortedByNeighboringLabs = sortedByNeighboringLabs.reverse();
+
+      this.innerLab1 = reversedSortedByNeighboringLabs[0];
+      this.innerLab2 = reversedSortedByNeighboringLabs[1];
+      for(const l in reversedSortedByNeighboringLabs) {
+        // console.log(reversedSortedByNeighboringLabs[l].id + ' - ' + reversedSortedByNeighboringLabs[l].getLabsInRange().length);
+      }
     }
   }
-  // Getter
-  get area() {
-    return this.calcArea();
-  }
-  // Method
-  calcArea() {
-    return this.height * this.width;
+  get summary() {
+    var result = "";
+    result += 'Factory room:' + this.room.name + '\n';
+    result += 'Size: ' + this.size + '\n';
+    if(this.innerLab1 != undefined && this.innerLab2 != undefined) {
+      result += 'Inner lab 1: ' + this.innerLab1.id + '\n';
+      result += 'Inner lab 2: ' + this.innerLab2.id + '\n';
+    }
+    return result;
   }
 };

@@ -36,8 +36,8 @@ module.exports.loop = function() {
     strucCount++;
   }
 
-  var tmpFactory = new Factory('W59S4']);
-  
+  var tmpFactory = new Factory('W59S4');
+
 
   // console.log(strucCount);
      for (var c in Game.creeps) {
@@ -367,6 +367,8 @@ module.exports.loop = function() {
     if (CPUdebug == true) {CPUdebugString = CPUdebugString.concat("<br>Start cycling through rooms: " + Game.cpu.getUsed())}
         // Cycle through rooms
         for (var r in Game.rooms) {
+          var roomFactory = Game.rooms[r].factory();
+          roomFactory.summary();
             //Save hostile creeps in room
             let roomCreeps = Game.rooms[r].find(FIND_MY_CREEPS);
             var hostiles = Game.rooms[r].find(FIND_HOSTILE_CREEPS);
