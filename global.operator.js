@@ -40,7 +40,10 @@ operator.loadLabs = function() {
   }
 };
 
+operator.boostCreeps = function() {
+  
 
+};
 
 operator.unloadLinkDrain = function() {
   // var allLinks = _.filter(Game.structures, (a) => a.structureType == STRUCTURE_LINK && a.energy > 100);

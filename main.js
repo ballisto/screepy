@@ -308,7 +308,7 @@ module.exports.loop = function() {
                             packetSize = global.RBS_PACKETSIZE * 2;
                         }
                         //no ongoing transfer, terminal has capacity, delta in sourceroom is more than 10% of maxStorage, sourceroom has more than packetSize
-                        if (Game.rooms[r].memory.terminalTransfer == undefined && (_.sum(Game.rooms[r].terminal.store) >= Game.rooms[r].terminal.storeCapacity * 0.70 ||
+                        if (Game.rooms[r].memory.terminalTransfer == undefined && (_.sum(Game.rooms[r].terminal.store) >= Game.rooms[r].terminal.storeCapacity * 0.70 &&
                             (storageDelta >= (Game.rooms[r].memory.resourceLimits[combinedResources[n]].maxStorage * 0.1) && packetSize <= Game.rooms[r].storage.store[combinedResources[n]] && storageDelta <= Game.rooms[r].storage.store[combinedResources[n]]))) {
                             // Resource can be shared with other rooms if their maxStorage is not reached yet
                             checkedResources.push(n);
