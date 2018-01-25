@@ -186,6 +186,7 @@ Creep.prototype.run = function() {
       break;
       case "withdraw":
       case "pickup":
+      case "boostCreep":
         if(this.storeAllBut()) {
           const targetObject = Game.getObjectById(curJobData.target);
           if(targetObject != undefined) {
@@ -199,6 +200,12 @@ Creep.prototype.run = function() {
               }
               else if(curJobData.task == 'withdraw'){
                  result = this.withdraw(targetObject, curJobData.resType);
+              }
+              else if(curJobData.task == 'boostCreep'){
+                 tmpLabObject = Game.getObjectById(curJobData.target);
+                 if(tmpLabObject != undefined) {
+                   result = tmpLabObject.boostCreep(this);
+                 }
               }
               if(result == OK || result == ERR_FULL || result == ERR_NOT_ENOUGH_RESOURCES	) {
                 jobs.setDone(curJobData.id);
