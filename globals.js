@@ -112,7 +112,7 @@ global.jobTemplates.transferResource = {task: "transfer", priority: 201, entity:
 global.jobTemplates.withdrawResource = {task: "withdraw", priority: 201, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
 global.jobTemplates.pickupResource = {task: "pickup", priority: 555, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
 global.jobTemplates.terminalTransfer = {task: "send", priority: 555, entity: "terminal", status: "new", ttl: 222 };
-global.jobTemplates.boostCreep = {task: "boostCreep", priority: 102, entity: "lab", status: "new", ttl: 444 };
+global.jobTemplates.boostCreep = {task: "boostCreep", priority: 102, entity: "creep", status: "new", ttl: 444 };
 
 global.bodyHitpointsMatrix = [0,100,200,400,800,1200,1600,2000,3000];
 

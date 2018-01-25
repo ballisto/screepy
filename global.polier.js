@@ -129,9 +129,16 @@ polier.findCandidatesForJob = function(jobData) {
   const targetStructure = Game.getObjectById(jobData.target);
   if(targetStructure == undefined) {return false;}
 
-  var creepsInRoom = _.filter(Game.creeps, (c) => c.room.name == targetStructure.room.name && !c.spawning && ( c.role() == 'energyTransporter' || c.role() == 'distributor' ) );
-  var creepsInRoomMatchingBodyReq = _.filter(creepsInRoom, function(c) {return polier.creepMatchesBodyReq(c.id, jobData.bodyReq);});
-  return creepsInRoomMatchingBodyReq;
+  if(jobData.task == 'boostCreep') {
+    var creepsInRoom = _.filter(Game.creeps, (c) => c.room.name == targetStructure.room.name && c.ticksToLive > 1000);
+    var creepsInRoomBoostable = _.filter(creepsInRoom, function(c) {return c.canBeBoosted().includes(jobData.resType);});
+    return creepsInRoomBoostable;
+  }
+  else {
+    var creepsInRoom = _.filter(Game.creeps, (c) => c.room.name == targetStructure.room.name && !c.spawning && ( c.role() == 'energyTransporter' || c.role() == 'distributor' ) );
+    var creepsInRoomMatchingBodyReq = _.filter(creepsInRoom, function(c) {return polier.creepMatchesBodyReq(c.id, jobData.bodyReq);});
+    return creepsInRoomMatchingBodyReq;
+  }
 };
 
 polier.findCreepForJob = function(jobData) {
@@ -157,7 +164,7 @@ polier.assignJobs = function() {
 
 polier.balanceAssignments = function() {
   var assignmentsByCreep = _.indexBy(polier.getAllAssignments(), 'creepId');
-  
+
 
 };
 

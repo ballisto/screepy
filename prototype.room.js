@@ -15,6 +15,16 @@ Room.prototype.factory =
       return new Factory(this.name);
     };
 
+Room.prototype.getBoostLabs = function() {
+  var result = {};
+  if(this.memory != undefined && this.memory.boostLabs != undefined) {
+    for (const l in this.memory.boostLabs) {
+      result[l] = this.memory.boostLabs[l];
+    }
+  }
+  return result;
+};
+
 Room.prototype.myCreeps =
     function () {
         return this.find(FIND_MY_CREEPS);
@@ -265,7 +275,7 @@ Room.prototype.saveHostiles =
     };
 Room.prototype.manageRamparts =
     function () {
-      
+
       //Manage ramparts
 
       // let roomCreeps = this.find(FIND_MY_CREEPS);

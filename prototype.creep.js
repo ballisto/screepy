@@ -432,8 +432,47 @@ Creep.prototype.findSpaceEnergy =
             return null;
           }
         };
-Creep.prototype.bodyMatrix =
-        function () {
+Creep.prototype.canBeBoosted = function () {
+  var possibleBoostMinerals = [];
+  for (let c in this.body) {
+      var curBodyPart = this.body[c];
+      if(curBodyPart.boost != undefined) {
+        continue;
+      }
+      var curBodyPartPossibleBoosts = Object.keys(BOOSTS[curBodyPart.type]);
+      switch(curBodyPart.type) {
+        case WORK:
+          var tmpMinerals = [];
+          var tmpAction;
+          if(this.role == 'upgrader') {
+            tmpAction = 'upgradeController';
+          }
+          else if(this.role == 'harvester') {
+            tmpAction = 'harvest';
+          }
+          else if(this.role == 'builder') {
+            tmpAction = 'build';
+          }
+          for(const t in curBodyPartPossibleBoosts) {
+            const tmpBoostMineral = curBodyPartPossibleBoosts[t];
+            if(tmpBoostMineral[tmpAction] != undefined) {
+              if(!possibleBoostMinerals.includes(curBodyPartPossibleBoosts[t]))
+                possibleBoostMinerals.push(curBodyPartPossibleBoosts[t]);
+            }
+          }
+        break;
+        default:
+            for(const m in curBodyPartPossibleBoosts) {
+              if(!possibleBoostMinerals.includes(curBodyPartPossibleBoosts[m]))
+                possibleBoostMinerals.push(curBodyPartPossibleBoosts[m]);
+            }
+          break;
+      }
+    }
+    return possibleBoostMinerals;
+  };
+
+Creep.prototype.bodyMatrix = function () {
           //init matrix
           let tmpBodyMatrix = [];
           for (let i = 0; i < 8; i++) {

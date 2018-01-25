@@ -26,23 +26,26 @@ operator.loadEnergy = function() {
 
 operator.loadLabs = function() {
   //load boost labs
-  if(Memory.rooms != undefined) {
-    for(const r in Memory.rooms) {
-      if(Memory.rooms[r].boostLabs != undefined) {
-        for (const l in Memory.rooms[r].boostLabs) {
-          const curLabObject = Game.getObjectById(l);
-          if(curLabObject != undefined && !jobs.jobForStructureExists(l, jobTemplates.transferResource.task) && (curLabObject.mineralCapacity - curLabObject.mineralAmount) > 150) {
-            jobs.addJobWithTemplate(jobTemplates.transferResource, l, Memory.rooms[r].boostLabs[l], curLabObject.mineralCapacity - curLabObject.mineralAmount);
-          }
-        }
+  for ( const r in Game.rooms) {
+    for (const l in Game.rooms[r].getBoostLabs()) {
+      const curLabObject = Game.getObjectById(l);
+      if(curLabObject != undefined && !jobs.jobForStructureExists(l, jobTemplates.transferResource.task) && (curLabObject.mineralCapacity - curLabObject.mineralAmount) > 150) {
+        jobs.addJobWithTemplate(jobTemplates.transferResource, l, Memory.rooms[r].boostLabs[l], curLabObject.mineralCapacity - curLabObject.mineralAmount);
       }
     }
   }
 };
 
 operator.boostCreeps = function() {
-  
-
+  //load boost labs
+  for ( const r in Game.rooms) {
+    for (const l in Game.rooms[r].getBoostLabs()) {
+      const curLabObject = Game.getObjectById(l);
+      if(curLabObject != undefined && curLabObject.mineralType == Memory.rooms[r].boostLabs[l] && curLabObject.mineralAmount > 150 && !jobs.jobForStructureExists(l, jobTemplates.boostCreep.task)) {
+        jobs.addJobWithTemplate(jobTemplates.boostCreep, l, curLabObject.mineralType, 0);
+      }
+    }
+  }
 };
 
 operator.unloadLinkDrain = function() {
