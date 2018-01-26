@@ -33,6 +33,13 @@ Room.prototype.hostileCreeps =
         function () {
             return this.find(FIND_HOSTILE_CREEPS);
         };
+Room.prototype.isSafe = function() {
+  var loadedEnemyTowers = _.filter(this.find(FIND_STRUCTURES), (a) => a.energy > 0 && a.structureType == STRUCTURE_TOWER && !a.my );
+  if(loadedEnemyTowers.length > 0) {return false;}
+
+  if( (_.filter(this.hostileCreeps(), function(h) {return h.isDangerous();})).length > 0 ) {return false;}
+  return true;
+};
 
 Room.prototype.refreshMemory =
     function () {

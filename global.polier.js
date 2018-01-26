@@ -154,7 +154,7 @@ polier.assignJobs = function() {
   var unassignedJobsForCreeps = _.filter(unassignedJobs, (j) => j.entity == 'creep');
   for(const j in unassignedJobs) {
     const tmpCreepForJob = polier.findCreepForJob(unassignedJobs[j]);
-    if(tmpCreepForJob) {
+    if(tmpCreepForJob instanceof Creep) {
       polier.addAssignment(unassignedJobs[j].id, tmpCreepForJob.id);
       unassignedJobs[j].status = 'assigned';
       jobs.modifyJob(unassignedJobs[j]);

@@ -117,9 +117,11 @@ Creep.prototype.moveToParking = function() {
 Creep.prototype.run = function() {
   var curAssignment = polier.getCurTaskForCreep(this.id);
   if( curAssignment == undefined ) {
-    if(this.storeAllBut()) {
-      this.moveToParking();
-      return true;
+    if(this.goToHomeRoom()) {
+      if(this.storeAllBut()) {
+        this.moveToParking();
+        return true;
+      }
     }
   }
   else {
@@ -142,7 +144,9 @@ Creep.prototype.run = function() {
             if(c != curJobData.resType && this.carry[c] > 0) { creepCarriesSomethingElse = true;}
           }
           if(creepCarriesSomethingElse) {
-            this.storeAllBut();
+            if(this.goToHomeRoom()) {
+              this.storeAllBut();
+            }
             }
           else {
             this.getResource(curJobData.resType, curJobData.resAmount);

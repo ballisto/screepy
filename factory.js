@@ -11,6 +11,7 @@ global.Factory = class Factory {
       this.size = curRoomFactoryCache.size;
       this.innerLab1 = curRoomFactoryCache.innerLab1;
       this.innerLab2 = curRoomFactoryCache.innerLab2;
+      this.allLabsInFactory = curRoomFactoryCache.allLabsInFactory;
     }
     else {
       var labs = _.filter(Game.structures, (a) => a.structureType == STRUCTURE_LAB && a.room.name == roomName);
@@ -29,9 +30,18 @@ global.Factory = class Factory {
         curRoomFactoryCache.innerLab1 = this.innerLab1;
         this.innerLab2 = reversedSortedByNeighboringLabs[1];
         curRoomFactoryCache.innerLab2 = this.innerLab2;
-        for(const l in reversedSortedByNeighboringLabs) {
-          // console.log(reversedSortedByNeighboringLabs[l].id + ' - ' + reversedSortedByNeighboringLabs[l].getLabsInRange().length);
+
+        var allLabsInFactory = [];
+        var tmpLabsInRangeOfInnerLab1 = this.innerLab1.getLabsInRange();
+        var tmpLabsInRangeOfInnerLab2 = this.innerLab2.getLabsInRange();
+        var tmpAllLabsInRange = tmpLabsInRangeOfInnerLab1.concat(tmpLabsInRangeOfInnerLab2);
+        for (const l in tmpAllLabsInRange) {
+          if(!allLabsInFactory.includes(tmpAllLabsInRange[l])) {
+            allLabsInFactory.push(tmpAllLabsInRange[l]);
+          }
         }
+        this.allLabsInFactory = allLabsInFactory;
+        curRoomFactoryCache.allLabsInFactory = allLabsInFactory;
       }
     }
   }
@@ -47,7 +57,9 @@ global.Factory = class Factory {
   }
 
   get isBusy() {
-
+    // factory busy with old code
+    if(this.room.memory.labOrder != undefined || this.room.memory.labTarget != undefined) { return true;}
+    return false;
   }
 
   run() {

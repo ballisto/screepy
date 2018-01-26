@@ -1098,8 +1098,14 @@ module.exports.loop = function() {
                         else if (creep.memory.role == 'remoteStationaryHarvester') {
                             creep.roleRemoteStationaryHarvester();
                         }
-                        else if (creep.memory.role == 'attacker' || creep.memory.role == 'einarr' || creep.memory.role == 'healer' || creep.memory.role == 'archer') {
-                            creep.roleUnit();
+                        // else if (creep.memory.role == 'attacker' || creep.memory.role == 'einarr' || creep.memory.role == 'healer' || creep.memory.role == 'archer') {
+                        //     creep.roleUnit();
+                        // }
+                        else if (creep.memory.role == 'healer') {
+                            creep.roleHealer();
+                        }
+                        else if (creep.memory.role == 'attacker') {
+                            creep.roleAttacker();
                         }
                         else if (creep.memory.role == 'scientist') {
                             creep.roleScientist();

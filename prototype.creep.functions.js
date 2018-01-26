@@ -25,6 +25,13 @@ Creep.prototype.goToHomeRoom = function() {
     else {return true;}
 };
 
+Creep.prototype.homeRoom = function() {
+  if(this.memory.homeroom != undefined && Game.rooms[this.memory.homeroom] != undefined) {
+    return Game.rooms[this.memory.homeroom];
+  }
+  return undefined;
+};
+
 Creep.prototype.isEmpty = function() {
   if(_.sum(this.carry) == 0) { return true;}
   else { return false;}
@@ -33,6 +40,11 @@ Creep.prototype.isEmpty = function() {
 Creep.prototype.isFull = function() {
   if(_.sum(this.carry) == this.carryCapacity) { return true;}
   else { return false;}
+};
+
+Creep.prototype.isDangerous = function() {
+  if ( (_.filter( this.body, (b) => b.type == ATTACK ||  b.type == RANGED_ATTACK )).length > 0 ) {return true;}
+  return false;
 };
 
 Creep.prototype.checkTerminalLimits = function(resource) {
@@ -66,6 +78,7 @@ Creep.prototype.storeAllBut = function(resource) {
       }
     }
     else {
+      this.goToHomeRoom();
       this.say("NO SPACE!");
     }
     return false;
@@ -150,4 +163,26 @@ Creep.prototype.gotoFlag = function (flag) {
             }
         }
     }
+};
+Creep.prototype.moveRandom = function(onPath) {
+  const startDirection = _.random(1, 8);
+  let direction = 0;
+  for (let i = 0; i < 8; i++) {
+    direction = RoomPosition.changeDirection(startDirection, i);
+    const pos = this.pos.getAdjacentPosition(direction);
+    if (pos.isBorder(-1)) {
+      continue;
+    }
+    if (onPath && !pos.inPath()) {
+      continue;
+    }
+    if (pos.checkForWall()) {
+      continue;
+    }
+    if (pos.checkForObstacleStructure()) {
+      continue;
+    }
+    break;
+  }
+  this.move(direction);
 };

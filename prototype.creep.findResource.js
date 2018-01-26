@@ -12,18 +12,18 @@ module.exports = function() {
 				// Go through requested sourceTypes
 				switch (selectedStructureTypes[argcounter]) {
 					case STRUCTURE_STORAGE:
-							if (this.room.storage != undefined && this.room.storage.storeCapacity - _.sum(this.room.storage.store) > 0) {
+							if (this.room.storage != undefined && this.room.storage.my && this.room.storage.storeCapacity - _.sum(this.room.storage.store) > 0) {
 									return this.room.storage;
 							}
 					break;
 					case STRUCTURE_TERMINAL:
-							if (this.room.terminal != undefined && this.room.terminal.storeCapacity - _.sum(this.room.terminal.store) < this.room.terminal.storeCapacity * 0.75) {
+							if (this.room.terminal != undefined && this.room.terminal.my && this.room.terminal.storeCapacity - _.sum(this.room.terminal.store) < this.room.terminal.storeCapacity * 0.75) {
 									return this.room.terminal;
 							}
 					break;
 					case STRUCTURE_CONTAINER:
 					var tempContainers = _.filter(Game.structures, (s) => s.structureType != STRUCTURE_CONTAINER && s.room.name == this.room.name && _.sum(s.store) < s.storeCapacity );
-					if(tempContainers.length > 0) {
+					if(tempContainers.length > 0 && this.room.controller.my) {
 						return tempContainers[0];
 					}
 					break;

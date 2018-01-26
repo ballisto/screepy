@@ -48,7 +48,7 @@ global.config = {
     assignmentsSegment: 1,
     assignmentsKey: "assignments",
     maxAssignmentsPerWorker: 5,
-    rolesToBoost: ['energyTransporter', 'upgrader', 'attacker', 'healer', 'distributor'],
+    rolesToBoost: ['transporter', 'upgrader', 'attacker', 'healer'],
   },
 
   profiler: {

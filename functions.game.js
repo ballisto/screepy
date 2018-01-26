@@ -639,9 +639,9 @@ global.produce = function (roomName, amount, resource) {
     return "OK";
 };
 
-global.addBoostLab = function (roomName, labID, mineralType) {
+global.addBoostLab = function (labID, mineralType) {
     if (arguments.length == 0) {
-        return "addBoostLab (roomName, labID, mineralType)";
+        return "addBoostLab (labID, mineralType)";
     }
     var lab = Game.getObjectById(labID);
     const mineralDetails = mineralDescriptions[mineralType];
@@ -649,7 +649,7 @@ global.addBoostLab = function (roomName, labID, mineralType) {
     if (lab != null && mineralDetails != undefined && mineralDetails.bodyPart != undefined ) {
 
         var boostLabList;
-        var room = Game.rooms[roomName];
+        var room = lab.room;
         if (room.memory.boostLabs == undefined) {
             room.memory.boostLabs = {};
         }
@@ -676,12 +676,20 @@ global.listBoostLabs = function () {
     return returnstring;
 };
 
-global.delBoostLab = function (roomName, entryNr) {
+global.delBoostLab = function (labId) {
     if (arguments.length == 0) {
-        return "delBoostLab (roomName, entryNr)";
+        return "delBoostLab (labId)";
     }
-    Game.rooms[roomName].memory.boostLabs.splice(entryNr, 1);
-    return "Boost Lab removed.";
+    labObject = Game.getObjectById(labId);
+    if (labObject instanceof Lab) {
+      tmpRoomBoostLabs = labObject.room.getBoostLabs();
+      if(tmpRoomBoostLabs[labId] != undefined) {
+        delete labObject.room.memory.boostLabs[labId];
+        return "Boost Lab removed.";
+      }
+      return "Not a Boostlab";
+    }
+    return "Invalid LabID";
 };
 
 global.addBoost = function (roomName, role, mineralType, volume) {

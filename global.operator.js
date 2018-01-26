@@ -12,6 +12,8 @@ operator.run = function() {
   operator.pickupResources();
   operator.loadLabs();
   operator.boostCreeps();
+  operator.unLoadLabs();
+  operator.steal();
 };
 
 operator.loadEnergy = function() {
@@ -39,6 +41,11 @@ operator.loadLabs = function() {
 
 operator.unLoadLabs = function() {
   //load boost labs
+  var labsNotBusyWithMinerals = _.filter(Game.structures, (a) => a.structureType == STRUCTURE_LAB && !a.isBusy() && !a.isEmpty());
+  var labsNotBusyWithMineralsWithoutOpenJob = _.filter(labsNotBusyWithMinerals, function(s) { return !jobs.jobForStructureExists(s.id, jobTemplates.withdrawResource.task );});
+  for(const l in labsNotBusyWithMineralsWithoutOpenJob) {
+    jobs.addJobWithTemplate(jobTemplates.withdrawResource, labsNotBusyWithMineralsWithoutOpenJob[l].id, labsNotBusyWithMineralsWithoutOpenJob[l].mineralType, 0);
+  }
   // for ( const r in Game.rooms) {
   //   for (const l in Game.rooms[r].getBoostLabs()) {
   //     const curLabObject = Game.getObjectById(l);
@@ -47,6 +54,28 @@ operator.unLoadLabs = function() {
   //     }
   //   }
   // }
+};
+
+operator.steal = function() {
+  if(Game.rooms['W57S3'] != undefined && Game.rooms['W57S3'].storage != undefined ) {
+    targetStorage = Game.rooms['W57S3'].storage;
+    if(_.sum(targetStorage.store) > 0 && targetStorage.room.isSafe()) {
+      var resourceArray = [];
+      for(const r in targetStorage.store) {
+        var curResourceArr = {resource: r, amount: targetStorage.store[r]};
+        resourceArray.push(curResourceArr);
+      }
+      resourceArray = _.sortBy(resourceArray, function(r) {return r.amount;});
+      resourceArray.reverse();
+      if(resourceArray.length > 0 ) {
+        const resourceToSteal = resourceArray[0].resource;
+
+        if(!jobs.jobForStructureExists(targetStorage.id, jobTemplates.steal.task )) {
+          jobs.addJobWithTemplate(jobTemplates.steal, targetStorage.id, resourceToSteal, 0);
+        }
+      }
+    }
+  }
 };
 
 operator.boostCreeps = function() {
