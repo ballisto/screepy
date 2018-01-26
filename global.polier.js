@@ -130,7 +130,7 @@ polier.findCandidatesForJob = function(jobData) {
   if(targetStructure == undefined) {return false;}
 
   if(jobData.task == 'boostCreep') {
-    var creepsInRoom = _.filter(Game.creeps, (c) => c.room.name == targetStructure.room.name && c.ticksToLive > 1000);
+    var creepsInRoom = _.filter(Game.creeps, (c) => c.room.name == targetStructure.room.name && c.ticksToLive > 1000 && config.polier.rolesToBoost.includes(c.role()));
     var creepsInRoomBoostable = _.filter(creepsInRoom, function(c) {return c.canBeBoosted().includes(jobData.resType);});
     return creepsInRoomBoostable;
   }

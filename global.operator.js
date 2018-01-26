@@ -11,6 +11,7 @@ operator.run = function() {
   operator.unloadLinkDrain();
   operator.pickupResources();
   operator.loadLabs();
+  operator.boostCreeps();
 };
 
 operator.loadEnergy = function() {
@@ -34,6 +35,18 @@ operator.loadLabs = function() {
       }
     }
   }
+};
+
+operator.unLoadLabs = function() {
+  //load boost labs
+  // for ( const r in Game.rooms) {
+  //   for (const l in Game.rooms[r].getBoostLabs()) {
+  //     const curLabObject = Game.getObjectById(l);
+  //     if(curLabObject != undefined && !jobs.jobForStructureExists(l, jobTemplates.withdrawResource.task) && (curLabObject.mineralCapacity - curLabObject.mineralAmount) > 150) {
+  //       jobs.addJobWithTemplate(jobTemplates.withdrawResource, l, Memory.rooms[r].boostLabs[l], curLabObject.mineralCapacity - curLabObject.mineralAmount);
+  //     }
+  //   }
+  // }
 };
 
 operator.boostCreeps = function() {
