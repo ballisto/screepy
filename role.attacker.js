@@ -76,4 +76,5 @@ Creep.prototype.roleAttacker = function() {
     }
 
     this.goToHomeRoom();
+    
 };

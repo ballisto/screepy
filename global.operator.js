@@ -58,7 +58,7 @@ operator.unLoadLabs = function() {
 
 operator.steal = function() {
   if(Game.rooms['W57S3'] != undefined && Game.rooms['W57S3'].storage != undefined ) {
-    targetStorage = Game.rooms['W57S3'].storage;
+    var targetStorage = Game.rooms['W57S3'].storage;
     if(_.sum(targetStorage.store) > 0 && targetStorage.room.isSafe()) {
       var resourceArray = [];
       for(const r in targetStorage.store) {

@@ -55,6 +55,11 @@ module.exports = {
         minimumSpawnOf["SKHarvester"] = 0;
         minimumSpawnOf["SKHauler"] = 0;
         minimumSpawnOf["energyTransporter"] = 1;
+        if(spawnRoom.name == 'W57S4') {
+          minimumSpawnOf["attacker"] = 1;
+          minimumSpawnOf["healer"] = 1;
+          minimumSpawnOf["distributor"] = 1;
+        }
 
         let myFlags = _.filter(Game.flags,{ memory: { spawn: spawnRoom.memory.masterSpawn}});
 
