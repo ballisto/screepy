@@ -28,6 +28,15 @@ module.exports.loop = function() {
   // jobs.resetMemory();
   // polier.resetMemory();
 
+  if(_.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W57S2' && c.memory.role != undefined && c.memory.role == 'upgrader' ).length <= 3 &&
+      _.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W57S4' && c.memory.role != undefined && c.memory.role == 'upgrader' ).length > 0) {
+        var upgradersToSwitch = _.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W57S4' && c.memory.role != undefined && c.memory.role == 'upgrader' );
+        for ( var u in upgradersToSwitch) {
+          upgradersToSwitch[u].memory.homeroom = 'W57S2';
+          upgradersToSwitch[u].memory.spawn = Game.rooms['W57S2'].controller.id;
+        }
+  }
+
   var tmpObserver = Game.getObjectById('5a5ff577175ef20d0b3d0c9e');
   tmpObserver.observeRoom('W57S3');
   var strucs = Game.structures;
@@ -1111,7 +1120,7 @@ module.exports.loop = function() {
                             creep.roleScientist();
                         }
                         else if (creep.memory.role == 'transporter') {
-                            creep.roleTransporter();
+                            creep.run();
                         }
                         else if (creep.memory.role == 'bigUpgrader') {
                             creep.roleUpgrader();

@@ -57,8 +57,9 @@ module.exports = {
         minimumSpawnOf["energyTransporter"] = 1;
         if(spawnRoom.name == 'W57S4') {
           minimumSpawnOf["attacker"] = 1;
-          minimumSpawnOf["healer"] = 1;
-          minimumSpawnOf["distributor"] = 1;
+          // minimumSpawnOf["healer"] = 1;
+          // minimumSpawnOf["distributor"] = 1;
+          minimumSpawnOf["transporter"] = 1;
         }
 
         let myFlags = _.filter(Game.flags,{ memory: { spawn: spawnRoom.memory.masterSpawn}});
@@ -113,7 +114,9 @@ module.exports = {
                     minimumSpawnOf.claimer = vacantFlags.length;
                     break;
                 case 'attackController':
+                  if (myFlags[flag].room.controller != undefined && (myFlags[flag].room.controller.upgradeBlocked == undefined || myFlags[flag].room.controller.upgradeBlocked < 200)) {
                     minimumSpawnOf.bigClaimer += vol;
+                  }
                     break;
                 case "unitGroup":
                     if (mem.attacker != undefined) {
@@ -158,6 +161,7 @@ module.exports = {
 
         // Upgrader
         if (spawnRoom.controller.level == 8) {
+            if(spawnRoom.name == 'W57S4') {}
             minimumSpawnOf.upgrader = 0;
             if (spawnRoom.controller.ticksToDowngrade < 50000 || spawnRoom.storage.store[RESOURCE_ENERGY] > 350000) {
                 minimumSpawnOf.upgrader = 1;
@@ -193,7 +197,9 @@ module.exports = {
         // EnergyTransporter, Harvester & Repairer
         //minimumSpawnOf["energyTransporter"] = minimumSpawnOf.stationaryHarvester;
         minimumSpawnOf["harvester"] = Math.ceil(1) - minimumSpawnOf.energyTransporter;
-        //minimumSpawnOf["repairer"] = Math.ceil(numberOfSources * 0.5);
+        if(spawnRoom.controller.level < 5){
+          minimumSpawnOf["repairer"] = Math.ceil(numberOfSources * 0.5);
+        }
         /** Rest **/
         // Miner
         minimumSpawnOf["miner"] = numberOfExploitableMineralSources;

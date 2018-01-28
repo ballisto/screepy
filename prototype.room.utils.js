@@ -1,8 +1,23 @@
 'use strict';
 
+Room.prototype.supportRooms = function() {
+  return _.filter(Game.rooms, (r) => this.totalResourceInStock(RESOURCE_ENERGY) > 100000 && r.controller.level < 6 && r.controller.my &&  (Game.map.getRoomLinearDistance(this.name,r.name) < 3));
+}
+
 Room.structureHasEnergy = (structure) => structure.store && structure.store.energy || structure.energy;
 
 Room.structureIsEmpty = (structure) => (!structure.store || _.sum(structure.store) === 0) && !structure.energy && !structure.mineralAmount && !structure.ghodium && !structure.power;
+
+Room.prototype.totalResourceInStock = function(resourceType) {
+  var totalResourceInStock = 0;
+  if(this.storage != undefined && this.storage.store[resourceType] != undefined) {
+    totalResourceInStock += this.storage.store[resourceType];
+  }
+  if(this.terminal != undefined && this.terminal.store[resourceType] != undefined) {
+    totalResourceInStock += this.terminal.store[resourceType];
+  }
+  return totalResourceInStock;
+};
 
 Room.prototype.sortMyRoomsByLinearDistance = function(target) {
   const sortByLinearDistance = function(object) {

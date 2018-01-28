@@ -49,6 +49,10 @@ jobs.jobForStructureExists = function(structureId, task) {
     return false;
   }
 };
+jobs.jobForStructureCount = function(structureId, task) {
+  var openJobsForStructure = _.filter(jobs.getAllUnfinishedJobs(), (j) => j.target == structureId && j.task == task);
+  return openJobsForStructure.length;  
+};
 
 jobs.getOpenJobsForStructure = function(structureId) {
   var openJobsForStructure = _.filter(jobs.getAllUnfinishedJobs(), (j) => j.target == structureId);

@@ -13,43 +13,64 @@ Creep.prototype.roleAttacker = function() {
     if( curAssignment != undefined ) {
        this.run();
        return true;
-      }
+    }
 
-    if (this.homeroom() != undefined) {
-      if ( this.homeroom().memory.attackRoom != undefined ) {
-        const roomToAttack = Game.rooms[this.homeroom().memory.attackRoom];
+    if (this.homeRoom() != undefined) {
+      if ( this.homeRoom().memory.attackRoom != undefined ) {
+        const roomToAttack = Game.rooms[this.homeRoom().memory.attackRoom];
         if (roomToAttack != undefined) {
+          if(this.room.name != roomToAttack.name) {
+            const exitDir = this.room.findExitTo(roomToAttack);
+            const exit = this.pos.findClosestByRange(exitDir);
+            this.moveTo(exit);
+            return true;
+          }
+          // if(Game.getObjectById('59c9063cb438bd4e51c47da8') != undefined) {
+          //   var tmpWall = Game.getObjectById('59c9063cb438bd4e51c47da8');
+          //   if(this.attack(tmpWall) == ERR_NOT_IN_RANGE) {
+          //       this.moveTo(tmpWall);
+          //   }
+          // }
           var prey = null;
           var hostileCreeps = roomToAttack.hostileCreeps();
           var dangerousHostileCreeps = _.filter(hostileCreeps, function(h) {return h.isDangerous();});
           if (dangerousHostileCreeps.length > 0) {
-            prey = dangerousHostileCreeps[0];
+            prey = this.pos.findClosestByRange(dangerousHostileCreeps);
           }
           else if(hostileCreeps.length > 0) {
-            prey = hostileCreeps[0];
+            prey = this.pos.findClosestByRange(hostileCreeps);;
           }
+
 
           if (prey != undefined) {
             if(this.attack(prey) == ERR_NOT_IN_RANGE) {
-              if(this.room.name == roomToAttack.name) {
-                const adjacentPositions = Array.from(this.pos.getAllAdjacentPositions());
-
-                for(const p in adjacentPositions) {
-                  var strucsOnPosition = adjacentPositions[p].lookFor(LOOK_STRUCTURES);
-                  const wallsInRange = _.filter(strucsOnPosition, (l) => l.structureType == STRUCTURE_WALL);
-                  if(wallsInRange.length > 0) {
-                    const curWallInRange = curLabsInRange[0];
-                    this.attack(curWallInRange);
-                    return true;
-                  }
-                }
-              }
+              // if(this.room.name == roomToAttack.name) {
+              //   const adjacentPositions = Array.from(this.pos.getAllAdjacentPositions());
+              //
+              //   for(const p in adjacentPositions) {
+              //     var strucsOnPosition = adjacentPositions[p].lookFor(LOOK_STRUCTURES);
+              //     const wallsInRange = _.filter(strucsOnPosition, (l) => l.structureType == STRUCTURE_WALL);
+              //     if(wallsInRange.length > 0) {
+              //       const curWallInRange = wallsInRange[0];
+              //       this.attack(curWallInRange);
+              //       return true;
+              //     }
+              //   }
+              // }
               this.moveTo(prey);
               return true;
             }
           }
           else {
-            if (roomToAttack.controller != undefined) {
+            var hostileExtensions = _.filter(roomToAttack.find(FIND_HOSTILE_STRUCTURES), (s) => s.structureType == STRUCTURE_EXTENSION || s.structureType == STRUCTURE_RAMPART || s.structureType == STRUCTURE_TOWER);
+            if (hostileExtensions.length > 0) {
+              closestHostileExtension = this.pos.findClosestByRange(hostileExtensions);
+              if(this.attack(closestHostileExtension) == ERR_NOT_IN_RANGE) {
+                this.moveTo(closestHostileExtension);
+              }
+              return true;
+            }
+            else if(roomToAttack.controller != undefined) {
               this.moveTo(roomToAttack.controller);
               return true;
             }
@@ -74,7 +95,8 @@ Creep.prototype.roleAttacker = function() {
         }
       }
     }
+  }
 
     this.goToHomeRoom();
-    
+
 };

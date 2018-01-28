@@ -19,7 +19,7 @@ Creep.prototype.roleHealer = function() {
       }
     }
     else {
-      var patientCandidates = _.filter(this.room.find(FIND_MY_CREEPS), (c) => c.role == 'attacker' && c.memory.healer == undefined);
+      var patientCandidates = _.filter(this.room.find(FIND_MY_CREEPS), (c) => c.memory.role == 'attacker' && c.memory.healer == undefined);
       if(patientCandidates.length > 0) {
         this.memory.patient = patientCandidates[0].id;
         patientCandidates[0].memory.healer = this.id;

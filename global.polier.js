@@ -135,7 +135,12 @@ polier.findCandidatesForJob = function(jobData) {
     return creepsInRoomBoostable;
   }
   else {
-    var creepsInRoom = _.filter(Game.creeps, (c) => c.room.name == targetStructure.room.name && !c.spawning && ( c.role() == 'energyTransporter' || c.role() == 'distributor' ) );
+    if(jobData.task == 'transfer') {
+      var creepsInRoom = _.filter(Game.creeps, (c) => (c.room.name == targetStructure.room.name || (c.room.name == 'W57S4' && targetStructure.room.name == 'W57S3' ) ) && !c.spawning && ( c.role() == 'energyTransporter' || c.role() == 'distributor') );
+    }
+    else {
+      var creepsInRoom = _.filter(Game.creeps, (c) => (c.room.name == targetStructure.room.name || (c.room.name == 'W57S4' && targetStructure.room.name == 'W57S3' ) ) && !c.spawning && ( c.role() == 'energyTransporter' || c.role() == 'distributor' || c.role() == 'transporter') );
+    }
     var creepsInRoomMatchingBodyReq = _.filter(creepsInRoom, function(c) {return polier.creepMatchesBodyReq(c.id, jobData.bodyReq);});
     return creepsInRoomMatchingBodyReq;
   }
@@ -157,6 +162,7 @@ polier.assignJobs = function() {
     if(tmpCreepForJob instanceof Creep) {
       polier.addAssignment(unassignedJobs[j].id, tmpCreepForJob.id);
       unassignedJobs[j].status = 'assigned';
+
       jobs.modifyJob(unassignedJobs[j]);
     }
   }

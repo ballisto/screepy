@@ -7,7 +7,7 @@ Creep.prototype.roleRemoteStationaryHarvester = function() {
         if (this.memory.currentFlag == undefined) {
             console.log(this.name + " has no sources to stationary harvest in room " + this.room.name + ".");
         }
-        else if (this.room.memory.hostiles.length == 0) {
+        else {
             var flag = Game.flags[this.memory.currentFlag];
             var sourceKeeper = [];
 
@@ -57,30 +57,9 @@ Creep.prototype.roleRemoteStationaryHarvester = function() {
                         }
                     }
                     else if (this.carry.energy < this.carryCapacity) {
-                        //Time to refill
-                        //Identify and save source
-                        if (this.memory.source == undefined) {
-                            var source = this.pos.findClosestByRange(FIND_SOURCES);
-                            this.memory.source = source.id;
-                        }
-                        else {
-                            var source = Game.getObjectById(this.memory.source);
-                        }
-                        if (source == undefined) {
-                            delete this.memory.source;
-                        }
-                        else if (source.energy == 0) {
-                            this.memory.sleep = source.ticksToRegeneration;
-                        }
-                        else {
-
-                            if (this.harvest(source) != OK) {
-                                this.memory.statusHarvesting = false;
-                                delete this.memory.source;
-                            }
-                            else {
-                                this.memory.statusHarvesting = source.id;
-                            }
+                        var source = this.pos.findClosestByRange(FIND_SOURCES);
+                        if (source.energy > 0) {
+                          this.memory.statusHarvesting = source.id;
                         }
                     }
                 }
@@ -93,11 +72,6 @@ Creep.prototype.roleRemoteStationaryHarvester = function() {
             else {
                 console.log(this.name + " in room " + this.room.name + " has a problem.");
             }
-        }
-        else {
-            // Hostiles present
-            this.memory.fleeing = true;
-            this.goToHomeRoom();
         }
     }
     else {

@@ -70,13 +70,18 @@ operator.steal = function() {
       if(resourceArray.length > 0 ) {
         const resourceToSteal = resourceArray[0].resource;
 
-        if(!jobs.jobForStructureExists(targetStorage.id, jobTemplates.steal.task )) {
+        if(jobs.jobForStructureCount(targetStorage.id, jobTemplates.steal.task) < 5) {
           jobs.addJobWithTemplate(jobTemplates.steal, targetStorage.id, resourceToSteal, 0);
         }
       }
     }
   }
 };
+
+operator.supportTransport = function() {
+  var controllersUnderSix = _.filter(Game.structures, (a) => a.structureType == STRUCTURE_CONTROLLER && a.level < 6);
+
+}
 
 operator.boostCreeps = function() {
   //load boost labs

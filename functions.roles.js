@@ -20,3 +20,5 @@ require("role.bigClaimer");
 require("role.transporter");
 require("role.SKHarvester");
 require("role.SKHauler");
+require("role.attacker");
+require("role.healer");

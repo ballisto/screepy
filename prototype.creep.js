@@ -455,22 +455,26 @@ Creep.prototype.canBeBoosted = function () {
         case WORK:
           var tmpMinerals = [];
           var tmpAction;
-          if(this.role == 'upgrader') {
+          if(this.memory.role == 'upgrader') {
             tmpAction = 'upgradeController';
           }
-          else if(this.role == 'harvester') {
+          else if(this.memory.role == 'harvester') {
             tmpAction = 'harvest';
           }
-          else if(this.role == 'builder') {
+          else if(this.memory.role == 'builder') {
             tmpAction = 'build';
           }
-          for(const t in curBodyPartPossibleBoosts) {
-            const tmpBoostMineral = curBodyPartPossibleBoosts[t];
-            if(tmpBoostMineral[tmpAction] != undefined) {
-              if(!possibleBoostMinerals.includes(curBodyPartPossibleBoosts[t]))
-                possibleBoostMinerals.push(curBodyPartPossibleBoosts[t]);
-            }
+          const tmpBOOSTS = BOOSTS[curBodyPart.type];
+
+          for(const m in tmpBOOSTS) {
+              const tmpBoostMineral = tmpBOOSTS[m];
+
+              if(tmpBoostMineral[tmpAction] != undefined) {
+                if(!possibleBoostMinerals.includes(m))
+                  possibleBoostMinerals.push(m);
+              }
           }
+
         break;
         default:
             for(const m in curBodyPartPossibleBoosts) {

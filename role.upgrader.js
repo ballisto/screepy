@@ -1,4 +1,7 @@
 Creep.prototype.roleUpgrader = function() {
+  var curAssignment = polier.getCurTaskForCreep(this.id);
+  if( curAssignment != undefined ) { this.run(); }
+  else {
     if (this.goToHomeRoom() == true) {
         // if creep is bringing energy to the controller but has no energy left
         if (this.memory.working == true && this.carry.energy == 0) {
@@ -37,4 +40,5 @@ Creep.prototype.roleUpgrader = function() {
             this.roleCollector();
         }
     }
+  }
 };

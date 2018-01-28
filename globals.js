@@ -113,7 +113,7 @@ global.jobTemplates.withdrawResource = {task: "withdraw", priority: 201, entity:
 global.jobTemplates.pickupResource = {task: "pickup", priority: 555, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
 global.jobTemplates.terminalTransfer = {task: "send", priority: 555, entity: "terminal", status: "new", ttl: 222 };
 global.jobTemplates.boostCreep = {task: "boostCreep", priority: 102, entity: "creep", status: "new", ttl: 444 };
-global.jobTemplates.steal = {task: "withdraw", priority: 101, entity: "creep", bodyReq: "70700000", status: "new", ttl: 222 };
+global.jobTemplates.steal = {task: "withdraw", priority: 101, entity: "creep", bodyReq: "70700000", status: "new", ttl: 666 };
 
 global.bodyHitpointsMatrix = [0,100,200,400,800,1200,1600,2000,3000];
 
@@ -579,9 +579,9 @@ global.buildingPlans = {
         {
             //Level 8 (max 12900)
             minEnergy: 3250,
-            body: [CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, MOVE, MOVE, MOVE, MOVE, MOVE]
-            // minEnergy: 9750,
-            // body: [CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
+            // body: [CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, MOVE, MOVE, MOVE, MOVE, MOVE]
+            minEnergy: 12700,
+            body: [CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
         }],
 
     protector: [
@@ -840,8 +840,8 @@ global.buildingPlans = {
         },
         {
             //Level 8 (max 12900)
-            minEnergy: 900,
-            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE]
+            minEnergy: 1250,
+            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
         }],
 
     SKHarvester: [
