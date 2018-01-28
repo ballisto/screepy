@@ -8,6 +8,64 @@ Room.structureHasEnergy = (structure) => structure.store && structure.store.ener
 
 Room.structureIsEmpty = (structure) => (!structure.store || _.sum(structure.store) === 0) && !structure.energy && !structure.mineralAmount && !structure.ghodium && !structure.power;
 
+Room.prototype.findSpace = function(structures) {
+  var selectedStructureTypes = {};
+  if(arguments.length == 0) {
+    selectedStructureTypes = [STRUCTURE_STORAGE, STRUCTURE_TERMINAL, STRUCTURE_CONTAINER];
+  }
+  else {
+    selectedStructureTypes = arguments;
+  }
+  for (let argcounter = 0; argcounter < selectedStructureTypes.length; argcounter++) {
+      // Go through requested sourceTypes
+      switch (selectedStructureTypes[argcounter]) {
+        case STRUCTURE_STORAGE:
+            if (this.storage != undefined && this.storage.my && this.storage.storeCapacity - _.sum(this.storage.store) > 0) {
+                return this.storage;
+            }
+        break;
+        case STRUCTURE_TERMINAL:
+            if (this.terminal != undefined && this.terminal.my && this.terminal.storeCapacity - _.sum(this.terminal.store) < this.terminal.storeCapacity * 0.75) {
+                return this.terminal;
+            }
+        break;
+        case STRUCTURE_CONTAINER:
+        var tempContainers = _.filter(this.find(FIND_STRUCTURES), (s) => s.structureType == STRUCTURE_CONTAINER && !s.isFull() && !s.isHarvesterStorage() );
+        if(tempContainers.length > 0 && this.controller.my) {
+          return tempContainers[0];
+        }
+        break;
+      }
+    }
+    return null;
+};
+Creep.prototype.findResource = function(resource) {
+  var selectedStructureTypes = [STRUCTURE_STORAGE, STRUCTURE_TERMINAL, STRUCTURE_CONTAINER];
+
+  for (let argcounter = 0; argcounter < selectedStructureTypes.length; argcounter++) {
+      // Go through requested sourceTypes
+      switch (selectedStructureTypes[argcounter]) {
+        case STRUCTURE_STORAGE:
+            if (this.storage != undefined && this.storage.store[resource] > 0) {
+                return this.storage;
+            }
+        break;
+        case STRUCTURE_TERMINAL:
+            if (this.terminal != undefined && this.terminal.store[resource] > 0) {
+                return this.terminal;
+            }
+        break;
+        case STRUCTURE_CONTAINER:
+        var tempContainers = _.filter(this.find(FIND_STRUCTURES), (s) => s.structureType == STRUCTURE_CONTAINER && s.store[resource] != undefined && s.store[resource] > 0 );
+        if(tempContainers.length > 0) {
+          return tempContainers[0];
+        }
+        break;
+      }
+    }
+    return null;
+};
+
 Room.prototype.totalResourceInStock = function(resourceType) {
   var totalResourceInStock = 0;
   if(this.storage != undefined && this.storage.store[resourceType] != undefined) {

@@ -6,10 +6,3 @@ StructureContainer.prototype.isHarvesterStorage = function () {
 
       return false;
     };
-StructureContainer.prototype.isEmpty = function() {
-  return _.sum(this.store) == 0;
-};
-
-StructureContainer.prototype.isFull = function() {
-  return _.sum(this.store) == this.storeCapacity;
-};

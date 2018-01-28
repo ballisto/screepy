@@ -79,8 +79,18 @@ operator.steal = function() {
 };
 
 operator.supportTransport = function() {
-  var controllersUnderSix = _.filter(Game.structures, (a) => a.structureType == STRUCTURE_CONTROLLER && a.level < 6);
-
+  var roomsUnderSix = _.filter(Game.rooms, (r) => r.controller.level < 6 && r.controller.my);
+  for (const r in roomsUnderSix) {
+    var structureWithSpaceInRoom = _.sortBy(roomsUnderSix[r].findSpace(), function(s) { return s.spaceLeft();};
+    if (structureWithSpaceInRoom.length > 0) {
+      structureWithSpaceInRoom.reverse();
+      for (const f in structureWithSpaceInRoom) {
+        if(!jobs.jobForStructureExists(structureWithSpaceInRoom[f].id, jobTemplates.supportTransport.task)) {
+          jobs.addJobWithTemplate(jobTemplates.supportTransport, structureWithSpaceInRoom[f].id, RESOURCE_ENERGY, structureWithSpaceInRoom[f].storeCapacity);
+        }
+      }
+    }
+  }
 }
 
 operator.boostCreeps = function() {

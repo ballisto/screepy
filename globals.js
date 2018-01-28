@@ -6,6 +6,7 @@ require('global.jobs');
 require('global.operator');
 require('global.polier');
 require('factory');
+require('prototype.structure')();
 require('prototype.spawn2')();
 require('prototype.creep.functions');
 require('prototype.creep.findMyFlag')();
@@ -19,6 +20,7 @@ require('prototype.room.init');
 require('prototype.room.defense');
 require('prototype.roomposition');
 require('prototype.roomobject');
+require('prototype.constainer')();
 require('prototype.link');
 require('prototype.lab');
 require('prototype.terminal');
@@ -114,6 +116,7 @@ global.jobTemplates.pickupResource = {task: "pickup", priority: 555, entity: "cr
 global.jobTemplates.terminalTransfer = {task: "send", priority: 555, entity: "terminal", status: "new", ttl: 222 };
 global.jobTemplates.boostCreep = {task: "boostCreep", priority: 102, entity: "creep", status: "new", ttl: 444 };
 global.jobTemplates.steal = {task: "withdraw", priority: 101, entity: "creep", bodyReq: "70700000", status: "new", ttl: 666 };
+global.jobTemplates.supportTransport = {task: "transfer", priority: 301, entity: "creep", bodyReq: "70700000", status: "new", ttl: 666 };
 
 global.bodyHitpointsMatrix = [0,100,200,400,800,1200,1600,2000,3000];
 
