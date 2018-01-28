@@ -22,7 +22,7 @@ module.exports = function() {
 							}
 					break;
 					case STRUCTURE_CONTAINER:
-					var tempContainers = _.filter(Game.structures, (s) => s.structureType != STRUCTURE_CONTAINER && s.room.name == this.room.name && _.sum(s.store) < s.storeCapacity );
+					var tempContainers = _.filter(this.room.find(FIND_STRUCTURES), (s) => s.structureType == STRUCTURE_CONTAINER && s.room.name == this.room.name && !s.isFull() && !s.isHarvesterStorage() );
 					if(tempContainers.length > 0 && this.room.controller.my) {
 						return tempContainers[0];
 					}
@@ -48,7 +48,7 @@ module.exports = function() {
 							}
 					break;
 					case STRUCTURE_CONTAINER:
-					var tempContainers = _.filter(Game.structures, (s) => s.structureType != STRUCTURE_CONTAINER && s.room.name == this.room.name && s.store[resource] > 0 );
+					var tempContainers = _.filter(this.room.find(FIND_STRUCTURES), (s) => s.structureType == STRUCTURE_CONTAINER && s.room.name == this.room.name && s.store[resource] != undefined && s.store[resource] > 0 );
 					if(tempContainers.length > 0) {
 						return tempContainers[0];
 					}
