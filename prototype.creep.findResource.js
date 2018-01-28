@@ -1,7 +1,7 @@
 module.exports = function() {
     // find nearest requested resource and return object, otherwise return null
-	Creep.prototype.findSpace = function(structures) {
-		return this.room.findSpace(structures);
+	Creep.prototype.findSpace = function() {
+		return this.room.findSpace();
 	};
 	Creep.prototype.findResource = function(resource) {
 		return this.room.findResource(resource);

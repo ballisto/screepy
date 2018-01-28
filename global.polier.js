@@ -135,8 +135,13 @@ polier.findCandidatesForJob = function(jobData) {
     return creepsInRoomBoostable;
   }
   else {
-    var creepsInRoom = _.filter(Game.creeps, (c) => (c.room.name == targetStructure.room.name || c.room.supportRooms().includes(targetStructure.room) || (c.room.name == 'W57S4' && targetStructure.room.name == 'W57S3' ) ) && !c.spawning && config.polier.rolesToAssign.includes(c.role()));
-    
+    if(jobData.job != undefined && (jobData.job == 'steal' || jobData.job == 'supportTransport')) {
+      var creepsInRoom = _.filter(Game.creeps, (c) => (c.room.name == targetStructure.room.name || c.room.supportRooms().includes(targetStructure.room) || (c.room.name == 'W57S4' && targetStructure.room.name == 'W57S3' ) ) && !c.spawning && config.polier.rolesToAssign.includes(c.role()));
+    }
+    else {
+      var creepsInRoom = _.filter(Game.creeps, (c) => c.room.name == targetStructure.room.name && !c.spawning && config.polier.rolesToAssign.includes(c.role()));
+    }
+
     var creepsInRoomMatchingBodyReq = _.filter(creepsInRoom, function(c) {return polier.creepMatchesBodyReq(c.id, jobData.bodyReq);});
     return creepsInRoomMatchingBodyReq;
   }
@@ -156,10 +161,11 @@ polier.assignJobs = function() {
   for(const j in unassignedJobs) {
     const tmpCreepForJob = polier.findCreepForJob(unassignedJobs[j]);
     if(tmpCreepForJob instanceof Creep) {
-      polier.addAssignment(unassignedJobs[j].id, tmpCreepForJob.id);
-      unassignedJobs[j].status = 'assigned';
-
-      jobs.modifyJob(unassignedJobs[j]);
+      if(polier.getAssignmentsForCreep().length <= config.polier.maxAssignmentsPerWorker) {
+        polier.addAssignment(unassignedJobs[j].id, tmpCreepForJob.id);
+        unassignedJobs[j].status = 'assigned';
+        jobs.modifyJob(unassignedJobs[j]);
+      }
     }
   }
 };
@@ -169,7 +175,12 @@ polier.balanceAssignments = function() {
 
 
 };
+polier.prioritize = function() {
 
+  var assignmentsByCreep = _.indexBy(polier.getAllAssignments(), 'creepId');
+
+
+};
 polier.printAssignments = function() {
     const tmpAssigns = polier.getAllAssignments();
     for(const key in tmpAssigns) {

@@ -47,7 +47,7 @@ global.config = {
   polier: {
     assignmentsSegment: 1,
     assignmentsKey: "assignments",
-    maxAssignmentsPerWorker: 5,
+    maxAssignmentsPerWorker: 2,
     rolesToBoost: ['transporter', 'upgrader', 'attacker', 'healer'],
     rolesToAssign: ['transporter', 'energyTransporter', 'distributor'],
   },

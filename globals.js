@@ -6,7 +6,7 @@ require('global.jobs');
 require('global.operator');
 require('global.polier');
 require('factory');
-require('prototype.structure')();
+require('prototype.structure');
 require('prototype.spawn2')();
 require('prototype.creep.functions');
 require('prototype.creep.findMyFlag')();
@@ -20,7 +20,7 @@ require('prototype.room.init');
 require('prototype.room.defense');
 require('prototype.roomposition');
 require('prototype.roomobject');
-require('prototype.constainer')();
+require('prototype.container');
 require('prototype.link');
 require('prototype.lab');
 require('prototype.terminal');
@@ -110,13 +110,13 @@ global.mineralDescriptions.XGHO2 = {tier: 3, component1: "X", component2: "GHO2"
 
 
 global.jobTemplates = {};
-global.jobTemplates.transferResource = {task: "transfer", priority: 201, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
-global.jobTemplates.withdrawResource = {task: "withdraw", priority: 201, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
-global.jobTemplates.pickupResource = {task: "pickup", priority: 555, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
-global.jobTemplates.terminalTransfer = {task: "send", priority: 555, entity: "terminal", status: "new", ttl: 222 };
-global.jobTemplates.boostCreep = {task: "boostCreep", priority: 102, entity: "creep", status: "new", ttl: 444 };
-global.jobTemplates.steal = {task: "withdraw", priority: 101, entity: "creep", bodyReq: "70700000", status: "new", ttl: 666 };
-global.jobTemplates.supportTransport = {task: "transfer", priority: 301, entity: "creep", bodyReq: "70700000", status: "new", ttl: 666 };
+global.jobTemplates.transferResource = {job: "transferResource", task: "transfer", priority: 201, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
+global.jobTemplates.withdrawResource = {job: "withdrawResource", task: "withdraw", priority: 201, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
+global.jobTemplates.pickupResource = {job: "pickupResource", task: "pickup", priority: 555, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
+global.jobTemplates.terminalTransfer = {job: "terminalTransfer", task: "send", priority: 555, entity: "terminal", status: "new", ttl: 222 };
+global.jobTemplates.boostCreep = {job: "boostCreep", task: "boostCreep", priority: 102, entity: "creep", status: "new", ttl: 444 };
+global.jobTemplates.steal = {job: "steal", task: "withdraw", priority: 101, entity: "creep", bodyReq: "70700000", status: "new", ttl: 666 };
+global.jobTemplates.supportTransport = {job: "supportTransport", task: "transfer", priority: 301, entity: "creep", bodyReq: "70700000", status: "new", ttl: 666 };
 
 global.bodyHitpointsMatrix = [0,100,200,400,800,1200,1600,2000,3000];
 

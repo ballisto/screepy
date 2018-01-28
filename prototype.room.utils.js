@@ -39,7 +39,7 @@ Room.prototype.findSpace = function(structures) {
     }
     return null;
 };
-Creep.prototype.findResource = function(resource) {
+Room.prototype.findResource = function(resource) {
   var selectedStructureTypes = [STRUCTURE_STORAGE, STRUCTURE_TERMINAL, STRUCTURE_CONTAINER];
 
   for (let argcounter = 0; argcounter < selectedStructureTypes.length; argcounter++) {

@@ -64,7 +64,7 @@ module.exports = {
                            //Find the closest damaged Structure
                            var closestDamagedStructure = towers[i].pos.findClosestByRange(FIND_STRUCTURES, {filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL && s.structureType != STRUCTURE_RAMPART});
                            if(!closestDamagedStructure) {
-                             if(towers[i].room.storage.store[RESOURCE_ENERGY] > 50000) {
+                             if(towers[i].room.storage != undefined && towers[i].room.storage.store[RESOURCE_ENERGY] > 50000) {
                                //var closestDamagedStructure = towers[i].pos.findClosestByRange(FIND_STRUCTURES, {filter: (s) => s.hits < s.hitsMax});
                                var target = undefined;
                                var ramparts = Game.rooms[roomIndex].find(FIND_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_RAMPART});

@@ -51,7 +51,7 @@ jobs.jobForStructureExists = function(structureId, task) {
 };
 jobs.jobForStructureCount = function(structureId, task) {
   var openJobsForStructure = _.filter(jobs.getAllUnfinishedJobs(), (j) => j.target == structureId && j.task == task);
-  return openJobsForStructure.length;  
+  return openJobsForStructure.length;
 };
 
 jobs.getOpenJobsForStructure = function(structureId) {
@@ -83,6 +83,7 @@ jobs.addJobWithTemplate = function(template, targetId,resourceType, amount) {
   var tmpAllJobs = jobs.getAllJobs();
   tmpAllJobs.push(newJobData);
   root.setSegmentObject(config.jobs.jobsSegment,config.jobs.jobsKey,tmpAllJobs);
+  return newJobId;
 };
 
 jobs.deleteJob = function(jobId) {
@@ -100,6 +101,12 @@ jobs.setDone = function(jobId) {
   var tmpJobData = jobs.getJobData(jobId);
   tmpJobData.status = 'done';
   tmpJobData.ttl = 20;
+  jobs.modifyJob(tmpJobData);
+};
+
+jobs.setPriority = function(jobId, newPriority) {
+  var tmpJobData = jobs.getJobData(jobId);
+  tmpJobData.priority = newPriority;
   jobs.modifyJob(tmpJobData);
 };
 

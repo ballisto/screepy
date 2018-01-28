@@ -13,7 +13,8 @@ operator.run = function() {
   operator.loadLabs();
   operator.boostCreeps();
   operator.unLoadLabs();
-  operator.steal();
+  // operator.steal();
+  operator.supportTransport();
 };
 
 operator.loadEnergy = function() {
@@ -23,7 +24,12 @@ operator.loadEnergy = function() {
   var structuresNeedingEnergyWithoutOpenJob = _.filter(structuresNeedingEnergy, function(s) { return !jobs.jobForStructureExists(s.id, jobTemplates.transferResource.task );});
 
   for(const s in structuresNeedingEnergyWithoutOpenJob) {
-    jobs.addJobWithTemplate(jobTemplates.transferResource, structuresNeedingEnergyWithoutOpenJob[s].id, RESOURCE_ENERGY, structuresNeedingEnergyWithoutOpenJob[s].energyCapacity - structuresNeedingEnergyWithoutOpenJob[s].energy);
+    const jobId = jobs.addJobWithTemplate(jobTemplates.transferResource, structuresNeedingEnergyWithoutOpenJob[s].id, RESOURCE_ENERGY, structuresNeedingEnergyWithoutOpenJob[s].energyCapacity - structuresNeedingEnergyWithoutOpenJob[s].energy);
+    const roomEnergySource = structuresNeedingEnergyWithoutOpenJob[s].room.findResource(RESOURCE_ENERGY);
+    if(roomEnergySource != undefined) {
+      const jobData = jobs.getJobData(jobId);
+      jobs.setPriority(jobId, jobData.priority + structuresNeedingEnergyWithoutOpenJob[s].pos.getRangeTo(roomEnergySource));
+    }
   }
 };
 
@@ -81,13 +87,14 @@ operator.steal = function() {
 operator.supportTransport = function() {
   var roomsUnderSix = _.filter(Game.rooms, (r) => r.controller.level < 6 && r.controller.my);
   for (const r in roomsUnderSix) {
-    var structureWithSpaceInRoom = _.sortBy(roomsUnderSix[r].findSpace(), function(s) { return s.spaceLeft();};
-    if (structureWithSpaceInRoom.length > 0) {
-      structureWithSpaceInRoom.reverse();
-      for (const f in structureWithSpaceInRoom) {
-        if(!jobs.jobForStructureExists(structureWithSpaceInRoom[f].id, jobTemplates.supportTransport.task)) {
-          jobs.addJobWithTemplate(jobTemplates.supportTransport, structureWithSpaceInRoom[f].id, RESOURCE_ENERGY, structureWithSpaceInRoom[f].storeCapacity);
-        }
+    // var structureWithSpaceInRoom = _.sortBy(roomsUnderSix[r].findSpace(), function(s) { return s.spaceLeft();});
+    var structureWithSpaceInRoom = roomsUnderSix[r].findSpace();
+    if (structureWithSpaceInRoom != undefined) {
+      // structureWithSpaceInRoom.reverse();
+      // for (const f in structureWithSpaceInRoom) {
+        if(!jobs.jobForStructureExists(structureWithSpaceInRoom.id, jobTemplates.supportTransport.task)) {
+          jobs.addJobWithTemplate(jobTemplates.supportTransport, structureWithSpaceInRoom.id, RESOURCE_ENERGY, structureWithSpaceInRoom.storeCapacity);
+        // }
       }
     }
   }
