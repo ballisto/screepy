@@ -112,7 +112,7 @@ global.mineralDescriptions.XGHO2 = {tier: 3, component1: "X", component2: "GHO2"
 global.jobTemplates = {};
 global.jobTemplates.transferResource = {job: "transferResource", task: "transfer", priority: 201, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
 global.jobTemplates.withdrawResource = {job: "withdrawResource", task: "withdraw", priority: 201, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
-global.jobTemplates.pickupResource = {job: "pickupResource", task: "pickup", priority: 555, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
+global.jobTemplates.pickupResource = {job: "pickupResource", task: "pickup", priority: 150, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
 global.jobTemplates.terminalTransfer = {job: "terminalTransfer", task: "send", priority: 555, entity: "terminal", status: "new", ttl: 222 };
 global.jobTemplates.boostCreep = {job: "boostCreep", task: "boostCreep", priority: 102, entity: "creep", status: "new", ttl: 444 };
 global.jobTemplates.steal = {job: "steal", task: "withdraw", priority: 101, entity: "creep", bodyReq: "70700000", status: "new", ttl: 666 };
@@ -369,8 +369,8 @@ global.buildingPlans = {
         },
         {
             //Level 8 (max 12900)
-            minEnergy: 1900,
-            body: [MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
+            minEnergy: 2500,
+            body: [MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
         }],
 
     repairer: [
@@ -799,8 +799,8 @@ global.buildingPlans = {
         },
         {
             //Level 8 (max 12900)
-            minEnergy: 1850,
-            body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
+            minEnergy: 2550,
+            body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
             // minEnergy: 3150,
             // body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
         }],

@@ -28,7 +28,7 @@ module.exports.loop = function() {
   // jobs.resetMemory();
   // polier.resetMemory();
 
-  if(_.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W57S2' && c.memory.role != undefined && c.memory.role == 'upgrader' ).length <= 3 &&
+  if(_.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W57S2' && c.memory.role != undefined && c.memory.role == 'upgrader' ).length <= 2 &&
       _.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W57S4' && c.memory.role != undefined && c.memory.role == 'upgrader' ).length > 0) {
         var upgradersToSwitch = _.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W57S4' && c.memory.role != undefined && c.memory.role == 'upgrader' );
         for ( var u in upgradersToSwitch) {
@@ -36,6 +36,7 @@ module.exports.loop = function() {
           upgradersToSwitch[u].memory.spawn = Game.rooms['W57S2'].controller.id;
         }
   }
+
 
   var tmpObserver = Game.getObjectById('5a5ff577175ef20d0b3d0c9e');
   tmpObserver.observeRoom('W57S3');
@@ -707,11 +708,11 @@ module.exports.loop = function() {
                                             console.log("<font color=#ffca33 type='highlight'>Room " + Game.rooms[r].name + " started auto production of " + reactionAmount + " " + productionTarget.resource + ".</font>");
                                         }
                                     }
-                                    else if (Game.rooms[r].storage.store[global.mineralDescriptions[productionTarget].component1] < minProductionPacketSize) {
-                                        resource = global.mineralDescriptions[productionTarget].component1;
+                                    else if (Game.rooms[r].storage.store[global.mineralDescriptions[productionTarget.resource].component1] < minProductionPacketSize) {
+                                        resource = global.mineralDescriptions[productionTarget.resource].component1;
                                     }
-                                    else if (Game.rooms[r].storage.store[global.mineralDescriptions[productionTarget].component2] < minProductionPacketSize) {
-                                        resource = global.mineralDescriptions[productionTarget].component2;
+                                    else if (Game.rooms[r].storage.store[global.mineralDescriptions[productionTarget.resource].component2] < minProductionPacketSize) {
+                                        resource = global.mineralDescriptions[productionTarget.resource].component2;
                                     }
                                     productionTarget = whatIsLackingFor(Game.rooms[r], genuineDelta, resource);
                                 }

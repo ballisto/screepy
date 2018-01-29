@@ -13,8 +13,9 @@ operator.run = function() {
   operator.loadLabs();
   operator.boostCreeps();
   operator.unLoadLabs();
-  // operator.steal();
+  operator.steal();
   operator.supportTransport();
+  operator.unloadSourceContainers();
 };
 
 operator.loadEnergy = function() {
@@ -93,7 +94,7 @@ operator.supportTransport = function() {
       // structureWithSpaceInRoom.reverse();
       // for (const f in structureWithSpaceInRoom) {
         if(!jobs.jobForStructureExists(structureWithSpaceInRoom.id, jobTemplates.supportTransport.task)) {
-          jobs.addJobWithTemplate(jobTemplates.supportTransport, structureWithSpaceInRoom.id, RESOURCE_ENERGY, structureWithSpaceInRoom.storeCapacity);
+          jobs.addJobWithTemplate(jobTemplates.supportTransport, structureWithSpaceInRoom.id, RESOURCE_ENERGY, 5000);
         // }
       }
     }
@@ -128,11 +129,21 @@ operator.unloadLinkDrain = function() {
     jobs.addJobWithTemplate(jobTemplates.transferResource, linksNeedEnergyWithoutOpenJob[e].id, RESOURCE_ENERGY, (linksNeedEnergyWithoutOpenJob[e].energyCapacity - linksNeedEnergyWithoutOpenJob[e].energy) );
   }
 };
+operator.unloadSourceContainers = function() {
+  var allRooms = _.filter(Game.rooms, (r) => r.controller != undefined && r.controller.my);
+  for(const r in allRooms) {
+    var sourceContainers = _.filter(allRooms[r].find(FIND_STRUCTURES), (s) => s.structureType == STRUCTURE_CONTAINER && s.isHarvesterStorage && s.store[RESOURCE_ENERGY] > s.storeCapacity * 0.5 && !jobs.jobForStructureExists(s.id, jobTemplates.withdrawResource.task ) );
+    for(const c in sourceContainers) {
+      jobs.addJobWithTemplate(jobTemplates.withdrawResource, sourceContainers[c].id, RESOURCE_ENERGY, 0);
+    }
+  }
+
+};
 
 operator.pickupResources = function() {
-  var allStorages = _.filter(Game.structures, (a) => a.structureType == STRUCTURE_STORAGE);
-  for(const s in allStorages) {
-    var droppedResources = allStorages[s].room.find(FIND_DROPPED_RESOURCES);
+  var allRooms = _.filter(Game.rooms, (r) => r.controller != undefined && r.controller.my);
+  for(const r in allRooms) {
+    var droppedResources = allRooms[r].find(FIND_DROPPED_RESOURCES);
     var droppedResourcesWithoutOpenJob = _.filter(droppedResources, function(s) { return !jobs.jobForStructureExists(s.id, jobTemplates.pickupResource.task ) && s.amount > 150;});
     for(const e in droppedResourcesWithoutOpenJob) {
       jobs.addJobWithTemplate(jobTemplates.pickupResource, droppedResourcesWithoutOpenJob[e].id, droppedResourcesWithoutOpenJob[e].resourceType, droppedResourcesWithoutOpenJob[e].amount );

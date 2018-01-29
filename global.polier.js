@@ -136,7 +136,7 @@ polier.findCandidatesForJob = function(jobData) {
   }
   else {
     if(jobData.job != undefined && (jobData.job == 'steal' || jobData.job == 'supportTransport')) {
-      var creepsInRoom = _.filter(Game.creeps, (c) => (c.room.name == targetStructure.room.name || c.room.supportRooms().includes(targetStructure.room) || (c.room.name == 'W57S4' && targetStructure.room.name == 'W57S3' ) ) && !c.spawning && config.polier.rolesToAssign.includes(c.role()));
+      var creepsInRoom = _.filter(Game.creeps, (c) => (c.ticksToLive > 700 && c.room.name == targetStructure.room.name || c.room.supportRooms().includes(targetStructure.room) || (c.room.name == 'W57S4' && targetStructure.room.name == 'W57S3' ) ) && !c.spawning && config.polier.rolesToAssign.includes(c.role()));
     }
     else {
       var creepsInRoom = _.filter(Game.creeps, (c) => c.room.name == targetStructure.room.name && !c.spawning && config.polier.rolesToAssign.includes(c.role()));
@@ -158,13 +158,15 @@ polier.findCreepForJob = function(jobData) {
 polier.assignJobs = function() {
   var unassignedJobs = polier.getAllUnassignedJobs();
   var unassignedJobsForCreeps = _.filter(unassignedJobs, (j) => j.entity == 'creep');
-  for(const j in unassignedJobs) {
-    const tmpCreepForJob = polier.findCreepForJob(unassignedJobs[j]);
+  var sortedUnassignedJobsForCreeps = _.sortBy(unassignedJobsForCreeps, function(s) {return s.priority;});
+  for(const j in sortedUnassignedJobsForCreeps) {
+
+    const tmpCreepForJob = polier.findCreepForJob(sortedUnassignedJobsForCreeps[j]);
     if(tmpCreepForJob instanceof Creep) {
-      if(polier.getAssignmentsForCreep().length <= config.polier.maxAssignmentsPerWorker) {
-        polier.addAssignment(unassignedJobs[j].id, tmpCreepForJob.id);
-        unassignedJobs[j].status = 'assigned';
-        jobs.modifyJob(unassignedJobs[j]);
+      if(polier.getAssignmentsForCreep(tmpCreepForJob.id).length < config.polier.maxAssignmentsPerWorker) {
+        polier.addAssignment(sortedUnassignedJobsForCreeps[j].id, tmpCreepForJob.id);
+        sortedUnassignedJobsForCreeps[j].status = 'assigned';
+        jobs.modifyJob(sortedUnassignedJobsForCreeps[j]);
       }
     }
   }
@@ -192,7 +194,7 @@ polier.summary = function() {
   var sortedJobList = _.sortBy(jobs.getAllJobs(), function(j) { return Game.getObjectById(j.target).room.name; });
 
   var returnstring = "Jobs summary\n"
-  returnstring = returnstring.concat("<table><tr><th>Room  </th><th>Job  </th><th>Task  </th><th>Target  </th><th>Status  </th><th>Age  </th><th>TTL  </th></tr>");
+  returnstring = returnstring.concat("<table><tr><th>Room  </th><th>Job  </th><th>Prio  </th><th>Task  </th><th>Target  </th><th>Status  </th><th>Age  </th><th>TTL  </th></tr>");
   var resourceTable = [];
   var total = [];
 
@@ -203,6 +205,7 @@ polier.summary = function() {
       var color = "#aaffff";
       returnstring = returnstring.concat("<tr></tr><td>" + curJobTargetObject.room.name + "  </td>");
       returnstring = returnstring.concat("<td><font color='" + color + "'>" + jobData.id + "  </font></td>");
+      returnstring = returnstring.concat("<td><font color='" + color + "'>" + jobData.priority + "  </font></td>");
       returnstring = returnstring.concat("<td><font color='" + color + "'>" + jobData.task + "  </font></td>");
       returnstring = returnstring.concat("<td><font color='" + color + "'>" + curJobTargetObject.structureType + "  </font></td>");
       returnstring = returnstring.concat("<td><font color='" + color + "'>" + jobData.status + "  </font></td>");

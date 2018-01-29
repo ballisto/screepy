@@ -147,9 +147,11 @@ Creep.prototype.run = function() {
             if(this.goToHomeRoom()) {
               this.storeAllBut();
             }
-            }
+          }
           else {
-            this.getResource(curJobData.resType, curJobData.resAmount);
+            if(this.goToHomeRoom()) {
+              this.getResource(curJobData.resType, curJobData.resAmount);
+            }
           }
         }
         else {
