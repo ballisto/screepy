@@ -26,7 +26,7 @@ Creep.prototype.roleHarvester = function() {
             }
             else {
                 //towers included in energy distribution
-                structure = this.findResourceOLD(global.RESOURCE_SPACE, STRUCTURE_SPAWN, STRUCTURE_EXTENSION, STRUCTURE_TOWER);
+                structure = this.findResourceOLD(global.RESOURCE_SPACE, STRUCTURE_SPAWN, STRUCTURE_EXTENSION);
             }
             var nuker;
             var powerSpawn;
@@ -66,7 +66,7 @@ Creep.prototype.roleHarvester = function() {
             }
             else {
                 let labBreaker = false;
-                if (this.room.memory.boostLabs != undefined) {
+                if (false) {
                     //Check boost labs for energy
                     for (let b in this.room.memory.boostLabs) {
                         let lab = Game.getObjectById(this.room.memory.boostLabs[b]);

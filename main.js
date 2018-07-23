@@ -25,28 +25,62 @@ module.exports.loop = function() {
   jobs.run();
   polier.run();
 
-  // jobs.resetMemory();
-  // polier.resetMemory();
+// jobs.setDone(158693);
+// jobs.setDone(158692);
+//   jobs.resetMemory();
+//   polier.resetMemory();
+  
+//   if(_.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W56S3' && c.memory.role != undefined && c.memory.role == 'builder' ).length <= 1 &&
+//       _.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W57S2' && c.memory.role != undefined && (c.memory.role == 'upgrader' || c.memory.role == 'builder') ).length > 0) {
+//         var upgradersToSwitch = _.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W57S2' && c.memory.role != undefined && (c.memory.role == 'upgrader' || c.memory.role == 'builder') );
+//         for ( var u in upgradersToSwitch) {
+//           upgradersToSwitch[u].memory.homeroom = 'W56S3';
+//           upgradersToSwitch[u].memory.role = 'builder';
+//           upgradersToSwitch[u].memory.spawn = Game.rooms['W56S3'].controller.id;
+//           upgradersToSwitch[u].memory.foreign = 'true';
+//         }
+//   }
 
-  if(_.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W57S2' && c.memory.role != undefined && c.memory.role == 'upgrader' ).length <= 2 &&
-      _.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W57S4' && c.memory.role != undefined && c.memory.role == 'upgrader' ).length > 0) {
-        var upgradersToSwitch = _.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W57S4' && c.memory.role != undefined && c.memory.role == 'upgrader' );
-        for ( var u in upgradersToSwitch) {
-          upgradersToSwitch[u].memory.homeroom = 'W57S2';
-          upgradersToSwitch[u].memory.spawn = Game.rooms['W57S2'].controller.id;
-        }
-  }
+//   if(_.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W59S3' && c.memory.role != undefined && c.memory.role == 'builder' ).length <= 1 &&
+//       _.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W58S3' && c.memory.role != undefined && (c.memory.role == 'upgrader' || c.memory.role == 'builder') ).length > 0) {
+//         var upgradersToSwitch = _.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W58S3' && c.memory.role != undefined && (c.memory.role == 'upgrader' || c.memory.role == 'builder') );
+//         for ( var u in upgradersToSwitch) {
+//           upgradersToSwitch[u].memory.homeroom = 'W59S3';
+//           upgradersToSwitch[u].memory.role = 'upgrader';
+//           upgradersToSwitch[u].memory.spawn = Game.rooms['W59S3'].controller.id;
+//           upgradersToSwitch[u].memory.foreign = 'true';
+//         }
+//   }
+//   if(_.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W59S1' && c.memory.role != undefined && c.memory.role == 'builder' && c.memory.foreign == 'true' ).length <= 1 &&
+//       _.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W58S2' && c.memory.role != undefined && c.memory.role == 'upgrader' ).length > 0) {
+//         var upgradersToSwitchB = _.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W58S2' && c.memory.role != undefined && (c.memory.role == 'upgrader' || c.memory.role == 'builder') );
+//         for ( var u in upgradersToSwitchB) {
+//           upgradersToSwitchB[u].memory.homeroom = 'W59S1';
+//           upgradersToSwitchB[u].memory.role = 'builder';
+//           upgradersToSwitchB[u].memory.spawn = Game.rooms['W59S1'].controller.id;
+//           upgradersToSwitchB[u].memory.foreign = 'true';
+//         }
+//   }
+
+for(let r in Memory.rooms.W59S1.resourceLimits) {
+    // Memory.rooms.W59S1.resourceLimits[r].maxStorage = 0;
+    // console.log(Memory.rooms.W59S1.resourceLimits[r].maxStorage);
+}
 
 
-  var tmpObserver = Game.getObjectById('5a5ff577175ef20d0b3d0c9e');
-  tmpObserver.observeRoom('W57S3');
+  var tmpObserver = Game.getObjectById('5a5fed41081d780faa820c74');
+  tmpObserver.observeRoom('W56S4');
+  var tmpObserver2 = Game.getObjectById('5a5fedd336ab5505152fd1da');
+  tmpObserver2.observeRoom('W56S5');
+  
+  
   var strucs = Game.structures;
   var strucCount = 0;
   for(const s in strucs) {
     strucCount++;
   }
 
-  var tmpFactory = new Factory('W59S4');
+  
   var publicRamparts = _.filter(Game.structures, (s) => s.structureType == STRUCTURE_RAMPART && s.owner == global.playerUsername && s.isPublic == true);
   for(const r in publicRamparts) {
     publicRamparts[r].setPublic(false);
@@ -177,7 +211,7 @@ module.exports.loop = function() {
             var order =Game.market.getOrderById(info[1]);
             if (order != null) {
                 if (left > 1000) {
-                    left = 1000;
+                    left = 10000;
                 }
                 if (left > order.amount) {
                     left = order.amount;
@@ -279,6 +313,8 @@ module.exports.loop = function() {
         }
     if (CPUdebug == true) {CPUdebugString = CPUdebugString.concat("<br>Start Resource Balancing: " + Game.cpu.getUsed())}
     if (Game.time % global.DELAYRESOURCEBALANCING == 0 && Game.cpu.bucket > global.CPU_THRESHOLD) {
+    // if (false) {
+        // console.log('balancing')
         // Inter-room resource balancing
         for (let r in global.myRooms) {
             //terminal ready, storage is ours, enough energy, no ongoing transfer
@@ -317,10 +353,18 @@ module.exports.loop = function() {
                         if (combinedResources[n] == RESOURCE_ENERGY) {
                             packetSize = global.RBS_PACKETSIZE * 2;
                         }
+                        //  if(Game.rooms[r].name == 'W59S4' ) {
+                        //         console.log( (_.sum(Game.rooms[r].terminal.store) >= Game.rooms[r].terminal.storeCapacity * 0.70 ))
+                        //  }
                         //no ongoing transfer, terminal has capacity, delta in sourceroom is more than 10% of maxStorage, sourceroom has more than packetSize
-                        if (Game.rooms[r].memory.terminalTransfer == undefined && (_.sum(Game.rooms[r].terminal.store) >= Game.rooms[r].terminal.storeCapacity * 0.70 &&
-                            (storageDelta >= (Game.rooms[r].memory.resourceLimits[combinedResources[n]].maxStorage * 0.1) && packetSize <= Game.rooms[r].storage.store[combinedResources[n]] && storageDelta <= Game.rooms[r].storage.store[combinedResources[n]]))) {
+                        if (Game.rooms[r].memory.terminalTransfer == undefined &&
+                            // (storageDelta >= (Game.rooms[r].memory.resourceLimits[combinedResources[n]].maxStorage * 0.1) && packetSize <= Game.rooms[r].storage.store[combinedResources[n]] && storageDelta <= Game.rooms[r].storage.store[combinedResources[n]])) {
+                            (storageDelta >= (Game.rooms[r].memory.resourceLimits[combinedResources[n]].maxStorage * 0.1) && storageDelta <= Game.rooms[r].storage.store[combinedResources[n]])) {
                             // Resource can be shared with other rooms if their maxStorage is not reached yet
+                        //     if(Game.rooms[r].name == 'W59S4' ) {
+                        //         console.log(Game.rooms[r].memory.terminalTransfer == undefined && (_.sum(Game.rooms[r].terminal.store) >= Game.rooms[r].terminal.storeCapacity * 0.70 ))
+                        //      console.log(combinedResources[n] + ' - ' + Game.rooms[r].memory.resourceLimits[combinedResources[n]].maxStorage + ' - ' + storageDelta + ' - packetsize - ' +  packetSize + ' - store - ' + Game.rooms[r].storage.store[combinedResources[n]] )
+                        //  }
                             checkedResources.push(n);
                             let recipientRooms = [];
                             let fullRooms = [];
@@ -380,7 +424,10 @@ module.exports.loop = function() {
     if (CPUdebug == true) {CPUdebugString = CPUdebugString.concat("<br>Start cycling through rooms: " + Game.cpu.getUsed())}
         // Cycle through rooms
         for (var r in Game.rooms) {
-          var roomFactory = Game.rooms[r].factory();
+            if(Game.rooms[r].controller != undefined && Game.rooms[r].controller.my) {
+                // Game.rooms[r].controller.sign();
+            }
+        //   var roomFactory = Game.rooms[r].factory();
           // console.log(roomFactory.summary);
             //Save hostile creeps in room
             let roomCreeps = Game.rooms[r].find(FIND_MY_CREEPS);
@@ -686,19 +733,23 @@ module.exports.loop = function() {
                             let delta = Math.ceil((Game.rooms[r].memory.resourceLimits[resource].minProduction - storageLevel)/10)*10;
                             if(delta > 3000) {delta =3000;}
                             //delta is bigger than 20% of minProduction or more than 3000
+                            
                             if (delta >= Game.rooms[r].memory.resourceLimits[resource].minProduction * 0.2 || delta >= 3000) {
                                 let genuineDelta = delta;
                                 //determine components missing, try to make missing components
                                 var productionTarget = whatIsLackingFor(Game.rooms[r], delta, resource);
                                 let minProductionPacketSize = 100;
-
+                                // console.log(r + ' - ' + resource + ' - '+ JSON.stringify(productionTarget))
                                 while (global.mineralDescriptions[productionTarget.resource].tier > 0 && Game.rooms[r].memory.labTarget == undefined && Game.cpu.getUsed() < 250) {
                                     if (productionTarget.amount == 0) {
                                         productionTarget.amount = genuineDelta;
                                     }
+                                    // console.log(r + ' - ' + productionTarget.resource + ' - ' + global.mineralDescriptions[productionTarget.resource].component1 + ' - '+ Game.rooms[r].storage.store[global.mineralDescriptions[productionTarget.resource].component1]);
+                                    // console.log(r + ' - ' + productionTarget.resource + ' - ' + global.mineralDescriptions[productionTarget.resource].component2 + ' - '+ Game.rooms[r].storage.store[global.mineralDescriptions[productionTarget.resource].component2]);
                                     if (Game.rooms[r].storage.store[global.mineralDescriptions[productionTarget.resource].component1] >= minProductionPacketSize &&
                                         Game.rooms[r].storage.store[global.mineralDescriptions[productionTarget.resource].component2] >= minProductionPacketSize) {
                                         //All components ready, start production
+                                        console.log(r + ' - ' + resource + ' - '+ delta);
                                         let reactionAmount = Math.min(Game.rooms[r].storage.store[global.mineralDescriptions[productionTarget.resource].component1], Game.rooms[r].storage.store[global.mineralDescriptions[productionTarget.resource].component2]);
                                         if (reactionAmount > genuineDelta) {
                                             reactionAmount = genuineDelta;
@@ -708,10 +759,10 @@ module.exports.loop = function() {
                                             console.log("<font color=#ffca33 type='highlight'>Room " + Game.rooms[r].name + " started auto production of " + reactionAmount + " " + productionTarget.resource + ".</font>");
                                         }
                                     }
-                                    else if (Game.rooms[r].storage.store[global.mineralDescriptions[productionTarget.resource].component1] < minProductionPacketSize) {
+                                    else if ( Game.rooms[r].storage.store[global.mineralDescriptions[productionTarget.resource].component1] == undefined || Game.rooms[r].storage.store[global.mineralDescriptions[productionTarget.resource].component1] < minProductionPacketSize) {
                                         resource = global.mineralDescriptions[productionTarget.resource].component1;
                                     }
-                                    else if (Game.rooms[r].storage.store[global.mineralDescriptions[productionTarget.resource].component2] < minProductionPacketSize) {
+                                    else if ( Game.rooms[r].storage.store[global.mineralDescriptions[productionTarget.resource].component2] == undefined || Game.rooms[r].storage.store[global.mineralDescriptions[productionTarget.resource].component2] < minProductionPacketSize) {
                                         resource = global.mineralDescriptions[productionTarget.resource].component2;
                                     }
                                     productionTarget = whatIsLackingFor(Game.rooms[r], genuineDelta, resource);
@@ -827,7 +878,9 @@ module.exports.loop = function() {
                             if (labOrder[3] == "running") {
                                 // Reaction can be started
                                 for (var lab in Game.rooms[r].memory.roomArray.labs) {
-                                    if ((Game.rooms[r].memory.boostLabs == undefined || Game.rooms[r].memory.boostLabs.indexOf(Game.rooms[r].memory.roomArray.labs[lab]) == -1) && Game.rooms[r].memory.roomArray.labs[lab] != innerLabs[0].labID && Game.rooms[r].memory.roomArray.labs[lab] != innerLabs[1].labID) {
+                                    // if (Game.rooms[r].memory.boostLabs != undefined) { console.log(lab)}
+                                    // if(r == 'W58S3') { console.log(Game.rooms[r].memory.boostLabs[Game.rooms[r].memory.roomArray.labs[lab]]) }
+                                    if ((Game.rooms[r].memory.boostLabs == undefined || Game.rooms[r].memory.boostLabs[Game.rooms[r].memory.roomArray.labs[lab]] == undefined) && Game.rooms[r].memory.roomArray.labs[lab] != innerLabs[0].labID && Game.rooms[r].memory.roomArray.labs[lab] != innerLabs[1].labID) {
                                         if (Game.getObjectById(innerLabs[0].labID).mineralAmount > 4 && Game.getObjectById(innerLabs[1].labID).mineralAmount > 4) {
                                             //Still enough material to do a reaction
                                             var currentLab = Game.getObjectById(Game.rooms[r].memory.roomArray.labs[lab]);
@@ -1121,7 +1174,7 @@ module.exports.loop = function() {
                             creep.roleScientist();
                         }
                         else if (creep.memory.role == 'transporter') {
-                            creep.run();
+                            creep.roleTransporter();
                         }
                         else if (creep.memory.role == 'bigUpgrader') {
                             creep.roleUpgrader();

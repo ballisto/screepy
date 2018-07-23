@@ -55,12 +55,15 @@ module.exports = {
         minimumSpawnOf["SKHarvester"] = 0;
         minimumSpawnOf["SKHauler"] = 0;
         minimumSpawnOf["energyTransporter"] = 1;
-        if(spawnRoom.name == 'W57S4') {
-          minimumSpawnOf["attacker"] = 1;
-          // minimumSpawnOf["healer"] = 1;
-          // minimumSpawnOf["distributor"] = 1;
-          minimumSpawnOf["transporter"] = 3;
+        if(spawnRoom.name == 'W58S2') {
+        //   minimumSpawnOf["attacker"] = 1;
+        //   // minimumSpawnOf["healer"] = 1;
+        //   // minimumSpawnOf["distributor"] = 1;
+        //   minimumSpawnOf["transporter"] = 4;
         }
+        // if(spawnRoom.name == 'W57S2') {
+        //   minimumSpawnOf["transporter"] = 1;
+        // }
 
         let myFlags = _.filter(Game.flags,{ memory: { spawn: spawnRoom.memory.masterSpawn}});
 
@@ -158,23 +161,41 @@ module.exports = {
         if (minimumSpawnOf.builder > Math.ceil(numberOfSources * 1.5)) {
             minimumSpawnOf.builder = Math.ceil(numberOfSources * 1.5);
         }
+        // if(spawnRoom.name == 'W57S2') {minimumSpawnOf.builder = 1;}
 
         // Upgrader
-        if (spawnRoom.controller.level == 8) {
+        if (spawnRoom.controller.ticksToDowngrade < 10000) {
+            minimumSpawnOf.upgrader = 1;
+        }
+        else if (spawnRoom.controller.level == 8) {
           minimumSpawnOf.upgrader = 0;
-            if(spawnRoom.name == 'W57S4') {minimumSpawnOf.upgrader = 1;}
+            // if(spawnRoom.name == 'W57S2') {minimumSpawnOf.upgrader = 1;}
           
-            if (spawnRoom.controller.ticksToDowngrade < 50000 || spawnRoom.storage.store[RESOURCE_ENERGY] > 350000) {
+            if (spawnRoom.controller.ticksToDowngrade < 50000 || spawnRoom.totalResourceInStock(RESOURCE_ENERGY) > 250000) {
                 minimumSpawnOf.upgrader = 1;
             }
         }
         else {
-            if (spawnRoom.controller.ticksToDowngrade < 50000 || spawnRoom.storage.store[RESOURCE_ENERGY] > 250000 || spawnRoom.controller.level < 7) {
-            minimumSpawnOf["upgrader"] = 2;
+            if(spawnRoom.totalResourceInStock(RESOURCE_ENERGY) > 150000) {
+                minimumSpawnOf["upgrader"] = 3;
+            }
+            else if(spawnRoom.totalResourceInStock(RESOURCE_ENERGY) > 75000) {
+                minimumSpawnOf["upgrader"] = 2;
+            }
+            else if(spawnRoom.totalResourceInStock(RESOURCE_ENERGY) > 25000) {
+                minimumSpawnOf["upgrader"] = 1;
+            }
+            else {
+               minimumSpawnOf.upgrader = 0; 
             }
         }
+        // if(spawnRoom.name == 'W56S3') {minimumSpawnOf.upgrader = 3;}
         //Wall Repairer
-        if (spawnRoom.memory.roomSecure == true && constructionOfRampartsAndWalls == 0) {
+        // if(spawnRoom.memory.border != undefined && spawnRoom.memory.border == true) { console.log(spawnRoom.memory.border);}
+        if(spawnRoom.memory.border != undefined && spawnRoom.memory.border == true) {
+                minimumSpawnOf["wallRepairer"] = 1;
+        }
+        else if (spawnRoom.memory.roomSecure == true && constructionOfRampartsAndWalls == 0) {
             minimumSpawnOf["wallRepairer"] = 0;
         }
         else {
@@ -183,6 +204,7 @@ module.exports = {
         }
         // Distributor
         if (spawnRoom.memory.terminalTransfer != undefined) {
+            // console.log(spawnRoom.name);
             //ongoing terminal transfer
             minimumSpawnOf["distributor"] = 1;
         }
@@ -198,6 +220,7 @@ module.exports = {
         // EnergyTransporter, Harvester & Repairer
         //minimumSpawnOf["energyTransporter"] = minimumSpawnOf.stationaryHarvester;
         minimumSpawnOf["harvester"] = Math.ceil(1) - minimumSpawnOf.energyTransporter;
+        if(spawnRoom.name == 'W56S3') {minimumSpawnOf.harvester = 1;}
         if(spawnRoom.controller.level < 4){
           minimumSpawnOf["repairer"] = Math.ceil(numberOfSources * 0.5);
         }

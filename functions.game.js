@@ -168,7 +168,7 @@ global.listStorages = function (displayResource) {
 
     //Prepare header row
     for (var r in global.myRooms) {
-        if (Game.rooms[r].storage != undefined && Game.rooms[r].storage.owner.username == global.playerUsername) {
+        if (Game.rooms[r].storage != undefined && Game.rooms[r].storage.store != undefined && Game.rooms[r].storage.owner.username == global.playerUsername) {
             returnstring = returnstring.concat("<th>" + Game.rooms[r].name + "  </th>");
             for (var res in global.myRooms[r].storage.store) {
                 if (resourceTable.indexOf(res) == -1) {
@@ -490,6 +490,10 @@ global.buy = function (orderID, amount) {
     if (order == null) {
         return "Invalid order ID!"
     }
+    if (arguments.length == 1) {
+        amount = order.amount;
+        
+    }
 
     if (order.remainingAmount < amount) {
         return "Order does not contain enough material!"
@@ -681,7 +685,7 @@ global.delBoostLab = function (labId) {
         return "delBoostLab (labId)";
     }
     labObject = Game.getObjectById(labId);
-    if (labObject instanceof Lab) {
+    if (labObject instanceof StructureLab) {
       tmpRoomBoostLabs = labObject.room.getBoostLabs();
       if(tmpRoomBoostLabs[labId] != undefined) {
         delete labObject.room.memory.boostLabs[labId];

@@ -16,6 +16,7 @@ operator.run = function() {
   operator.steal();
   operator.supportTransport();
   operator.unloadSourceContainers();
+  operator.loadProxyContainers();
 };
 
 operator.loadEnergy = function() {
@@ -33,14 +34,25 @@ operator.loadEnergy = function() {
     }
   }
 };
+operator.loadProxyContainers = function() {
+  var allRooms = _.filter(Game.rooms, (r) => r.controller != undefined && r.controller.my);
+  for(const r in allRooms) {
+    var targetContainers = _.filter(allRooms[r].find(FIND_STRUCTURES), (s) => s.structureType == STRUCTURE_CONTAINER && !s.isHarvesterStorage() && s.spaceLeft() >= 500 && !jobs.jobForStructureExists(s.id, jobTemplates.transferResource.task ) );
+    for(const c in targetContainers) {
+      jobs.addJobWithTemplate(jobTemplates.transferResource, targetContainers[c].id, RESOURCE_ENERGY, targetContainers[c].storeCapacity);
+    }
+  }
+
+};
 
 operator.loadLabs = function() {
   //load boost labs
   for ( const r in Game.rooms) {
     for (const l in Game.rooms[r].getBoostLabs()) {
       const curLabObject = Game.getObjectById(l);
-      if(curLabObject != undefined && !jobs.jobForStructureExists(l, jobTemplates.transferResource.task) && (curLabObject.mineralCapacity - curLabObject.mineralAmount) > 150) {
-        jobs.addJobWithTemplate(jobTemplates.transferResource, l, Memory.rooms[r].boostLabs[l], curLabObject.mineralCapacity - curLabObject.mineralAmount);
+      const mineralAmountNeeded = curLabObject.mineralCapacity - curLabObject.mineralAmount;
+      if(curLabObject != undefined && !jobs.jobForStructureExists(l, jobTemplates.transferResource.task) && (curLabObject.mineralCapacity - curLabObject.mineralAmount) > 150 && Game.rooms[r].totalResourceInStock(Memory.rooms[r].boostLabs[l]) >= mineralAmountNeeded) {
+        jobs.addJobWithTemplate(jobTemplates.transferResource, l, Memory.rooms[r].boostLabs[l], mineralAmountNeeded );
       }
     }
   }
@@ -64,7 +76,7 @@ operator.unLoadLabs = function() {
 };
 
 operator.steal = function() {
-  if(Game.rooms['W57S3'] != undefined && Game.rooms['W57S3'].storage != undefined ) {
+  if(false) {
     var targetStorage = Game.rooms['W57S3'].storage;
     if(_.sum(targetStorage.store) > 0 && targetStorage.room.isSafe()) {
       var resourceArray = [];
@@ -86,7 +98,7 @@ operator.steal = function() {
 };
 
 operator.supportTransport = function() {
-  var roomsUnderSix = _.filter(Game.rooms, (r) => r.controller.level < 6 && r.controller.my);
+  var roomsUnderSix = _.filter(Game.rooms, (r) => r.controller!= undefined && r.controller.level < 6 && r.controller.my);
   for (const r in roomsUnderSix) {
     // var structureWithSpaceInRoom = _.sortBy(roomsUnderSix[r].findSpace(), function(s) { return s.spaceLeft();});
     var structureWithSpaceInRoom = roomsUnderSix[r].findSpace();
@@ -132,7 +144,7 @@ operator.unloadLinkDrain = function() {
 operator.unloadSourceContainers = function() {
   var allRooms = _.filter(Game.rooms, (r) => r.controller != undefined && r.controller.my);
   for(const r in allRooms) {
-    var sourceContainers = _.filter(allRooms[r].find(FIND_STRUCTURES), (s) => s.structureType == STRUCTURE_CONTAINER && s.isHarvesterStorage && s.store[RESOURCE_ENERGY] > s.storeCapacity * 0.5 && !jobs.jobForStructureExists(s.id, jobTemplates.withdrawResource.task ) );
+    var sourceContainers = _.filter(allRooms[r].find(FIND_STRUCTURES), (s) => s.structureType == STRUCTURE_CONTAINER && s.isHarvesterStorage() && s.store[RESOURCE_ENERGY] > s.storeCapacity * 0.5 && !jobs.jobForStructureExists(s.id, jobTemplates.withdrawResource.task ) );
     for(const c in sourceContainers) {
       jobs.addJobWithTemplate(jobTemplates.withdrawResource, sourceContainers[c].id, RESOURCE_ENERGY, 0);
     }

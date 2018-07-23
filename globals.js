@@ -45,10 +45,10 @@ global.DELAYLAB = 10;
 global.DELAYRCL8INSTALLATION = 100;
 global.DELAYDROPPEDENERGY = 3;
 global.RESOURCE_SPACE = "space";
-global.TERMINAL_PACKETSIZE = 2500; //Size of packets in resource balancing system
+global.TERMINAL_PACKETSIZE = 7500; //Size of packets in resource balancing system
 global.AUTOSELL_PACKETSIZE = 5000;
 global.TERMINALMARKETSTORE = 50000;
-global.RBS_PACKETSIZE = 5000;
+global.RBS_PACKETSIZE = 1000;
 global.CPU_THRESHOLD = 500;
 global.WALLMAX = 5500000;
 global.MINSURPLUSENERGY = 100000;
@@ -307,28 +307,28 @@ global.buildingPlans = {
         },
         {
             //Level 4 (max 1300)
-            minEnergy: 850,
-            body: [MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY]
+            minEnergy: 950,
+            body: [MOVE, MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY]
         },
         {
             //Level 5 (max 1800)
-            minEnergy: 850,
-            body: [MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY]
+            minEnergy: 950,
+            body: [MOVE, MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY]
         },
         {
             //Level 6 (max 2300)
-            minEnergy: 850,
-            body: [MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY]
+            minEnergy: 950,
+            body: [MOVE, MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY]
         },
         {
             //Level 7 (max 5600)
-            minEnergy: 850,
-            body: [MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY]
+            minEnergy: 950,
+            body: [MOVE, MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY]
         },
         {
             //Level 8 (max 12900)
-            minEnergy: 850,
-            body: [MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY]
+            minEnergy: 950,
+            body: [MOVE, MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY]
         }],
 
     upgrader: [
@@ -833,13 +833,13 @@ global.buildingPlans = {
         },
         {
             //Level 6 (max 2300)
-            minEnergy: 900,
-            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE]
+            minEnergy: 1050,
+            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE]
         },
         {
             //Level 7 (max 5600)
-            minEnergy: 900,
-            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE]
+            minEnergy: 1050,
+            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE]
         },
         {
             //Level 8 (max 12900)

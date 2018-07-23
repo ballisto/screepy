@@ -15,7 +15,9 @@ Creep.prototype.roleBuilder = function () {
         // if creep is trying to complete a constructionSite but has no energy left
         if (this.carry.energy == 0) {
             // switch state
-            this.memory.working = false;
+            if(this.storeAllBut()) {
+                this.memory.working = false;
+            }
         }
         // if creep is harvesting energy but is full
         else if (this.memory.working == false && this.carry.energy == this.carryCapacity) {

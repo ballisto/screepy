@@ -77,7 +77,7 @@ Creep.prototype.roleScientist = function() {
                     var lab;
                     for (var c in this.room.memory.roomArray.labs) {
                         lab = Game.getObjectById(this.room.memory.roomArray.labs[c]);
-                        if ((this.room.memory.boostLabs == undefined || this.room.memory.boostLabs.indexOf(lab.id) == -1) && lab.mineralAmount > 0 && lab.id != innerLabs[0].labID && lab.id != innerLabs[1].labID) {
+                        if ((this.room.memory.boostLabs == undefined || this.room.memory.boostLabs[lab.id] == undefined) && lab.mineralAmount > 0 && lab.id != innerLabs[0].labID && lab.id != innerLabs[1].labID) {
                             if (_.sum(this.carry) < this.carryCapacity) {
                                 if (this.withdraw(lab, lab.mineralType) == ERR_NOT_IN_RANGE) {
                                     this.moveTo(lab);

@@ -2,6 +2,21 @@ Creep.prototype.roleCollector = function() {
     // check for picked up minerals
     if (this.memory.statusHarvesting == undefined || this.memory.statusHarvesting == false) {
         var container;
+        // var droppedResources = this.room.find(FIND_DROPPED_RESOURCES);
+        // if(droppedResources != undefined && droppedResources.length > 0) {
+        //     for(const r in droppedResources) {
+        //         if(droppedResources[r].resourceType == RESOURCE_ENERGY ) {
+        //             if(this.pickup(droppedResources[r]) != OK) {
+        //                 this.moveTo(droppedResources[r]);
+        //                 return true;
+        //             }
+        //             else {
+        //                 return true;
+        //             }
+        //         }
+        //     }
+        // }
+        
         if (this.memory.role == "harvester" || this.memory.role == "energyTransporter" || this.memory.role == "distributor" || this.memory.role == "scientist") {
             // find closest container with energy
             if (this.room.energyCapacityAvailable > this.room.energyAvailable) {

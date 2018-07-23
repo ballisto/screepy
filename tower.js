@@ -2,101 +2,114 @@ module.exports = {
 
     //TOWER CODE
     defendMyRoom: function(roomIndex) {
+            const room = Game.rooms[roomIndex];
+            var towers = _.filter(Game.structures, (a) => a.room.name == roomIndex && a.structureType == STRUCTURE_TOWER);
 
-            var towers = [];
-            for (let t in Game.rooms[roomIndex].memory.roomArray.towers) {
-                towers.push(Game.getObjectById(Game.rooms[roomIndex].memory.roomArray.towers[t]));
+            let damagedStructures = _.filter(room.find(FIND_MY_STRUCTURES), (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL && s.structureType != STRUCTURE_RAMPART);
+            damagedStructures = damagedStructures.concat(_.filter(room.find(FIND_STRUCTURES), (s) => s.hits < s.hitsMax && (s.structureType == STRUCTURE_ROAD || s.structureType == STRUCTURE_CONTAINER) ));
+            var maxDamagedStructure = null;
+            if(damagedStructures.length > 0) {
+                maxDamagedStructure = _.max(damagedStructures, (s) => s.hitsMax - s.hits);
             }
+            // if(roomIndex == 'W58S2'){console.log(maxDamagedStructure);}
+            
+            // console.log(sortedDamagedStructures)
+            
+            let ramparts = room.find(FIND_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_RAMPART && s.hits < s.hitsMax && s.hits < 10000000});
+            let weakRamparts = room.find(FIND_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_RAMPART && s.hits < s.hitsMax && s.hits < 100000});
+            ramparts = _.sortBy(ramparts,"hits");
 
-            if (Game.rooms[roomIndex].memory.hostiles.length > 0) {
-                let hostiles = [];
-                for (let h in Game.rooms[roomIndex].memory.hostiles) {
-                    hostiles.push(Game.getObjectById(Game.rooms[roomIndex].memory.hostiles[h]));
+            var wallsAndRamparts = room.find(FIND_STRUCTURES, {filter: (s) => (s.structureType == STRUCTURE_WALL || s.structureType == STRUCTURE_RAMPART)  && s.hits < s.hitsMax && s.hits < 10000000});
+            wallsAndRamparts = _.sortBy(wallsAndRamparts,"hits");
+            
+            const nukes = room.find(FIND_NUKES);
+            
+            const sortedNukes = _.sortBy(nukes, (object) => {
+                return object.timeToLand;
+            });
+            
+            let wounded = Game.rooms[roomIndex].find(FIND_MY_CREEPS, {filter: (s) => s.hits < s.hitsMax });
+            
+            var repairTarget = null;
+
+            const hostiles = room.hostileCreeps();
+            if(hostiles.length > 0) {         
+            
+                for (var t in towers) {
+                    towers[t].attack(hostiles[0]);
                 }
-
+                return true;
+            }
+            
+            else if (wounded.length > 0) {
+                // Tower healing code
                 for (var tower in towers) {
-                    // Tower attack code
-                    var maxAttackBodyParts = 0;
-                    var AttackBodyParts = 0;
-                    var attackingInvader = undefined;
-
-                    for (var h in hostiles) {
-                        AttackBodyParts = 0;
-                        for (var part in hostiles[h].body) {
-                            if (hostiles[h].body[part].type == ATTACK) {
-                                //Healing body part found
-                                AttackBodyParts++;
+                    let towerTarget = towers[tower].pos.findClosestByRange(wounded);
+                    towers[tower].heal(towerTarget);
+                }
+                return true;
+            }
+            
+            else if (sortedNukes.length > 0) {
+                for(const n in sortedNukes) {
+                    let structuresOnNukePos = sortedNukes[n].pos.lookFor(LOOK_STRUCTURES);
+                    let rampartsOnNukePos = _.filter(structuresOnNukePos, function (s) { return s.structureType == STRUCTURE_RAMPART && s.hits <= 11000000});
+                    if(rampartsOnNukePos.length > 0) {
+                        repairTarget = rampartsOnNukePos[0];                                
+                    }
+                    else {
+                        const structuresInRange = sortedNukes[n].pos.findInRange(FIND_STRUCTURES, 4);
+                        const sortedStructuresInRange = _.sortBy(structuresInRange, (s) => s.defensePriority());
+                        const rampartsInRange = _.filter(sortedStructuresInRange, (s) => s.structureType == STRUCTURE_RAMPART);
+                        
+                        for(const r in rampartsInRange) {
+                            if(rampartsInRange[r].hits < 6000000) {
+                                repairTarget = rampartsInRange[r];
+                                break;                                        
                             }
                         }
-
-                        if (AttackBodyParts > maxAttackBodyParts) {
-                            maxAttackBodyParts = AttackBodyParts;
-                            attackingInvader = hostiles[h].id;
-                        }
-                    }
-
-                    if (hostiles.length > 0) {
-                        let towerTarget = towers[tower].pos.findClosestByRange(hostiles);
-                        if (towerTarget != null) {
-                            if(tower.room = "W58S4" && towerTarget.pos.y == 0) {}
-                            else {
-                              towers[tower].attack(towerTarget);
-                          }
-                        }
                     }
                 }
             }
-            else {
-                var wounded = Game.rooms[roomIndex].find(FIND_CREEPS, {filter: (s) => s.hits < s.hitsMax && isHostile(s) == false});
-                if (wounded.length > 0) {
-                    // Tower healing code
-                    for (var tower in towers) {
-                        let towerTarget = towers[tower].pos.findClosestByRange(wounded);
-                        towers[tower].heal(towerTarget);
+                      
+            else if(maxDamagedStructure != undefined) {
+                repairTarget = maxDamagedStructure;
+            }
+            
+            else if(weakRamparts.length > 0) {
+                repairTarget = weakRamparts[0];
+            }
+            
+            else if(room.storage != undefined && room.storage.store[RESOURCE_ENERGY] > 50000 && ramparts.length > 0) {
+                let structures = room.find(FIND_MY_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_NUKER || s.structureType == STRUCTURE_TERMINAL || s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_TOWER || s.structureType == STRUCTURE_STORAGE});
+                sortedCriticalStructures = _.sortBy(structures, (s) => s.defensePriority());
+                for (let s in sortedCriticalStructures) {
+                    let foundStructures = sortedCriticalStructures[s].pos.lookFor(LOOK_STRUCTURES);
+                    foundStructures = foundStructures.concat(sortedCriticalStructures[s].pos.lookFor(LOOK_CONSTRUCTION_SITES));
+                    let criticalRamparts = _.filter(foundStructures, function (s) { return s.structureType == STRUCTURE_RAMPART && s.hits <= 6000000});
+                    let sortedCriticalRamparts = _.sortBy(criticalRamparts, (r) => r.hits);
+                    
+                    // console.log(criticalRamparts)
+                    if (criticalRamparts.length > 0) {
+                        repairTarget = sortedCriticalRamparts[0];
+                        break;
                     }
                 }
-                else {
-                  for(var i in towers){
-                       //...repair Buildings! :) But ONLY until HALF the energy of the tower is gone.
-                       //Because we don't want to be exposed if something shows up at our door :)
-                       if(towers[i].energy > ((towers[i].energyCapacity / 10)* 7)){
-
-                           //Find the closest damaged Structure
-                           var closestDamagedStructure = towers[i].pos.findClosestByRange(FIND_STRUCTURES, {filter: (s) => s.hits < s.hitsMax && s.structureType != STRUCTURE_WALL && s.structureType != STRUCTURE_RAMPART});
-                           if(!closestDamagedStructure) {
-                             if(towers[i].room.storage != undefined && towers[i].room.storage.store[RESOURCE_ENERGY] > 50000) {
-                               //var closestDamagedStructure = towers[i].pos.findClosestByRange(FIND_STRUCTURES, {filter: (s) => s.hits < s.hitsMax});
-                               var target = undefined;
-                               var ramparts = Game.rooms[roomIndex].find(FIND_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_RAMPART});
-                               ramparts = _.sortBy(ramparts,"hits");
-
-                               var walls = Game.rooms[roomIndex].find(FIND_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_WALL});
-                               walls = _.sortBy(walls,"hits");
-
-                               if (walls.length > 0 && ((ramparts[0] != undefined && walls[0].hits < ramparts[0].hits) || (ramparts.length == 0))) {
-                                   target = walls[0];
-                               }
-                               else if (ramparts.length > 0) {
-                                   target = ramparts[0];
-                               }
-
-                               // if we find a wall that has to be repaired
-                               if (target != undefined && target.hits < 100000) {
-                                   var result = towers[i].repair(target);
-                                 }
-                               else if (towers[i].room.storage.store[RESOURCE_ENERGY] > 250000 && target != undefined && target.hits < 10000000) {
-                                   var result = towers[i].repair(target);
-                                 }
-                              }
-                           }
-           	              if(closestDamagedStructure) {
-           	 	            towers[i].repair(closestDamagedStructure);
-                          // console.log("The tower is repairing buildings.");
-                           }
-
-                       }
-                   }
-                }
             }
+            else if(room.storage != undefined && room.storage.store[RESOURCE_ENERGY] > 350000 && wallsAndRamparts.length > 0) {
+                repairTarget = wallsAndRamparts[0];
+            }
+            
+            // Repair if target found
+            if(repairTarget != undefined) {
+                for(var i in towers){
+                    if(towers[i].energy > (towers[i].energyCapacity / 10)* 5) {
+                        towers[i].repair(repairTarget);
+                    }
+                }  
+                return true;
+            }
+            
+        
             }
         };

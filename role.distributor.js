@@ -2,9 +2,10 @@ Creep.prototype.roleDistributor = function() {
     if(this.room.memory != undefined && this.room.memory.roomArray != undefined && this.room.memory.roomArray.nukers != undefined) {
       var nuker = Game.getObjectById(this.room.memory.roomArray.nukers[0]);
     }
-    var curAssignment = polier.getCurTaskForCreep(this.id);
-    if( curAssignment != undefined ) { this.run(); }
-    else {
+    // var curAssignment = polier.getCurTaskForCreep(this.id);
+    // if( curAssignment != undefined ) { this.run(); }
+    // else
+    {
       if (this.room.memory.terminalTransfer != undefined) {
           //ongoing terminal transfer
           if (_.sum(this.carry) > 0) {

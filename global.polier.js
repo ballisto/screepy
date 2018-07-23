@@ -136,7 +136,7 @@ polier.findCandidatesForJob = function(jobData) {
   }
   else {
     if(jobData.job != undefined && (jobData.job == 'steal' || jobData.job == 'supportTransport')) {
-      var creepsInRoom = _.filter(Game.creeps, (c) => (c.ticksToLive > 700 && c.room.name == targetStructure.room.name || c.room.supportRooms().includes(targetStructure.room) || (c.room.name == 'W57S4' && targetStructure.room.name == 'W57S3' ) ) && !c.spawning && config.polier.rolesToAssign.includes(c.role()));
+      var creepsInRoom = _.filter(Game.creeps, (c) => c.ticksToLive > 300 && c.room.supportRooms().includes(targetStructure.room) && !c.spawning && config.polier.rolesToAssign.includes(c.role()));
     }
     else {
       var creepsInRoom = _.filter(Game.creeps, (c) => c.room.name == targetStructure.room.name && !c.spawning && config.polier.rolesToAssign.includes(c.role()));

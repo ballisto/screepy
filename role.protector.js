@@ -16,7 +16,7 @@ Creep.prototype.roleProtector = function() {
     else if (protectorFlag != undefined && protectorFlag.memory.volume > 0) {
         //Move to flag if not there
         let range = this.pos.getRangeTo(protectorFlag);
-        if (range > 5) {
+        if (range > 2) {
             this.moveTo(protectorFlag, {ignoreCreeps: false, reusePath: moveReusePath()});
         }
     }

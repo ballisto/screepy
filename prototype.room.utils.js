@@ -1,7 +1,7 @@
 'use strict';
 
 Room.prototype.supportRooms = function() {
-  return _.filter(Game.rooms, (r) => this.totalResourceInStock(RESOURCE_ENERGY) > 100000 && r.controller.level < 6 && r.controller.my &&  (Game.map.getRoomLinearDistance(this.name,r.name) < 3));
+  return _.filter(Game.rooms, (r) => this.totalResourceInStock(RESOURCE_ENERGY) > 100000 && r.controller.level < 7 && r.controller.my &&  (Game.map.getRoomLinearDistance(this.name,r.name) < 3));
 }
 
 Room.structureHasEnergy = (structure) => structure.store && structure.store.energy || structure.energy;

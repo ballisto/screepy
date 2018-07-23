@@ -20,8 +20,12 @@ Creep.prototype.roleClaimer = function() {
 
         if (this.room.memory.hostiles.length == 0) {
             // try to claim the controller
-            if (this.room.controller.owner == undefined) {
-                if (remoteControllerFlag.memory.claim == 1) {
+            if (this.room.controller != undefined && this.room.controller.owner == undefined) {
+                
+                if(this.room.controller.sign == undefined || this.room.controller.sign.username != global.playerUsername) {
+                    returncode = this.signController(this.room.controller, "#nucularDiplomacy  --> https://www.youtube.com/watch?v=OoASZyihalc");
+                }
+                else if (remoteControllerFlag.memory.claim == 1) {
                     returncode = this.claimController(this.room.controller);
                 }
                 else {
