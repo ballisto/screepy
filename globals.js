@@ -60,7 +60,7 @@ global.LOG_PANICFLAG = true;
 global.LOG_INFO = true;
 
 global.playerUsername = global.playerUsername || _.chain(Game.rooms).map('controller').flatten().filter('my').map('owner.username').first().value();
-global.allies = [""];
+global.allies = ["Kamots","Conventia"];
 //global.myroomlist = _.filter(Game.rooms, {controller: { owner: { username: global.playerUsername}}});
 global.myroomlist = _.values(Game.rooms).filter (r => _.get(r, ['controller','owner','username'],undefined) === global.playerUsername);
 global.myRooms = {};
@@ -1141,7 +1141,7 @@ global.buildingPlans = {
             body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL]
         }],
 
-    einarr: [
+einarr: [
         {
             //Level 1 (max 300)
             minEnergy: 260,
@@ -1169,17 +1169,17 @@ global.buildingPlans = {
         },
         {
             //Level 6 (max 2100)
-            minEnergy: 1910,
-            body: [TOUGH, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, HEAL, HEAL, HEAL, HEAL]
+            minEnergy: 1840,
+            body: [TOUGH,TOUGH,TOUGH,TOUGH,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,MOVE,MOVE,HEAL,HEAL]
         },
         {
             //Level 7 (max 5600)
-            minEnergy: 5220,
-            body: [TOUGH, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL]
+            minEnergy: 2800,
+            body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL]
         },
         {
             //Level 8 (max 12900)
-            minEnergy: 5220,
-            body: [TOUGH, HEAL, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, ATTACK, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, HEAL, MOVE, MOVE]
+            minEnergy: 2800,
+            body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL]
         }]
 };

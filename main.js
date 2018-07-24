@@ -30,16 +30,16 @@ module.exports.loop = function() {
 //   jobs.resetMemory();
 //   polier.resetMemory();
   
-//   if(_.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W56S3' && c.memory.role != undefined && c.memory.role == 'builder' ).length <= 1 &&
-//       _.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W57S2' && c.memory.role != undefined && (c.memory.role == 'upgrader' || c.memory.role == 'builder') ).length > 0) {
-//         var upgradersToSwitch = _.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W57S2' && c.memory.role != undefined && (c.memory.role == 'upgrader' || c.memory.role == 'builder') );
-//         for ( var u in upgradersToSwitch) {
-//           upgradersToSwitch[u].memory.homeroom = 'W56S3';
-//           upgradersToSwitch[u].memory.role = 'builder';
-//           upgradersToSwitch[u].memory.spawn = Game.rooms['W56S3'].controller.id;
-//           upgradersToSwitch[u].memory.foreign = 'true';
-//         }
-//   }
+  if(_.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W52S3' && c.memory.role != undefined && c.memory.role == 'harvester' ).length <= 2 &&
+      _.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W56S3' && c.memory.role != undefined && (c.memory.role == 'harvester') ).length > 0) {
+        var upgradersToSwitch = _.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W56S3' && c.memory.role != undefined && ( c.memory.role == 'harvester') );
+        for ( var u in upgradersToSwitch) {
+          upgradersToSwitch[u].memory.homeroom = 'W52S3';
+          upgradersToSwitch[u].memory.role = 'harvester';
+          upgradersToSwitch[u].memory.spawn = Game.rooms['W52S3'].controller.id;
+          upgradersToSwitch[u].memory.foreign = 'true';
+        }
+  }
 
 //   if(_.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W59S3' && c.memory.role != undefined && c.memory.role == 'builder' ).length <= 1 &&
 //       _.filter(Game.creeps, (c) => c.memory.homeroom != undefined && c.memory.homeroom == 'W58S3' && c.memory.role != undefined && (c.memory.role == 'upgrader' || c.memory.role == 'builder') ).length > 0) {
@@ -69,10 +69,16 @@ for(let r in Memory.rooms.W59S1.resourceLimits) {
 
 
   var tmpObserver = Game.getObjectById('5a5fed41081d780faa820c74');
-  tmpObserver.observeRoom('W56S4');
+  tmpObserver.observeRoom('W52S3');
   var tmpObserver2 = Game.getObjectById('5a5fedd336ab5505152fd1da');
   tmpObserver2.observeRoom('W56S5');
   
+  var tmpObserver3 = Game.getObjectById('5b3862e6d0a5fc38ca6981df');
+  tmpObserver3.observeRoom('W53S2');
+  
+  
+   var tmpObserver4 = Game.getObjectById('5a5ff577175ef20d0b3d0c9e');
+  tmpObserver4.observeRoom('W53S1');
   
   var strucs = Game.structures;
   var strucCount = 0;
@@ -424,6 +430,13 @@ for(let r in Memory.rooms.W59S1.resourceLimits) {
     if (CPUdebug == true) {CPUdebugString = CPUdebugString.concat("<br>Start cycling through rooms: " + Game.cpu.getUsed())}
         // Cycle through rooms
         for (var r in Game.rooms) {
+            if (Game.time % 100 == 0) {
+                if (Game.rooms[r].memory.terminalTransfer != undefined) {
+                delete Game.rooms[r].terminalTransfer;
+                console.log(r + ": terminal-transfer removed");
+                }
+            }
+            
             if(Game.rooms[r].controller != undefined && Game.rooms[r].controller.my) {
                 // Game.rooms[r].controller.sign();
             }
