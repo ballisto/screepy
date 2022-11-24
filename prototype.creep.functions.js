@@ -25,7 +25,7 @@ Creep.prototype.goAroundShit = function (targetRoomName) {
         if(this.memory.W53N33_WP == undefined ) {
             if(this.pos.getRangeTo(Game.flags['W53N33_WP']) > 1) {
                 this.moveTo(Game.flags['W53N33_WP'], {reusePath: 50});
-                this.say('W53N33_WP')
+                this.say('W53N33_WPrudi')
                 return true;
             }
             else {
