@@ -131,9 +131,14 @@ module.exports = function() {
 												}
 										});
 								break;
+								
+								case "protector":
+								        flagList = _.filter(Game.flags, (f) => f.memory.function == flagFunction && ((Game.getObjectById(f.memory.spawn) != undefined && Game.getObjectById(f.memory.spawn).room.name == this.memory.homeroom) || Game.map.getRoomLinearDistance(this.room.name, f.pos.roomName)) <= 1);    
+								        // console.log(flagList);
+							    break;
 
 								default:
-										flagList = _.filter(Game.flags, {memory: {function: flagFunction}});
+										flagList = _.filter(Game.flags, (f) => f.memory.function == flagFunction && Game.getObjectById(f.memory.spawn) != undefined && Game.getObjectById(f.memory.spawn).room.name == this.memory.homeroom);
 								break;
 							}
 
@@ -142,6 +147,7 @@ module.exports = function() {
 								//console.log(flagList[fl].name);
                 // Flags with homogeneous volume
                 flagCreeps = _.filter(Game.creeps, {memory: {currentFlag: this.memory.currentFlag}});
+                
 
                 switch (flagFunction) {
                     case "haulEnergy":

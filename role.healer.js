@@ -14,6 +14,7 @@ Creep.prototype.roleHealer = function() {
     if(patient instanceof Creep) {
       if(this.heal(patient) == ERR_NOT_IN_RANGE) {
         this.moveTo(patient);
+        this.heal(this);
         return true;
       }
     }

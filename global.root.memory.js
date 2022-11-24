@@ -253,17 +253,17 @@ root.removeSegmentObject = function(id, key) {
  * This function should be called once on the end of each tick.
  */
 root.saveMemorySegments = function() {
-  for (const id of Object.keys(Memory.segments)) {
-    if (Memory.segments[id].lastModifiedTick === Game.time) {
-      const segment = root.getSegment(id);
-      for (const key of Object.keys(segment)) {
-        if (segment[key].lastModifiedTick === Game.time) {
-          const object = root.getSegmentObject(id, key);
-          segment[key].value = types[segment[key].type].stringify(object);
-        }
-      }
-      RawMemory.segments[id] = LZString.compressToBase64(JSON.stringify(segment));
-      Memory.segments[id].length = RawMemory.segments[id].length;
-    }
-  }
+//   for (const id of Object.keys(Memory.segments)) {
+//     if (Memory.segments[id].lastModifiedTick === Game.time) {
+//       const segment = root.getSegment(id);
+//       for (const key of Object.keys(segment)) {
+//         if (segment[key].lastModifiedTick === Game.time) {
+//           const object = root.getSegmentObject(id, key);
+//           segment[key].value = types[segment[key].type].stringify(object);
+//         }
+//       }
+//       RawMemory.segments[id] = LZString.compressToBase64(JSON.stringify(segment));
+//       Memory.segments[id].length = RawMemory.segments[id].length;
+//     }
+//   }
 };

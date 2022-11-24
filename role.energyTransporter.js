@@ -1,4 +1,5 @@
 Creep.prototype.roleEnergyTransporter = function() {
+    
   if(true) {this.run();}
     //     else {
     //     // if creep is bringing energy to a structure but has no energy left

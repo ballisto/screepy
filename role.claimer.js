@@ -10,22 +10,25 @@ Creep.prototype.roleClaimer = function() {
     if (remoteControllerFlag != undefined) {
         this.memory.currentFlag = remoteControllerFlag.name;
     }
+                
     if (remoteControllerFlag != undefined && this.room.name != remoteControllerFlag.pos.roomName) {
         //still in wrong room, go out
+        if(this.goAroundShit(remoteControllerFlag.pos.roomName)) {return true;}
         this.gotoFlag(remoteControllerFlag);
     }
     else if (remoteControllerFlag != undefined) {
         //new room reached, start reserving / claiming
         var returncode;
 
-        if (this.room.memory.hostiles.length == 0) {
+        // if (this.room.memory.hostiles.length == 0) {
+        if ( true) {
             // try to claim the controller
             if (this.room.controller != undefined && this.room.controller.owner == undefined) {
                 
-                if(this.room.controller.sign == undefined || this.room.controller.sign.username != global.playerUsername) {
-                    returncode = this.signController(this.room.controller, "#nucularDiplomacy  --> https://www.youtube.com/watch?v=OoASZyihalc");
-                }
-                else if (remoteControllerFlag.memory.claim == 1) {
+                // if(this.room.controller.sign == undefined || this.room.controller.sign.username != global.playerUsername) {
+                //     returncode = this.signController(this.room.controller, "The sky above the port was the color of television, tuned to a dead channel");
+                // }
+                if (remoteControllerFlag.memory.claim == 1) {
                     returncode = this.claimController(this.room.controller);
                 }
                 else {
@@ -39,7 +42,8 @@ Creep.prototype.roleClaimer = function() {
             if (returncode == ERR_NOT_IN_RANGE) {
                 this.moveTo(this.room.controller);
             }
-
+            
+            // console.log('name:' + this.name + 'errorcode: ' +  returncode);
             if (this.room.controller.owner != undefined && this.room.controller.owner.username == global.playerUsername) {
                 //Roomed successfully claimed, now build spawn and remove spawns and extensions from previous owner
                 let spawns = this.room.find(FIND_MY_SPAWNS).length;
@@ -59,10 +63,10 @@ Creep.prototype.roleClaimer = function() {
                 }
             }
         }
-        else {
-            //Hostiles creeps in new room
-            this.memory.fleeing = true;
-            this.goToHomeRoom()
-        }
+        // else {
+        //     //Hostiles creeps in new room
+        //     this.memory.fleeing = true;
+        //     this.goToHomeRoom()
+        // }
     }
 };

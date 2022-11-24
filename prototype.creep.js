@@ -111,6 +111,7 @@ return moveReturnCode;
 Creep.prototype.moveToParking = function() {
 if(this.room.store != undefined) {
   this.moveToMy(this.room.store.pos, 1);
+// this.moveTo(this.room.store.pos, 1);
 }
 };
 
@@ -132,7 +133,7 @@ else {
     jobs.modifyJob(curJobData);
   }
 
-  this.say(curAssignment.jobId);
+//   this.say(curAssignment.jobId);
   switch (curJobData.task) {
     case "transfer":
     case "build":
@@ -153,7 +154,7 @@ else {
         else {
           if(this.goToHomeRoom()) {
             this.getResource(curJobData.resType, curJobData.resAmount);
-          //   console.log(this.name)
+            //  console.log(this.name)
           }
         }
       }
@@ -162,7 +163,14 @@ else {
         
         if(targetObject != undefined) {
           if (this.pos.getRangeTo(targetObject) > 1) {
-            this.moveToMy(targetObject.pos, 1);
+            //   console.log(targetObject)
+            if(targetObject.structureType == STRUCTURE_SPAWN || targetObject.structureType == STRUCTURE_EXTENSION ) {
+              if( (targetObject.energyCapacity - targetObject.energy) == 0 ) {
+                jobs.setDone(curJobData.id);
+                return true;
+              }
+            }
+            this.moveTo(targetObject, {reusePath: 88});
           }
           else {
           switch (curJobData.task) {
@@ -203,6 +211,7 @@ else {
         if(targetObject != undefined) {
           if (this.pos.getRangeTo(targetObject) > 1) {
             this.moveToMy(targetObject.pos, 1);
+            // this.moveTo(targetObject.pos, 1);
           }
           else {
             var result = "";
@@ -261,7 +270,7 @@ Creep.prototype.getEnergy =
               // try to withdraw energy, if the container is not in range
               if (this.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                   // move towards it
-                  this.moveTo(container);
+                  this.moveTo(container, {reusePath: 88});
               }
           }
       }
@@ -462,7 +471,7 @@ for (let c in this.body) {
       case WORK:
         var tmpMinerals = [];
         var tmpAction;
-        if(this.memory.role == 'upgrader') {
+        if(this.memory.role == 'upgrader' || this.memory.role == 'fupgrader') {
           tmpAction = 'upgradeController';
         }
         else if(this.memory.role == 'harvester' || this.memory.role == 'miner') {
@@ -473,6 +482,12 @@ for (let c in this.body) {
         }
         else if(this.memory.role == 'wallRepairer') {
           tmpAction = 'repair';
+        }
+        else if(this.memory.role == 'einarr') {
+          tmpAction = 'dismantle';
+        }
+        else if(this.memory.role == 'demolisher') {
+          tmpAction = 'dismantle';
         }
         const tmpBOOSTS = BOOSTS[curBodyPart.type];
 
@@ -546,3 +561,10 @@ Creep.prototype.bodyMatrix = function () {
         }
         return tmpBodyMatrix;
       };
+Creep.prototype.cost = function () {
+    let cost = 0;
+    for (let b in this.body) {
+        cost += BODYPART_COST[this.body[b].type];
+    }
+    return cost;
+};

@@ -29,6 +29,38 @@ return true;
 }
 };
 
+Structure.prototype.isAlmostFull = function() {
+    let buffer = 0;
+    switch (this.structureType) {
+        case STRUCTURE_STORAGE: buffer = 20000;
+        break;
+        case STRUCTURE_TERMINAL: buffer = 10000;    
+        break;
+        default: buffer = 0;
+        break;
+    }    
+    
+    if ( this.spaceLeft() <= buffer ) {
+        return true;
+    }
+    else {
+        return false;
+    }
+};
+
+Structure.prototype.hasEnergy = function( minAmount = 50 ) {
+  if(this.energy != undefined && this.energy > minAmount) {
+    return true;
+  }
+  if(this.store != undefined && this.store[RESOURCE_ENERGY] != undefined && this.store[RESOURCE_ENERGY] > minAmount) {
+    return true;
+  }
+  else {
+    return false;
+  }
+};
+
+
 Structure.prototype.defensePriority = function() {
 switch (this.structureType) {
 case STRUCTURE_SPAWN: return 1;

@@ -118,31 +118,31 @@ Creep.prototype.roleScientist = function() {
                     break;
                 case "running":
                 default:
-                    let mineralsContainers = this.room.find(FIND_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_CONTAINER && (_.sum(s.store) > s.store[RESOURCE_ENERGY] || (_.sum(s.store) > 0 && s.store[RESOURCE_ENERGY == 0]))});
-                    if (mineralsContainers.length == 0) {
-                        delete this.memory.targetBuffer;
-                        delete this.memory.resourceBuffer;
-                        this.roleEnergyTransporter()
-                    }
-                    else {
-                        //get minerals from container
-                        if (this.memory.tidyFull == undefined && _.sum(this.carry) < this.carryCapacity) {
-                            //creep not full
-                            for (let e in mineralsContainers[0].store) {
-                                if (e != "energy" && this.withdraw(mineralsContainers[0], e) == ERR_NOT_IN_RANGE) {
-                                    this.moveTo(mineralsContainers[0]);
-                                }
-                            }
-                        }
-                        else {
-                            //creep full
-                            this.memory.tidyFull = true;
-                            this.storeAllBut();
-                            if (_.sum(this.carry) == 0) {
-                                delete this.memory.tidyFull;
-                            }
-                        }
-                    }
+                    // let mineralsContainers = this.room.find(FIND_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_CONTAINER && (_.sum(s.store) > s.store[RESOURCE_ENERGY] || (_.sum(s.store) > 0 && s.store[RESOURCE_ENERGY == 0]))});
+                    // if (mineralsContainers.length == 0) {
+                    //     delete this.memory.targetBuffer;
+                    //     delete this.memory.resourceBuffer;
+                    //     this.roleEnergyTransporter()
+                    // }
+                    // else {
+                    //     //get minerals from container
+                    //     if (this.memory.tidyFull == undefined && _.sum(this.carry) < this.carryCapacity) {
+                    //         //creep not full
+                    //         for (let e in mineralsContainers[0].store) {
+                    //             if (e != "energy" && this.withdraw(mineralsContainers[0], e) == ERR_NOT_IN_RANGE) {
+                    //                 this.moveTo(mineralsContainers[0]);
+                    //             }
+                    //         }
+                    //     }
+                    //     else {
+                    //         //creep full
+                    //         this.memory.tidyFull = true;
+                    //         this.storeAllBut();
+                    //         if (_.sum(this.carry) == 0) {
+                    //             delete this.memory.tidyFull;
+                    //         }
+                    //     }
+                    // }
                     break;
             }
         }

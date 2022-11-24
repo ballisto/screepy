@@ -138,7 +138,7 @@ Room.prototype.handleTower = function() {
     }
 
     const lowRampart = tower.pos.findClosestByRangePropertyFilter(FIND_STRUCTURES, 'structureType', [STRUCTURE_RAMPART], {
-      filter: (rampart) => rampart.hits < 10000,
+      filter: (rampart) => rampart.hits < 1000,
     });
 
     let repair = lowRampart;

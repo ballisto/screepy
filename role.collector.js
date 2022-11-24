@@ -119,6 +119,7 @@ Creep.prototype.roleCollector = function() {
             }
         }
         else {
+            
             //no room harvester role
             // find closest source
             if (this.room.terminal != undefined && this.room.memory.terminalTransfer == undefined && this.checkTerminalLimits(RESOURCE_ENERGY).amount > 0) {
@@ -126,8 +127,10 @@ Creep.prototype.roleCollector = function() {
             }
             else {
                 container = this.findResourceOLD(RESOURCE_ENERGY, FIND_SOURCES, STRUCTURE_LINK, STRUCTURE_CONTAINER, STRUCTURE_STORAGE);
+                // console.log(this.name + container)
             }
             if (container != undefined) {
+                // console.log(this.name)
                 let res = this.withdraw(container, RESOURCE_ENERGY);
                 if (res != OK && res != ERR_NOT_IN_RANGE) {
                     res = this.harvest(container)
@@ -139,6 +142,7 @@ Creep.prototype.roleCollector = function() {
             }
             else {
                 return -1;
+                // this.say('-1')
             }
         }
     }

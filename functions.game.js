@@ -125,6 +125,8 @@ global.terminalTransferX = function (transferResource, transferAmount, sourceRoo
     // transfer resources to from source to target
     var roomCandidates = new Array();
     var sourceRoom = Game.rooms[sourceRoomName];
+    let targetRoom = Game.rooms[targetRoomName];
+    
 
     if (arguments.length == 0) {
         return "terminalTransferX (transferResource, transferAmount, sourceRoomName, targetRoomName, transferFlag) --> terminalTransfer(\"Z\", 10000, \"W18S49\", \"W16S47\", false)";
@@ -140,6 +142,9 @@ global.terminalTransferX = function (transferResource, transferAmount, sourceRoo
 
     var totalCost = 0;
     if (sourceRoom.storage == undefined || sourceRoom.terminal == undefined || (sourceRoom.storage.store[transferResource] + sourceRoom.terminal.store[transferResource]) < transferAmount) {
+        return "Error scheduling terminal transfer job.";
+    }
+    if (targetRoom.storage == undefined || targetRoom.terminal == undefined || targetRoom.terminal.isPrettyFull()) {
         return "Error scheduling terminal transfer job.";
     }
     else {
@@ -161,16 +166,16 @@ global.terminalTransferX = function (transferResource, transferAmount, sourceRoo
     }
 };
 
-global.listStorages = function (displayResource) {
+global.ls = function (displayResource) {
     var returnstring = "<table><tr><th>Resource  </th>";
     var resourceTable = [];
     var total = [];
 
     //Prepare header row
-    for (var r in global.myRooms) {
-        if (Game.rooms[r].storage != undefined && Game.rooms[r].storage.store != undefined && Game.rooms[r].storage.owner.username == global.playerUsername) {
+    for (var r in Game.rooms) {
+        if (Game.rooms[r].my() && Game.rooms[r].storage != undefined && Game.rooms[r].storage.store != undefined && Game.rooms[r].storage.my) {
             returnstring = returnstring.concat("<th>" + Game.rooms[r].name + "  </th>");
-            for (var res in global.myRooms[r].storage.store) {
+            for (let res in Game.rooms[r].storage.store) {
                 if (resourceTable.indexOf(res) == -1) {
                     resourceTable.push(res);
                 }
@@ -183,8 +188,9 @@ global.listStorages = function (displayResource) {
         if (arguments.length == 0 || displayResource == resourceTable[res]) {
             returnstring = returnstring.concat("<tr></tr><td>" + resourceTable[res] + "  </td>");
             let c = -1;
-            for (var r in global.myRooms) {
-                if (Game.rooms[r].storage != undefined && Game.rooms[r].storage.owner.username == global.playerUsername) {
+            for (var r in Game.rooms) {
+                if (Game.rooms[r].my() && Game.rooms[r].storage != undefined && Game.rooms[r].storage.owner.username == global.playerUsername && Game.rooms[r].memory.resourceLimits[resourceTable[res]] != undefined) {
+                    // console.log(r);
                     c++;
                     var amount;
                     var color;
@@ -371,7 +377,7 @@ global.checkTerminalLimits = function (room, resource) {
     if (roomLimits[resource] != undefined && room.terminal.store[resource] != undefined) {
         delta.amount = room.terminal.store[resource] - roomLimits[resource].minTerminal;
     }
-    else if (room.terminal.store[resource] == undefined) {
+    else if (room.terminal.store[resource] == undefined && roomLimits[resource] != undefined) {
         delta.amount = 0 - roomLimits[resource].minTerminal;
     }
     else {
@@ -425,11 +431,11 @@ global.checkStorageLimits = function(room, resource) {
     // If material is missing a negative amount will be returned
     // If there is surplus a positive amount will be returned
     var terminalDelta = 0;
-    if (room.storage == undefined) {
+    if (room.storage == undefined || room.memory.resourceLimits[resource] == undefined) {
         return 0;
     }
     terminalDelta = checkTerminalLimits(room, resource);
-    if (room.storage.store[resource] != undefined) {
+    if (room.storage.store[resource] != undefined ) {
         return (terminalDelta.amount + room.storage.store[resource] - room.memory.resourceLimits[resource].maxStorage)
     }
     else {
@@ -825,16 +831,6 @@ global.moveReusePath = function(express) {
     let range = maxSteps - minSteps;
 
     return minSteps + Math.floor((1 - (Game.cpu.bucket / 10000)) * range);
-};
-
-global.isHostile = function (creep) {
-    if (global.allies.indexOf(creep.owner.username) == -1 && creep.owner.username != global.global.playerUsername) {
-        //Not own and not allied creep
-        return true;
-    }
-    else {
-        return false;
-    }
 };
 
 String.prototype.hashCode = function(){

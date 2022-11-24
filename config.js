@@ -36,7 +36,6 @@ global.jobs = {
 
 global.economy = {
   stock: {},
-
 };
 
 global.config = {
@@ -48,8 +47,9 @@ global.config = {
     assignmentsSegment: 1,
     assignmentsKey: "assignments",
     maxAssignmentsPerWorker: 1,
-    rolesToBoost: ['transporter', 'upgrader', 'attacker', 'healer', 'miner','wallRepairer'],
-    rolesToAssign: ['transporter', 'energyTransporter', 'distributor'],
+    // rolesToBoost: ['transporter', 'upgrader', 'attacker', 'healer', 'miner','wallRepairer', 'einarr','protector'],
+    rolesToBoost: ['transporter','einarr','demolisher','wallRepairer', 'upgrader','fupgrader', 'miner'],
+    rolesToAssign: ['energyTransporter'],  //, 'distributor'],
   },
 
   profiler: {

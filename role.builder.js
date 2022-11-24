@@ -1,12 +1,21 @@
 Creep.prototype.roleBuilder = function () {
     // check for home room
-    if (this.room.name != this.memory.homeroom && this.memory.role != "remoteHarvester" && this.memory.role != "energyHauler") {
+    if (this.room.name != this.memory.homeroom && this.memory.targetBuffer == undefined) {
         //return to home room
+        if(!this.isEmpty()) {
+            for (let r in this.carry) {
+                this.drop(r);
+                return true;
+            }
+        }
         var hometarget = Game.getObjectById(this.memory.spawn);
-
+        if(this.goAroundShit(this.memory.homeroom)) {return true;}
+                
         this.moveTo(hometarget);
     }
     else {
+        
+        
         if (this.memory.statusBuilding != undefined) {
             if (this.build(Game.getObjectById(this.memory.statusBuilding)) != OK) {
                 delete this.memory.statusBuilding;
@@ -15,21 +24,23 @@ Creep.prototype.roleBuilder = function () {
         // if creep is trying to complete a constructionSite but has no energy left
         if (this.carry.energy == 0) {
             // switch state
+            
             if(this.storeAllBut()) {
                 this.memory.working = false;
+                
             }
         }
         // if creep is harvesting energy but is full
         else if (this.memory.working == false && this.carry.energy == this.carryCapacity) {
             // switch state
             this.memory.working = true;
+            delete this.memory.cursource;
         }
+        
         // if creep is supposed to complete a constructionSite
         if (this.memory.working == true) {
-            if (this.room.memory.hostiles.length > 0 && this.room.memory.roomArray.towers.length > 0) {
-                this.towerEmergencyFill();
-            }
-            else {
+            
+            {
                 // find closest constructionSite
                 let constructionSite;
                 if (this.memory.myConstructionSite == undefined) {
@@ -79,7 +90,51 @@ Creep.prototype.roleBuilder = function () {
         }
         // if creep is supposed to harvest energy from source
         else {
-            this.roleCollector();
+            let source;
+            if(this.memory.cursource != undefined && this.memory.cursource != null) {
+                source = Game.getObjectById(this.memory.cursource);
+            }
+            if (source == undefined) {
+                source = this.room.findResource(RESOURCE_ENERGY);
+                if (source != undefined) {this.memory.cursource = source.id;}
+            }
+            if (source == undefined) {
+                source = this.pos.findClosestByPath(this.room.find(FIND_SOURCES));
+                if (source != undefined) {this.memory.cursource = source.id;}
+            }
+
+            if (source != undefined) {
+                let res = this.withdraw(source, RESOURCE_ENERGY);
+                if (res == ERR_NOT_ENOUGH_RESOURCES) {
+                    delete this.memory.cursource;
+                }
+                if (res != OK && res != ERR_NOT_IN_RANGE) {
+                    res = this.harvest(source);
+                }
+
+                if (res == ERR_NOT_IN_RANGE) {
+                    // console.log(this.name)
+                    this.moveTo(source, {reusePath: 50});
+                    return true;
+                }
+
+            }
+            else {
+                delete this.memory.cursource;
+            }
+
+            // console.log(this.name);
+            // this.roleCollector();
+            // if (this.room.storage.store.energy != undefined && this.room.storage.store.energy > 0) {
+            //     if (this.withdraw(this.room.storage,RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) { this.moveTo(this.room.storage); }
+            // }
+            // else if (this.room.terminal.store.energy != undefined && this.room.terminal.store.energy > 0) {
+                
+            //     if (this.withdraw(this.room.terminal,RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) { this.moveTo(this.room.terminal); return true;}
+            // }
+            // else {
+            //     this.roleCollector();
+            // }
         }
     }
 };

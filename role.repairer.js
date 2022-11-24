@@ -17,11 +17,11 @@ Creep.prototype.roleRepairer = function() {
 
         // if creep is supposed to repair something
         if (this.memory.working == true) {
-            if (this.room.memory.hostiles.length > 0 && this.room.memory.roomArray.towers.length > 0) {
-                // Hostiles present in room
-                this.towerEmergencyFill();
-            }
-            else {
+            // if (this.room.memory.hostiles.length > 0 && this.room.memory.roomArray.towers.length > 0) {
+            //     // Hostiles present in room
+            //     this.towerEmergencyFill();
+            // }
+             {
 
                 if (this.room.controller.level == 8 && this.room.controller.ticksToDowngrade < 10000) {
                     // Refresh level 8 controller
@@ -59,11 +59,33 @@ Creep.prototype.roleRepairer = function() {
                     }
                 }
                 else {
+                    let structure;
+                    if (this.memory.myStructure != undefined) {
+                        structure = Game.getObjectById(this.memory.myStructure);
+                        if (structure != null && structure.hits < structure.hitsMax && structure.structureType == STRUCTURE_ROAD && structure.structureType == STRUCTURE_CONTAINER ) {
+                            this.memory.myStructure = structure.id;
+                        }
+                        else {
+                            delete this.memory.myStructure;
+                        }
+                    }
+                    if (this.memory.myStructure == undefined) {
+                        structure = this.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => (s.hits < s.hitsMax && s.structureType == STRUCTURE_ROAD) });
+                    }
+                    if (structure != undefined) {
+                        this.memory.myStructure = structure.id;
+                        var result = this.repair(structure);
+                        if (result == ERR_NOT_IN_RANGE) {
+                            this.moveTo(structure);
+                        }
+                    }
+                    
                     //room without spawn
                     var constructionSite = this.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES, {filter: (s) => s.structureType == STRUCTURE_SPAWN});
                     if (constructionSite == null) {
                         constructionSite = this.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES, {filter: (s) => s.structureType == STRUCTURE_ROAD});
                     }
+                    
                     if (this.build(constructionSite) == ERR_NOT_IN_RANGE) {
                         // move towards it
                         this.moveTo(constructionSite);

@@ -13,8 +13,9 @@ Creep.prototype.roleRemoteStationaryHarvester = function() {
 
             if (flag != undefined) {
                 if (flag.pos.roomName != this.room.name) {
-                    // Creep not in assigned room
-                    this.moveTo(flag);
+                    if(this.goAroundShit(flag.pos.roomName)) {return true;}
+                    
+                    this.moveTo(flag, {reusePath: 88});
                 }
                 else if (this.pos.isEqualTo(flag) == true) {
                     // Harvesting position reached
@@ -23,12 +24,16 @@ Creep.prototype.roleRemoteStationaryHarvester = function() {
                         var buildRoad = this.pos.findInRange(FIND_CONSTRUCTION_SITES, 3, {filter: (s) => s.structureType == STRUCTURE_ROAD});
                         var buildContainers = this.pos.findInRange(FIND_CONSTRUCTION_SITES, 0, {filter: (s) => s.structureType == STRUCTURE_CONTAINER});
                         var repairContainers = this.pos.findInRange(FIND_STRUCTURES, 0, {filter: (s) => s.structureType == STRUCTURE_CONTAINER && s.hits < s.hitsMax});
+                        var repairRoads = this.pos.findInRange(FIND_STRUCTURES, 3, {filter: (s) => s.structureType == STRUCTURE_ROAD && s.hits < s.hitsMax});
                         //console.log(this.name + '  ' + buildContainers);
                         if (buildContainers.length > 0) {
                             this.build(buildContainers[0]);
                         }
                         else if (repairContainers.length > 0) {
                             this.repair(repairContainers[0]);
+                        }
+                        else if (repairRoads.length > 0) {
+                            this.repair(repairRoads[0]);
                         }
                         else if (buildRoad.length > 0) {
                             this.build(buildRoad[0]);
@@ -65,7 +70,7 @@ Creep.prototype.roleRemoteStationaryHarvester = function() {
                 }
                 else if (sourceKeeper.length == 0) {
                     // Move to harvesting point
-                    this.moveTo(flag);
+                    this.moveTo(flag, {reusePath: 88});
                     //this.moveTo(flag.pos);
                 }
             }

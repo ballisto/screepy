@@ -1,3 +1,182 @@
+Creep.prototype.goAroundShit = function (targetRoomName) {
+    // if( targetRoomName == 'W57N37' || targetRoomName == 'W57N38' || targetRoomName == 'W57N39' || targetRoomName == 'W58N39' || targetRoomName == 'W56N39') {
+    //     if(this.memory.W58N33_WP == undefined ) {
+    //         if(this.pos.getRangeTo(Game.flags['W58N33_WP']) > 1) {
+    //             this.moveTo(Game.flags['W58N33_WP'], {reusePath: 50});
+    //             this.say('W58N33_WP')
+    //             return true;
+    //         }
+    //         else {
+    //             this.memory.W58N33_WP = true;
+    //         }
+    //     }
+    //     if(this.memory.W58N36_WP == undefined && this.memory.W58N33_WP != undefined) {
+    //         if(this.pos.getRangeTo(Game.flags['W58N36_WP']) > 1) {
+    //             this.moveTo(Game.flags['W58N36_WP'], {reusePath: 50});
+    //             this.say('W58N36_WP')
+    //             return true;
+    //         }
+    //         else {
+    //             this.memory.W58N36_WP = true;
+    //         }
+    //     }     
+    // }
+    if(targetRoomName == 'W52N36') {
+        if(this.memory.W53N33_WP == undefined ) {
+            if(this.pos.getRangeTo(Game.flags['W53N33_WP']) > 1) {
+                this.moveTo(Game.flags['W53N33_WP'], {reusePath: 50});
+                this.say('W53N33_WP')
+                return true;
+            }
+            else {
+                this.memory.W53N33_WP = true;
+            }
+        }
+        // if(this.memory.W52N34_WP == undefined && this.memory.W53N33_WP != undefined) {
+        //     if(this.pos.getRangeTo(Game.flags['W52N34_WP']) > 1) {
+        //         this.moveTo(Game.flags['W52N34_WP'], {reusePath: 50});
+        //         this.say('W52N34_WP')
+        //         return true;
+        //     }
+        //     else {
+        //         this.memory.W52N34_WP = true;
+        //     }
+        // }  
+        // if(this.memory.W52N35_WP == undefined && this.memory.W52N34_WP != undefined) {
+        //     if(this.pos.getRangeTo(Game.flags['W52N35_WP']) > 1) {
+        //         this.moveTo(Game.flags['W52N35_WP'], {reusePath: 50});
+        //         this.say('W52N35_WP')
+        //         return true;
+        //     }
+        //     else {
+        //         this.memory.W52N35_WP = true;
+        //     }
+        // }  
+    }
+    if( targetRoomName == 'W53N18' && this.memory.homeroom == 'W56N18') {
+        if(this.memory.W53N19_WP == undefined ) {
+            if(this.pos.getRangeTo(Game.flags['W53N19_WP']) > 1) {
+                this.moveTo(Game.flags['W53N19_WP'], {reusePath: 50});
+                this.say('W53N19_WP')
+                return true;
+            }
+            else {
+                this.memory.W53N19_WP = true;
+            }
+        }
+    }
+    
+    if( targetRoomName == 'W53N18' && (this.memory.homeroom == 'W52N14' || this.memory.homeroom == 'W49N13'|| this.memory.homeroom == 'W53N12')) {
+        if(this.memory.W50N20_WP == undefined ) {
+            if(this.pos.getRangeTo(Game.flags['W50N20_WP']) > 1) {
+                this.moveTo(Game.flags['W50N20_WP'], {reusePath: 50});
+                this.say('W50N20_WP')
+                return true;
+            }
+            else {
+                this.memory.W50N20_WP = true;
+            }
+        }
+        if(this.memory.W52N20_WP == undefined) {
+            if(this.pos.getRangeTo(Game.flags['W52N20_WP']) > 1) {
+                this.moveTo(Game.flags['W52N20_WP'], {reusePath: 50});
+                this.say('W52N20_WP')
+                return true;
+            }
+            else {
+                this.memory.W52N20_WP = true;
+            }
+        }
+    }
+    
+        // if(this.memory.W50N24_WP != undefined && this.memory.W50N20_WP == undefined) {
+    //         if(this.pos.getRangeTo(Game.flags['W50N20_WP']) > 1) {
+    //             this.moveTo(Game.flags['W50N20_WP'], {reusePath: 50});
+    //             this.say('W50N20_WP')
+    //             return true;
+    //         }
+    //         else {
+    //             this.memory.W50N20_WP = true;
+    //         }
+    //     }
+    //     if(this.memory.W50N20_WP != undefined && this.memory.W51N20_WP == undefined) {
+    //         if(this.pos.getRangeTo(Game.flags['W51N20_WP']) > 1) {
+    //             this.moveTo(Game.flags['W51N20_WP'], {reusePath: 50});
+    //             this.say('W51N20_WP')
+    //             return true;
+    //         }
+    //         else {
+    //             this.memory.W51N20_WP = true;
+    //         }
+    //     }
+    //     if(this.memory.W51N20_WP != undefined && this.memory.W52N20_WP == undefined) {
+    //         if(this.pos.getRangeTo(Game.flags['W52N20_WP']) > 1) {
+    //             this.moveTo(Game.flags['W52N20_WP'], {reusePath: 50});
+    //             this.say('W52N20_WP')
+    //             return true;
+    //         }
+    //         else {
+    //             this.memory.W52N20_WP = true;
+    //         }
+    //     }
+    // }
+    // if( (targetRoomName == 'W55N28' || targetRoomName == 'W56N29'|| targetRoomName == 'W53N29'|| targetRoomName == 'W54N28') && (this.memory.role != 'remoteStationaryHarvester')) {
+    //     if(this.memory.W53N27_WP == undefined) {
+    //         if(this.pos.getRangeTo(Game.flags['W53N27_WP']) > 1) {
+    //             this.moveTo(Game.flags['W53N27_WP'], {reusePath: 50});
+    //             this.say('W53N27_WP')
+    //             return true;
+    //         }
+    //         else {
+    //             this.memory.W53N27_WP = true;
+    //         }
+    //     }
+    //     // if(this.memory.W55N20_WP != undefined && this.memory.W55N24_WP == undefined) {
+    //     //     // this.goToHomeRoom();
+    //     //     // return true;
+    //     //     if(this.pos.getRangeTo(Game.flags['W55N24_WP']) > 1) {
+    //     //         this.moveTo(Game.flags['W55N24_WP'], {reusePath: 50});
+    //     //         this.say('W55N24_WP')
+    //     //         return true;
+    //     //     }
+    //     //     else {
+    //     //         this.memory.W55N24_WP = true;
+    //     //     }
+    //     // }
+    //     // if(this.memory.W55N24_WP != undefined && this.memory.W55N24_WP2 == undefined) {
+    //     //     if(this.pos.getRangeTo(Game.flags['W55N24_WP2']) > 1) {
+    //     //         this.moveTo(Game.flags['W55N24_WP2'], {reusePath: 50});
+    //     //         this.say('W55N24_WP2')
+    //     //         return true;
+    //     //     }
+    //     //     else {
+    //     //         this.memory.W55N24_WP2 = true;
+    //     //     }
+    //     // }
+    //     // if(this.memory.W55N24_WP2 != undefined && this.memory.W55N26_WP == undefined) {
+    //     //     if(this.pos.getRangeTo(Game.flags['W55N26_WP']) > 1) {
+    //     //         this.moveTo(Game.flags['W55N26_WP'], {reusePath: 50});
+    //     //         this.say('W55N26_WP')
+    //     //         return true;
+    //     //     }
+    //     //     else {
+    //     //         this.memory.W55N26_WP = true;
+    //     //     }
+    //     // }
+    //     // if(this.memory.W55N26_WP != undefined && this.memory.W54N26_WP == undefined) {
+    //     //     if(this.pos.getRangeTo(Game.flags['W54N26_WP']) > 1) {
+    //     //         this.moveTo(Game.flags['W54N26_WP'], {reusePath: 50});
+    //     //         this.say('W54N26_WP')
+    //     //         return true;
+    //     //     }
+    //     //     else {
+    //     //         this.memory.W54N26_WP = true;
+    //     //     }
+    //     // }
+    // }
+    return false;
+};
+
 Creep.prototype.towerEmergencyFill = function () {
     var tower = this.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_TOWER && s.energy < s.energyCapacity});
     if (tower != null) {
@@ -18,12 +197,17 @@ Creep.prototype.goToHomeRoom = function() {
         }
         else {
             let controller = Game.rooms[this.memory.homeroom].controller;
-            this.moveTo(controller);
+            this.moveTo(controller, {reusePath: 100});
         }
         return false;
     }
     else {return true;}
 };
+
+Creep.prototype.isAlly = function() {
+  if(global.allies.includes(this.owner.username)) {return true;}
+  else {return false;}  
+  };
 
 Creep.prototype.homeRoom = function() {
   if(this.memory.homeroom != undefined && Game.rooms[this.memory.homeroom] != undefined) {
@@ -47,21 +231,62 @@ Creep.prototype.isDangerous = function() {
   return false;
 };
 
+Creep.prototype.isHostile = function() {
+  if( !this.my && !this.isAlly() ) {return true;}
+  else {return false;}  
+  };
+
 Creep.prototype.checkTerminalLimits = function(resource) {
     return checkTerminalLimits(this.room, resource);
 };
 
-Creep.prototype.storeAllBut = function(resource) {
+Creep.prototype.storeAllBut = function(resource, uselinks) {
     // send creep to storage to empty itself into it, keeping one resource type. Use null to drop all resource types.
     // returns true if only carrying allowed resource
+    let useLinks = false;
+    
     if (this.isEmpty()) {
         return true;
     }
-    if (arguments.length == 1 && (_.sum(this.carry) == this.carry[resource])) {
+    if (arguments.length == 1 && resource != '' && (_.sum(this.carry) == this.carry[resource])) {
         return true;
     }
-
+    if (arguments.length == 2 && uselinks != '' && uselinks == true) {
+        useLinks = true;
+    }
+    
     var targetContainer = this.findSpace();
+    
+    if(useLinks && (_.sum(this.carry) == this.carry[RESOURCE_ENERGY])) {
+        let closerLinks = _.filter(this.room.find(FIND_MY_STRUCTURES), (s) => s.structureType == STRUCTURE_LINK && s.getPriority() == 0);// && !s.isHarvesterLink() );
+        closerLinks = _.sortBy(closerLinks, (l) => this.pos.getRangeTo(l.pos));
+        if(closerLinks.length > 0) {
+            let distanceToContainer = 999;
+            if(targetContainer != null) { 
+                let pathToContainer = this.room.findPath(this.pos, targetContainer.pos);
+                distanceToContainer = (pathToContainer.length ? pathToContainer.length : 999);
+                // this.say(distanceToContainer);
+            }
+            
+            for(let l in closerLinks) {
+                let pathToLink = this.room.findPath(this.pos, closerLinks[l].pos);
+                let distanceToLink = (pathToLink.length ? pathToLink.length : 9999);
+                if(distanceToLink < distanceToContainer) {
+                    if( (closerLinks[l].energyCapacity - closerLinks[l].energy) < this.carry[RESOURCE_ENERGY] ) {
+                        let secondaryLinks = _.filter(closerLinks, (c) => closerLinks[l].pos.getRangeTo(c.pos) <= 2 && closerLinks[l].id != c.id && (c.energyCapacity - c.energy) >= this.carry[RESOURCE_ENERGY]);
+                        if ( secondaryLinks.length > 0) {
+                             targetContainer = secondaryLinks[l];
+                            break;
+                        }
+                    }
+                    targetContainer = closerLinks[l];
+                    
+                    break;
+                }
+            }
+        }
+    }
+    
     if(targetContainer != null) {
       if (this.pos.getRangeTo(targetContainer) > 1) {
           this.moveToMy(targetContainer.pos, 1);
@@ -164,6 +389,7 @@ Creep.prototype.gotoFlag = function (flag) {
         }
     }
 };
+
 Creep.prototype.moveRandom = function(onPath) {
   const startDirection = _.random(1, 8);
   let direction = 0;

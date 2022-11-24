@@ -32,8 +32,14 @@ Room.prototype.findSpace = function(structures) {
         break;
         case STRUCTURE_CONTAINER:
         var tempContainers = _.filter(this.find(FIND_STRUCTURES), (s) => s.structureType == STRUCTURE_CONTAINER && !s.isFull() && !s.isHarvesterStorage() );
-        if(tempContainers.length > 0 && this.controller.my) {
+        if(tempContainers.length > 0) {
           return tempContainers[0];
+        }
+        else {
+            tempContainers = _.filter(this.find(FIND_STRUCTURES), (s) => s.structureType == STRUCTURE_CONTAINER && !s.isFull());
+            if(tempContainers.length > 0) {
+            return tempContainers[0];
+        }
         }
         break;
       }
@@ -41,7 +47,7 @@ Room.prototype.findSpace = function(structures) {
     return null;
 };
 Room.prototype.findResource = function(resource) {
-  var selectedStructureTypes = [STRUCTURE_STORAGE, STRUCTURE_TERMINAL, STRUCTURE_CONTAINER];
+  var selectedStructureTypes = [STRUCTURE_STORAGE, STRUCTURE_TERMINAL, STRUCTURE_CONTAINER, STRUCTURE_LINK];
 
   for (let argcounter = 0; argcounter < selectedStructureTypes.length; argcounter++) {
       // Go through requested sourceTypes
@@ -61,6 +67,14 @@ Room.prototype.findResource = function(resource) {
         if(tempContainers.length > 0) {
           return tempContainers[0];
         }
+        break;
+        case STRUCTURE_LINK:
+            if(resource == RESOURCE_ENERGY) {
+                var tempLinks = _.filter(this.find(FIND_STRUCTURES), (s) => s.structureType == STRUCTURE_LINK && s.energy != undefined && s.energy > 0 && s.getPriority() == 1);
+                if(tempLinks.length > 0) {
+                return tempLinks[0];
+                }
+            }
         break;
       }
     }

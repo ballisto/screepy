@@ -17,9 +17,11 @@ StructureLab.prototype.isEmpty = function() {
 };
 
 StructureLab.prototype.isBusy = function() {
-  if (this.isBoostLab()) {return true;}
-  if (this.factory() != undefined) {return this.factory().isBusy;}
-  return false;
+  if (this.isBoostLab() && (this.mineralType == this.room.memory.boostLabs[this.id] || this.isEmpty())) {return true;}
+//   if (this.factory() != undefined && !this.isBoostLab()) {return this.factory().isBusy;}
+if(this.room.memory.labOrder != undefined || this.room.memory.labTarget != undefined) { return true;}
+    return false;
+  
 };
 
 StructureLab.prototype.isBoostLab = function() {
@@ -28,11 +30,11 @@ StructureLab.prototype.isBoostLab = function() {
   return false;
 };
 
-StructureLab.prototype.factory = function() {
-  if(this.room.factory() instanceof Factory) {
-    return this.room.factory();
-  }
-  else {
-    return undefined;
-  }
-};
+// StructureLab.prototype.factory = function() {
+//   if(this.room.factory() instanceof Factory) {
+//     return this.room.factory();
+//   }
+//   else {
+//     return undefined;
+//   }
+// };

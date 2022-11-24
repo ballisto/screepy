@@ -2,12 +2,7 @@ Creep.prototype.roleMiner = function() {
     var curAssignment = polier.getCurTaskForCreep(this.id);
     if( curAssignment != undefined ) { this.run(); }
     else {
-        if (this.room.name != this.memory.homeroom) {
-            //return to home room
-            var hometarget = Game.getObjectById(this.memory.spawn);
-            this.moveTo(hometarget);
-        }
-        else {
+        if (this.goToHomeRoom()) {            
             if (this.memory.statusHarvesting != undefined && this.memory.statusHarvesting != false) {
                 // Creep is mining, try to keep mining
                 if (this.harvest(Game.getObjectById(this.memory.statusHarvesting)) != OK || _.sum(this.carry) == this.carryCapacity) {
@@ -30,63 +25,32 @@ Creep.prototype.roleMiner = function() {
     
                 // if creep is supposed to transfer minerals to a structure
                 if (this.memory.working == true) {
-                    if (this.carry[RESOURCE_ENERGY] > 0) {
-                        //somehow picked up energy
-                        if (this.room.storage == undefined) {
-                            var container = this.findResourceOLD(global.RESOURCE_SPACE, STRUCTURE_CONTAINER, STRUCTURE_LINK)
-                        }
-                        else {
-                            var container = this.room.storage;
-                        }
-    
-                        if (this.transfer(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                            this.moveTo(container);
+                    let container;
+                    if (this.memory.container == undefined) {                                
+                        let containers = this.pos.findInRange(FIND_STRUCTURES, 1, {filter: (s) => (s.structureType == STRUCTURE_CONTAINER) });
+                        if (containers.length > 0) {                            
+                            this.memory.container = containers[0].id;
+                            container = containers[0];
                         }
                     }
                     else {
-                        for (var t in this.carry) {
-                            if (t != "energy") {
-                                resource = t;
-                                break;
-                            }
-                        }
-                        if (storage == null) {
-                            //No storage found in room
-                            var container = this.findResourceOLD(global.RESOURCE_SPACE, STRUCTURE_CONTAINER);
-                            if (this.transfer(container, resource) == ERR_NOT_IN_RANGE) {
-                                this.moveTo(container);
-                            }
-                        }
-                        else {
-                            //storage found
-                            if (this.transfer(storage, resource) == ERR_NOT_IN_RANGE) {
-                                this.moveTo(storage);
-                            }
-                        }
+                        container = Game.getObjectById(this.memory.container);
                     }
-                }
-                else {
-                    //creep is supposed to harvest minerals from source or containers
-                    let container = this.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] < _.sum(s.store)});
-                    var containerResource;
-    
-                    if (container != undefined && storage != undefined) {
-                        //minerals waiting in containers
-                        //analyzing storage of container
-                        var store = container.store;
-                        for (var s in store) {
-                            if (s != RESOURCE_ENERGY) {
-                                // mineral found in container
-                                containerResource = s;
-                            }
-                        }
-                        if (this.withdraw(container, containerResource) != OK) {
+
+                    if (container == undefined) {
+                        container = this.room.storage;
+                    }
+                    for (var t in this.carry) {
+                        if (this.transfer(container, t) == ERR_NOT_IN_RANGE) {
                             this.moveTo(container);
                         }
-                    }
-                    else if (Game.getObjectById(this.room.memory.roomArray.minerals[0]).mineralAmount > 0) {
+                    }                    
+                }
+                else {
+                    let mineral = this.pos.findClosestByPath(FIND_MINERALS, {filter: (s) => s.mineralAmount > 0});
+                    if (mineral != undefined) {
                         //minerals waiting at source
-                        var mineral = this.pos.findClosestByPath(FIND_MINERALS, {filter: (s) => s.mineralAmount > 0});
+                        
                         var result = this.harvest(mineral);
                         if (mineral != null && result == ERR_NOT_IN_RANGE) {
                             this.moveTo(mineral);
@@ -94,6 +58,28 @@ Creep.prototype.roleMiner = function() {
                         }
                         else if (mineral != null && result == OK) {
                             this.memory.statusHarvesting = mineral.id;
+                            if (this.memory.container == undefined) {                               
+                                let containers = this.pos.findInRange(FIND_STRUCTURES, 1, {filter: (s) => (s.structureType == STRUCTURE_CONTAINER) });
+                                if (containers.length == 0) {
+                                    let constructionSites =  this.pos.findInRange(FIND_CONSTRUCTION_SITES, 1, {filter: (s) => (s.structureType == STRUCTURE_CONTAINER)});
+                                    if (containers.length == 0 && constructionSites.length == 0 ) {
+                                        this.pos.createConstructionSite(STRUCTURE_CONTAINER);
+                                    }
+                                }                                
+                                else {
+                                    this.memory.container = containers[0].id;
+                                }
+                            }
+                            else if (_.sum(this.carry) > 0) {
+                                let container = Game.getObjectById(this.memory.container);
+                                if(container != undefined) {
+                                    for (var t in this.carry) {
+                                        if (this.transfer(container, t) == ERR_NOT_IN_RANGE) {
+                                            // this.moveTo(container);
+                                        }
+                                    }
+                                }    
+                            }                        
                         }
                         else if (mineral != null && result == ERR_TIRED) {
                             this.memory.sleep = 3;
@@ -101,6 +87,10 @@ Creep.prototype.roleMiner = function() {
                         else {
                             this.memory.statusHarvesting = false;
                         }
+                    }
+                    else {
+                        this.memory.working = true;
+                        this.memory.statusHarvesting = false;
                     }
                 }
             }

@@ -15,11 +15,158 @@ polier.init = function() {
 polier.run = function() {
   polier.cleanup();
   polier.assignJobs();
+  polier.runCreeps();
   // var tmpjobs = polier.getAllUnassignedJobs();
   // for (const i in tmpjobs) {
   //   console.log(tmpjobs[i].id);
   // }
   //  console.log(polier.summary());
+};
+
+polier.runCreeps = function() {
+  //Cycle through creeps
+  // if (CPUdebug == true) {
+  //   CPUdebugString = CPUdebugString.concat("<br>Starting creeps: " + Game.cpu.getUsed())
+  // }
+  for (let name in Game.creeps) {
+    // get the creep object
+    var creep = Game.creeps[name];
+    //Check for miniharvester
+    if (creep.memory.role == "miniharvester") {
+        creep.memory.role = "harvester";
+    }
+    //Check for fleeing creeps
+    if (false && creep.room.memory.hostiles.length == 0 && creep.memory.fleeing == true) {
+        //Get away from the exit
+        if ((creep.pos.x < 10 || creep.pos.x > 40) || (creep.pos.y < 10 || creep.pos.y > 40)) {
+            var area = creep.room.lookAtArea(20, 20, 40, 40, true);
+            area = _.filter(area, function (a) {
+                return (a.terrain != "wall")
+            });
+            if (area.length > 0) {
+                let destPos = creep.room.getPositionAt(area[0].x, area[0].y);
+                creep.moveTo(destPos);
+            }
+            else {
+                console.log(creep.name + " - No safe area found in room " + curRoom.name + ".");
+            }
+        }
+        else {
+            //Creep has distance to any room exit
+            creep.memory.sleep = 50;
+            delete creep.memory.fleeing;
+        }
+    }
+    else { // Check for sleeping creeps
+        if (creep.memory.sleep != undefined && creep.memory.jobQueueTask == undefined) {
+            creep.memory.sleep--;
+            //creep.say("Zzz: " + creep.memory.sleep);
+            if (creep.memory.sleep < 1) {
+                delete creep.memory.sleep;
+            }
+        }
+        else {
+            if (creep.spawning == false) {
+                // if (CPUdebug == true) {
+                //     CPUdebugString = CPUdebugString.concat("<br>Start creep " + creep.name + "( " + creep.memory.role + "): " + Game.cpu.getUsed())
+                // }
+
+                {
+                    if (creep.memory.role == 'harvester') {
+                        creep.roleHarvester();
+                    }
+                    else if (creep.memory.role == 'upgrader') {
+                        creep.roleUpgrader();
+                    }
+                    else if (creep.memory.role == 'repairer') {
+                        creep.roleRepairer();
+                    }
+                    else if (creep.memory.role == 'builder') {
+                        creep.roleBuilder();
+                    }
+                    else if (creep.memory.role == 'wallRepairer') {
+                        creep.roleWallRepairer();
+                    }
+                    else if (creep.memory.role == 'remoteHarvester') {
+                        creep.roleRemoteHarvester();
+                    }
+                    else if (creep.memory.role == 'protector') {
+                        creep.roleProtector();
+                    }
+                    else if (creep.memory.role == 'claimer') {
+                        creep.roleClaimer();
+                    }
+                    else if (creep.memory.role == 'bigClaimer') {
+                        creep.roleBigClaimer();
+                    }
+                    else if (creep.memory.role == 'stationaryHarvester') {
+                        creep.roleStationaryHarvester();
+                    }
+                    else if (creep.memory.role == 'miner') {
+                        creep.roleMiner();
+                    }
+                    else if (creep.memory.role == 'distributor') {
+                        creep.roleDistributor();
+                    }
+                    else if (creep.memory.role == 'demolisher') {
+                        creep.roleDemolisher();
+                    }
+                    else if (creep.memory.role == 'energyLoader') {
+                        creep.roleEnergyLoader();
+                    }
+                    else if (creep.memory.role == 'energyTransporter') {
+                        creep.run();
+                    }
+                    else if (creep.memory.role == 'energyHauler') {
+                        creep.roleEnergyHauler();
+                    }
+                    else if (creep.memory.role == 'remoteStationaryHarvester') {
+                        creep.roleRemoteStationaryHarvester();
+                    }
+                    // else if (creep.memory.role == 'attacker' || creep.memory.role == 'einarr' || creep.memory.role == 'healer' || creep.memory.role == 'archer') {
+                    //     creep.roleUnit();
+                    // }
+                    else if (creep.memory.role == 'healer') {
+                        creep.roleHealer();
+                    }
+                    else if (creep.memory.role == 'attacker') {
+                        creep.roleAttacker();
+                    }
+                    else if (creep.memory.role == 'einarr') {
+                        creep.roleEinarr();
+                    }
+                    else if (creep.memory.role == 'scientist') {
+                        creep.roleScientist();
+                    }
+                    else if (creep.memory.role == 'transporter') {
+                        creep.roleTransporter();
+                    }
+                    else if (creep.memory.role == 'blocker') {
+                        creep.roleBlocker();
+                    }
+                    else if (creep.memory.role == 'fupgrader') {
+                        creep.roleUpgrader();
+                    }
+                    else if (creep.memory.role == 'SKHarvester') {
+                        creep.roleSKHarvester()
+                    }
+                    else if (creep.memory.role == 'SKHauler') {
+                        creep.roleSKHauler();
+                    }
+                    else if (creep.memory.role == 'test') {
+                        creep.roleTest();
+                    }
+                    else if (creep.memory.role == 'drainer') {
+                        creep.roleDrainer();
+                    }
+                }
+            }
+        }
+        // if (CPUdebug == true) {
+        //     CPUdebugString = CPUdebugString.concat("<br>Creep " + creep.name + "( " + creep.memory.role + ") finished: " + Game.cpu.getUsed())
+        // }
+    }
+  }
 };
 
 polier.getAssignmentId = function() {
@@ -136,7 +283,8 @@ polier.findCandidatesForJob = function(jobData) {
   }
   else {
     if(jobData.job != undefined && (jobData.job == 'steal' || jobData.job == 'supportTransport')) {
-      var creepsInRoom = _.filter(Game.creeps, (c) => c.ticksToLive > 300 && c.room.supportRooms().includes(targetStructure.room) && !c.spawning && config.polier.rolesToAssign.includes(c.role()));
+    //   var creepsInRoom = _.filter(Game.creeps, (c) => c.ticksToLive > 300 && c.room.supportRooms().includes(targetStructure.room) && !c.spawning && config.polier.rolesToAssign.includes(c.role()));
+    //  var creepsInRoom = _.filter(Game.creeps, (c) => c.ticksToLive > 300 && c.room.supportRooms().includes(targetStructure.room) && !c.spawning && config.polier.rolesToAssign.includes(c.role()));
     }
     else {
       var creepsInRoom = _.filter(Game.creeps, (c) => c.room.name == targetStructure.room.name && !c.spawning && config.polier.rolesToAssign.includes(c.role()));

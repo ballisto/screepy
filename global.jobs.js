@@ -61,7 +61,9 @@ jobs.getOpenJobsForStructure = function(structureId) {
 
 jobs.getNewJobId = function() {
   const result = jobs.maxJobId;
-  jobs.maxJobId++;
+  
+  if(result >= 999999) { jobs.maxJobId = 1; }
+  else { jobs.maxJobId++; }
   Memory.jobs.maxJobId = jobs.maxJobId;
 
   return result;

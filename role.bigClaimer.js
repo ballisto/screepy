@@ -20,6 +20,7 @@ Creep.prototype.roleBigClaimer = function() {
         else {
             returncode = this.attackController(this.room.controller);
         }
+        this.say(returncode);
         if (returncode == ERR_NOT_IN_RANGE) {
             this.moveTo(this.room.controller);
         }

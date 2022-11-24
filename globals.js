@@ -1,47 +1,54 @@
 require('config');
 require('global.utils');
 require('global.root.memory');
-require('global.economy');
 require('global.jobs');
 require('global.operator');
 require('global.polier');
+require('scheduler');
+require('caretaker');
+require('economy');
 require('factory');
+require('commando');
 require('prototype.structure');
 require('prototype.spawn2')();
 require('prototype.creep.functions');
 require('prototype.creep.findMyFlag')();
 require('prototype.creep.findResource')();
 require('prototype.creep');
+require('prototype.powerCreep');
 require('prototype.room');
 require('prototype.room.utils');
 require('prototype.room.memory');
 require('prototype.room.costmatrix');
 require('prototype.room.init');
 require('prototype.room.defense');
+require('prototype.room.spawn');
 require('prototype.roomposition');
 require('prototype.roomobject');
 require('prototype.container');
 require('prototype.link');
 require('prototype.lab');
 require('prototype.terminal');
+require('prototype.flag');
 require('functions.game');
 require('functions.roles');
-require('tower');
+require('logging');
+require('prototype_string');
 
 global.SERIALIZATION_DELIMITER = "|";
-global.DELAYFLOWROOMCHECK = 313;
+global.UPDATEPOSITIONS = 333;
 global.DELAYMARKETAUTOSELL = 7;
 global.DELAYMARKETBUY = 3;
-global.DELAYFLAGCOLORS = 31;
-global.DELAYRESOURCEBALANCING = 9;
+global.DELAYFLAGCOLORS = 310;
+global.DELAYRESOURCEBALANCING = 45;
 global.DELAYROOMSCANNING = 10;
 global.DELAYFLAGFINDING = 20;
 global.DELAYRESOURCEFINDING = 3;
 global.DELAYPANICFLAG = 5;
 global.DELAYSPAWNING = 10;
 global.DELAYLINK = 2;
-global.DELAYPRODUCTION = 7;
-global.DELAYLAB = 10;
+global.DELAYPRODUCTION = 50;
+global.DELAYLAB = 4;
 global.DELAYRCL8INSTALLATION = 100;
 global.DELAYDROPPEDENERGY = 3;
 global.RESOURCE_SPACE = "space";
@@ -60,10 +67,14 @@ global.LOG_PANICFLAG = true;
 global.LOG_INFO = true;
 
 global.playerUsername = global.playerUsername || _.chain(Game.rooms).map('controller').flatten().filter('my').map('owner.username').first().value();
-global.allies = ["Kamots","Conventia"];
+global.allies = ["Kamots","Conventia","Shibdib","demawi", "Nyoom","Smokeman"];
 //global.myroomlist = _.filter(Game.rooms, {controller: { owner: { username: global.playerUsername}}});
 global.myroomlist = _.values(Game.rooms).filter (r => _.get(r, ['controller','owner','username'],undefined) === global.playerUsername);
 global.myRooms = {};
+//Fill global.myRooms
+for (let m in global.myroomlist) {
+    global.myRooms[global.myroomlist[m].name] = global.myroomlist[m];
+}
 
 global.mineralDescriptions = {};
 global.mineralDescriptions.H = {tier: 0, component1: false, component2: false };
@@ -111,7 +122,7 @@ global.mineralDescriptions.XGHO2 = {tier: 3, component1: "X", component2: "GHO2"
 
 global.jobTemplates = {};
 global.jobTemplates.transferResource = {job: "transferResource", task: "transfer", priority: 201, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
-global.jobTemplates.withdrawResource = {job: "withdrawResource", task: "withdraw", priority: 201, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
+global.jobTemplates.withdrawResource = {job: "withdrawResource", task: "withdraw", priority: 202, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
 global.jobTemplates.pickupResource = {job: "pickupResource", task: "pickup", priority: 150, entity: "creep", bodyReq: "20300000", status: "new", ttl: 222 };
 global.jobTemplates.terminalTransfer = {job: "terminalTransfer", task: "send", priority: 555, entity: "terminal", status: "new", ttl: 222 };
 global.jobTemplates.boostCreep = {job: "boostCreep", task: "boostCreep", priority: 102, entity: "creep", status: "new", ttl: 444 };
@@ -285,9 +296,51 @@ global.buildingPlans = {
         },
         {
             //Level 8 (max 12900)
-            minEnergy: 1300,
-            body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]
+            minEnergy: 1800,
+            body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
         }],
+
+        energyLoader: [
+            {
+                //Level 1 (max 300)
+                minEnergy: 250,
+                body: [MOVE, MOVE, CARRY, CARRY, CARRY]
+            },
+            {
+                //Level 2 (max 550)
+                minEnergy: 450,
+                body: [MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]
+            },
+            {
+                //Level 3 (max 800)
+                minEnergy: 600,
+                body: [MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
+            },
+            {
+                //Level 4 (max 1300)
+                minEnergy: 1050,
+                body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
+            },
+            {
+                //Level 5 (max 1800)
+                minEnergy: 1300,
+                body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]
+            },
+            {
+                //Level 6 (max 2300)
+                minEnergy: 1300,
+                body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]
+            },
+            {
+                //Level 7 (max 5600)
+                minEnergy: 1300,
+                body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]
+            },
+            {
+                //Level 8 (max 12900)
+                minEnergy: 1800,
+                body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
+            }],        
 
     stationaryHarvester: [
         {
@@ -359,19 +412,60 @@ global.buildingPlans = {
         },
         {
             //Level 6 (max 2300)
-            minEnergy: 1900,
-            body: [MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
+            minEnergy: 2050,
+            body: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY]
         },
         {
             //Level 7 (max 5600)
-            minEnergy: 1900,
-            body: [MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
+            minEnergy: 4000,
+            body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY]
         },
         {
             //Level 8 (max 12900)
-            minEnergy: 2500,
-            body: [MOVE, MOVE, MOVE, MOVE, MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
+            minEnergy: 2650,
+            body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
         }],
+    fupgrader: [
+            {
+                //Level 1 (max 300)
+                minEnergy: 300,
+                body: [MOVE, WORK, WORK, CARRY]
+            },
+            {
+                //Level 2 (max 550)
+                minEnergy: 550,
+                body: [MOVE, MOVE, MOVE, WORK, WORK, CARRY, CARRY, CARRY, CARRY]
+            },
+            {
+                //Level 3 (max 800)
+                minEnergy: 800,
+                body: [MOVE, MOVE, MOVE, MOVE, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY]
+            },
+            {
+                //Level 4 (max 1300)
+                minEnergy: 1250,
+                body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]
+            },
+            {
+                //Level 5 (max 1800)
+                minEnergy: 1750,
+                body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]
+            },
+            {
+                //Level 6 (max 2300)
+                minEnergy: 2050,
+                body: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY]
+            },
+            {
+                //Level 7 (max 5600)
+                minEnergy: 3400,
+                body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY]
+            },
+            {
+                //Level 8 (max 12900)
+                minEnergy: 3400,
+                body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY]
+            }],        
 
     repairer: [
         {
@@ -582,9 +676,9 @@ global.buildingPlans = {
         {
             //Level 8 (max 12900)
             minEnergy: 3250,
-            // body: [CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, MOVE, MOVE, MOVE, MOVE, MOVE]
-            minEnergy: 12700,
-            body: [CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
+            body: [CLAIM, CLAIM, CLAIM, CLAIM, CLAIM, MOVE, MOVE, MOVE, MOVE, MOVE]
+            // minEnergy: 8350,
+            // body: [CLAIM,CLAIM,CLAIM,CLAIM,CLAIM,CLAIM,CLAIM,CLAIM,CLAIM,CLAIM,CLAIM,CLAIM,CLAIM,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE]
         }],
 
     protector: [
@@ -625,8 +719,8 @@ global.buildingPlans = {
         },
         {
             //Level 8 (max 12900)
-            minEnergy: 1950,
-            body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK]
+            minEnergy: 2740,
+            body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,HEAL]
         }],
 
     miner: [
@@ -657,22 +751,22 @@ global.buildingPlans = {
         },
         {
             //Level 6 (max 2300)
-            minEnergy: 2100,
-            body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]
+            minEnergy: 2300,
+            body: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY]
         },
         {
             //Level 7 (max 5600)
-            minEnergy: 2100,
-            body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]
+            minEnergy: 2750,
+            body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY]
             // minEnergy: 3300,
             // body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]
         },
         {
             //Level 8 (max 12900)
-            minEnergy: 2100,
-            body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]
-            // minEnergy: 3300,
-            // body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]
+            // minEnergy: 2100,
+            // body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]
+            minEnergy: 4400,
+            body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY]
         }],
 
     distributor: [
@@ -713,8 +807,8 @@ global.buildingPlans = {
         },
         {
             //Level 8 (max 12900)
-            minEnergy: 1500,
-            body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]
+            minEnergy: 2500,
+            body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
         }],
 
     scientist: [
@@ -777,13 +871,13 @@ global.buildingPlans = {
         },
         {
             //Level 4 (max 1300)
-            minEnergy: 1150,
-            body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]
+            minEnergy: 1300,
+            body: [MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK]
         },
         {
             //Level 5 (max 1800)
-            minEnergy: 1400,
-            body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY]
+            minEnergy: 1550,
+            body: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK]
         },
         {
             //Level 6 (max 2300)
@@ -792,17 +886,17 @@ global.buildingPlans = {
         },
         {
             //Level 7 (max 5600)
-            minEnergy: 1850,
-            body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
+            minEnergy: 2700,
+            body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK]
             // minEnergy: 3150,
             // body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
         },
         {
             //Level 8 (max 12900)
-            minEnergy: 2550,
-            body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
-            // minEnergy: 3150,
-            // body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY]
+            // minEnergy: 2550,
+            // body: [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL]
+            minEnergy: 3000,
+            body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK]
         }],
 
     remoteStationaryHarvester: [
@@ -823,13 +917,13 @@ global.buildingPlans = {
         },
         {
             //Level 4 (max 1300)
-            minEnergy: 900,
-            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE]
+            minEnergy: 1050,
+            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE]
         },
         {
             //Level 5 (max 1800)
-            minEnergy: 900,
-            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE]
+            minEnergy: 1050,
+            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE]
         },
         {
             //Level 6 (max 2300)
@@ -838,8 +932,8 @@ global.buildingPlans = {
         },
         {
             //Level 7 (max 5600)
-            minEnergy: 1050,
-            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE]
+            minEnergy: 1250,
+            body: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
         },
         {
             //Level 8 (max 12900)
@@ -1179,7 +1273,90 @@ einarr: [
         },
         {
             //Level 8 (max 12900)
-            minEnergy: 2800,
-            body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,RANGED_ATTACK,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL]
+            minEnergy: 5480,
+            body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL]
+            
+        }],
+drainer: [
+        {
+            //Level 1 (max 300)
+            minEnergy: 200,
+            body: [MOVE, WORK, CARRY]
+        },
+        {
+            //Level 2 (max 550)
+            minEnergy: 200,
+            body: [MOVE, WORK, CARRY]
+        },
+        {
+            //Level 3 (max 800)
+            minEnergy: 200,
+            body: [MOVE, WORK, CARRY]
+        },
+        {
+            //Level 4 (max 1300)
+            minEnergy: 200,
+            body: [MOVE, WORK, CARRY]
+        },
+        {
+            //Level 5 (max 1800)
+            minEnergy: 200,
+            body: [MOVE, WORK, CARRY]
+        },
+        {
+            //Level 6 (max 2300)
+            minEnergy: 700,
+            body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK]
+        },
+        {
+            //Level 7 (max 5600)
+            minEnergy: 700,
+            body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK]
+        },
+        {
+            //Level 8 (max 12900)
+            minEnergy: 1050,
+            body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK]
+        }],
+blocker: [
+        {
+            //Level 1 (max 300)
+            minEnergy: 100,
+            body: [MOVE, MOVE]
+        },
+        {
+            //Level 2 (max 550)
+            minEnergy: 100,
+            body: [MOVE, MOVE]
+        },
+        {
+            //Level 3 (max 800)
+            minEnergy: 100,
+            body: [MOVE, MOVE]
+        },
+        {
+            //Level 4 (max 1300)
+            minEnergy: 100,
+            body: [MOVE, MOVE]
+        },
+        {
+            //Level 5 (max 1750)
+            minEnergy: 100,
+            body: [MOVE, MOVE]
+        },
+        {
+            //Level 6 (max 2100)
+            minEnergy: 100,
+            body: [MOVE, MOVE]
+        },
+        {
+            //Level 7 (max 5600)
+            minEnergy: 100,
+            body: [MOVE, MOVE]
+        },
+        {
+            //Level 8 (max 12900)
+            minEnergy: 100,
+            body: [MOVE, MOVE]
         }]
 };

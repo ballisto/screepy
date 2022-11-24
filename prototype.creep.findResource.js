@@ -110,10 +110,12 @@ module.exports = function() {
 
                     case STRUCTURE_LINK:
                         if (resource == RESOURCE_ENERGY) {
-                            tempArray = this.room.memory.roomArray.links;
+                            tempArray = _.filter(this.room.find(FIND_MY_STRUCTURES), (s) => s.structureType == STRUCTURE_LINK);
                             for (var s in tempArray) {
-                                if (Game.getObjectById(tempArray[s]) != null && Game.getObjectById(tempArray[s]) != null && Game.getObjectById(tempArray[s]).energy > 0) {
-                                    IDBasket.push(Game.getObjectById(tempArray[s]));
+                                let curLink = tempArray[s];
+                                // console.log(curLink)
+                                if (curLink != null && curLink.energy > 0 && curLink.getPriority() > 1) {
+                                    IDBasket.push(tempArray[s]);
                                 }
                             }
                         }

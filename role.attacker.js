@@ -16,18 +16,43 @@ Creep.prototype.roleAttacker = function() {
      return true;
   }
 
+  if(this.hits < (this.hitsMax * 0.75) ) {
+    this.goToHomeRoom();
+    return true;
+  }
+
   if (this.homeRoom() != undefined) {
     if ( this.homeRoom().memory.attackRoom != undefined ) {
         
       const roomToAttack = Game.rooms[this.homeRoom().memory.attackRoom];
       if (roomToAttack != undefined) {
         
-        if(this.room.name != roomToAttack.name) {
-          // const exitDir = this.room.findExitTo(roomToAttack);
-          // const exit = this.pos.findClosestByRange(exitDir);
-          const exit = Game.getObjectById('59bbc39d2052a716c3ce66ea');
-          this.moveTo(exit);
-          return true;
+          if(this.room.name != roomToAttack.name) {
+            if((this.homeRoom().memory.attackRoom == 'W57N5') && this.memory.W56N1WP == undefined) {
+              if(this.pos.getRangeTo(Game.flags['W56N1_WP']) >1) {
+                  this.moveTo(Game.flags['W56N1_WP']);
+                  return true;
+              }
+              else {
+                  this.memory.W56N1WP = true;
+              }
+          }
+          else if((this.homeRoom().memory.attackRoom == 'W57N5') && this.memory.W55N5WP == undefined) {
+              if(this.pos.getRangeTo(Game.flags['W55N5_WP']) >1) {
+                  this.moveTo(Game.flags['W55N5_WP']);
+                  return true;
+              }
+              else {
+                  this.memory.W55N5WP = true;
+              }
+          }
+          else if ( this.memory.healer == undefined) {
+            return true;
+          }
+          else {
+            this.moveTo(roomToAttack.controller);
+            return true;
+          }
         }
         // if(Game.getObjectById('59c9063cb438bd4e51c47da8') != undefined) {
         //   var tmpWall = Game.getObjectById('59c9063cb438bd4e51c47da8');
@@ -37,12 +62,13 @@ Creep.prototype.roleAttacker = function() {
         // }
         var prey = null;
         var hostileCreeps = roomToAttack.hostileCreeps();
+        hostileCreeps = _.filter(hostileCreeps, function(c) {return c.pos.lookFor(LOOK_STRUCTURES) == 0});
         var dangerousHostileCreeps = _.filter(hostileCreeps, function(h) {return h.isDangerous();});
         if (dangerousHostileCreeps.length > 0) {
-          prey = this.pos.findClosestByRange(dangerousHostileCreeps);
+          prey = this.pos.findClosestByPath(dangerousHostileCreeps);
         }
         else if(hostileCreeps.length > 0) {
-          prey = this.pos.findClosestByRange(hostileCreeps);
+          prey = this.pos.findClosestByPath(hostileCreeps);
         }
 
 
@@ -62,16 +88,23 @@ Creep.prototype.roleAttacker = function() {
             //   }
             // }
             this.moveTo(prey);
+            // console.log(prey.pos)
             return true;
           }
         }
         else {
-          // var hostileExtensions = _.filter(roomToAttack.find(FIND_HOSTILE_STRUCTURES), (s) => s.structureType == STRUCTURE_EXTENSION || s.structureType == STRUCTURE_RAMPART || s.structureType == STRUCTURE_TOWER || s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_STORAGE);
-          var hostileExtensions = roomToAttack.find(FIND_HOSTILE_STRUCTURES);
-          if (hostileExtensions.length > 0) {
-            closestHostileExtension = this.pos.findClosestByRange(hostileExtensions);
-            if(this.attack(closestHostileExtension) == ERR_NOT_IN_RANGE) {
-              this.moveTo(closestHostileExtension);
+          let target = null;
+          let hostileSpawns = _.filter(roomToAttack.find(FIND_HOSTILE_STRUCTURES), (s) => s.structureType == STRUCTURE_SPAWN);
+        
+          if(hostileSpawns.length > 0) {target = hostileSpawns[0];}
+          if (target == undefined) {
+            var hostileExtensions = _.filter(roomToAttack.find(FIND_HOSTILE_STRUCTURES), (s) => s.structureType != STRUCTURE_CONTROLLER);
+            // var hostileExtensions = roomToAttack.find(FIND_HOSTILE_STRUCTURES);
+            if (hostileExtensions.length > 0) {target = this.pos.findClosestByRange(hostileExtensions);}
+          }
+          if (target != undefined)  {
+            if(this.attack(target) == ERR_NOT_IN_RANGE) {
+              this.moveTo(target);
             }
             return true;
           }

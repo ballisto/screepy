@@ -1,4 +1,41 @@
 Creep.prototype.roleHarvester = function() {
+    
+    // if(this.room.name == 'W52S3') {
+    //     if(_.sum(this.carry) > 0) {
+    //         // console.log(this.name)
+    //                                 //   this.storeAllBut();
+    //                                 for(var r in this.carry){
+    //                                     if(this.carry[r] >0) {
+    //                                     // console.log(r)
+    //                                     this.drop(r);
+    //                                     return true;
+    //                                     }
+    //                                 }
+    //                             }
+    //     let containers = _.filter(this.room.find(FIND_STRUCTURES), (s) => s.structureType == STRUCTURE_CONTAINER);
+    //             for (var c in containers) {
+    //                 // console.log(c)
+    //                 if(containers[c].store != undefined) {
+    //                     // console.log(containers[c])
+    //                     for(var r in containers[c].store) {
+    //                         console.log(r)
+    //                         if(r != RESOURCE_ENERGY) {
+    //                             console.log(containers[c])
+    //                             console.log(this.withdraw(containers[c], r))
+    //                             // console.log(r)
+    //                             if(containers[c].store[r] > 0) {
+    //                                 if (this.withdraw(containers[c], r) == ERR_NOT_IN_RANGE) {
+    //                                     this.moveTo(containers[c]);
+                                        
+    //                                 }
+    //                                 return true;
+    //                             }
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    // }
+    
     if (this.goToHomeRoom() == true) {
         if (this.carry.energy == 0) {
             // if creep is bringing energy to a structure but has no energy left
@@ -19,15 +56,11 @@ Creep.prototype.roleHarvester = function() {
         if (this.memory.working == true) {
             // find closest spawn, extension or tower which is not full
             var structure;
-
-            if (this.room.memory.hostiles.length > 0 && this.room.find(FIND_MY_CREEPS, {filter: (s) => (s.memory.role == "protector")}).length == 0) {
-                //no tower refill;
-                structure = this.findResourceOLD(global.RESOURCE_SPACE, STRUCTURE_SPAWN, STRUCTURE_EXTENSION);
-            }
-            else {
-                //towers included in energy distribution
-                structure = this.findResourceOLD(global.RESOURCE_SPACE, STRUCTURE_SPAWN, STRUCTURE_EXTENSION);
-            }
+            structure = this.findResourceOLD(global.RESOURCE_SPACE, STRUCTURE_SPAWN, STRUCTURE_EXTENSION);
+                if(structure == undefined) {
+                    structure = this.findResourceOLD(global.RESOURCE_SPACE, STRUCTURE_TOWER);
+                }
+            
             var nuker;
             var powerSpawn;
             if (this.room.memory.roomArray.nukers != undefined) {
@@ -47,21 +80,21 @@ Creep.prototype.roleHarvester = function() {
                 // if we found one -> try to transfer energy, if it is not in range
                 if (this.transfer(structure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     // move towards it
-                    this.moveTo(structure);
+                    this.moveTo(structure, {reusePath: 88});
                 }
             }
             else if (nuker != null && nuker.energy < nuker.energyCapacity && this.room.storage.store[RESOURCE_ENERGY] > 50000) {
                 //Bring energy to nuker
                 if (this.transfer(nuker, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     // move towards it
-                    this.moveTo(nuker);
+                    this.moveTo(nuker, {reusePath: 88});
                 }
             }
             else if (powerSpawn != null && powerSpawn.energy < powerSpawn.energyCapacity && this.room.storage.store[RESOURCE_ENERGY] > 50000) {
                 //Bring energy to power spawn
                 if (this.transfer(powerSpawn, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     // move towards it
-                    this.moveTo(powerSpawn);
+                    this.moveTo(powerSpawn, {reusePath: 88});
                 }
             }
             else {
@@ -74,7 +107,7 @@ Creep.prototype.roleHarvester = function() {
                             //lab needs energy
                             if (this.transfer(lab, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                                 // move towards it
-                                this.moveTo(lab);
+                                this.moveTo(lab, {reusePath: 88});
                             }
                             labBreaker = true;
                             break;
@@ -92,7 +125,7 @@ Creep.prototype.roleHarvester = function() {
                     if ((container == null || container == undefined) && this.getActiveBodyparts(WORK) > 0) {
                         if (this.memory.role == "harvester") {
                             if (this.upgradeController(this.room.controller) == ERR_NOT_IN_RANGE) {
-                                this.moveTo(this.room.controller);
+                                this.moveTo(this.room.controller, {reusePath: 88});
                             }
                         }
                         else {
@@ -100,7 +133,7 @@ Creep.prototype.roleHarvester = function() {
                         }
                     }
                     else if (this.transfer(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                        this.moveTo(container);
+                        this.moveTo(container, {reusePath: 88});
                     }
                 }
             }

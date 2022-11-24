@@ -87,7 +87,13 @@ RoomPosition.prototype.getAllAdjacentPositions = function* () {
 RoomPosition.prototype.getAllPositionsInRange = function* (range) {
   for (let x = -range; x <= range; ++x) {
     for (let y = -range; y <= range; ++y) {
-      yield new RoomPosition(this.x + x, this.y + y, this.roomName);
+        // console.log(x + ' - ' + range);
+        if(this.x + x >= 0 && this.y + y >= 0 && this.x + x < 50 && this.y + y < 50) {
+            // console.log ( this.x + x);
+            // console.log ( this.y + y);
+            // console.log ( this.roomName);
+            yield new RoomPosition(this.x + x, this.y + y, this.roomName);
+        }
     }
   }
 };
@@ -131,7 +137,7 @@ RoomPosition.prototype.inPositions = function() {
 
   for (const creepId of Object.keys(room.memory.position.creep)) {
     const pos = room.memory.position.creep[creepId];
-    if (!pos) {
+    if (!pos || pos == undefined) {
       // TODO introduce this.log()
       // console.log('inPositions:', this.roomName, creepId);
       continue;
