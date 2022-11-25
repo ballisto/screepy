@@ -42,7 +42,7 @@ Creep.prototype.roleMiner = function() {
                     }
                     for (var t in this.carry) {
                         if (this.transfer(container, t) == ERR_NOT_IN_RANGE) {
-                            this.moveTo(container);
+                            this.travelTo(container);
                         }
                     }                    
                 }
@@ -53,7 +53,7 @@ Creep.prototype.roleMiner = function() {
                         
                         var result = this.harvest(mineral);
                         if (mineral != null && result == ERR_NOT_IN_RANGE) {
-                            this.moveTo(mineral);
+                            this.travelTo(mineral);
                             this.memory.statusHarvesting = false;
                         }
                         else if (mineral != null && result == OK) {

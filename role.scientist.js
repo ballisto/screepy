@@ -3,7 +3,7 @@ Creep.prototype.roleScientist = function() {
         //Scientist will die soon and possibly drop precious material
         let spawn = Game.getObjectById(this.memory.spawn);
         if (spawn.recycleCreep(this) == ERR_NOT_IN_RANGE) {
-            this.moveTo(spawn);
+            this.travelTo(spawn);
         }
     }
     else {
@@ -41,12 +41,12 @@ Creep.prototype.roleScientist = function() {
                                             delete this.room.memory.labOrder;
                                         }
                                         else if (this.withdraw(this.room.storage, innerLabs[lb].resource, creepPackage) == ERR_NOT_IN_RANGE) {
-                                            this.moveTo(this.room.storage);
+                                            this.travelTo(this.room.storage);
                                         }
                                     }
                                     else {
                                         if (this.transfer(currentInnerLab, innerLabs[lb].resource) == ERR_NOT_IN_RANGE) {
-                                            this.moveTo(currentInnerLab);
+                                            this.travelTo(currentInnerLab);
                                         }
                                     }
                                 }
@@ -56,7 +56,7 @@ Creep.prototype.roleScientist = function() {
                                 if (this.storeAllBut() == true) {
                                     //Get minerals from storage
                                     if (this.withdraw(currentInnerLab, currentInnerLab.mineralType) == ERR_NOT_IN_RANGE) {
-                                        this.moveTo(currentInnerLab);
+                                        this.travelTo(currentInnerLab);
                                     }
                                 }
                             }
@@ -80,7 +80,7 @@ Creep.prototype.roleScientist = function() {
                         if ((this.room.memory.boostLabs == undefined || this.room.memory.boostLabs[lab.id] == undefined) && lab.mineralAmount > 0 && lab.id != innerLabs[0].labID && lab.id != innerLabs[1].labID) {
                             if (_.sum(this.carry) < this.carryCapacity) {
                                 if (this.withdraw(lab, lab.mineralType) == ERR_NOT_IN_RANGE) {
-                                    this.moveTo(lab);
+                                    this.travelTo(lab);
                                 }
                             }
                             else {
@@ -90,7 +90,7 @@ Creep.prototype.roleScientist = function() {
                         // else if ((this.room.memory.boostLabs == undefined || this.room.memory.boostLabs.indexOf(lab.id) == -1) && lab.energy > 0) {
                         //     if (_.sum(this.carry) < this.carryCapacity) {
                         //         if (this.withdraw(lab, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                        //             this.moveTo(lab);
+                        //             this.travelTo(lab);
                         //         }
                         //     }
                         //     else {
@@ -130,7 +130,7 @@ Creep.prototype.roleScientist = function() {
                     //         //creep not full
                     //         for (let e in mineralsContainers[0].store) {
                     //             if (e != "energy" && this.withdraw(mineralsContainers[0], e) == ERR_NOT_IN_RANGE) {
-                    //                 this.moveTo(mineralsContainers[0]);
+                    //                 this.travelTo(mineralsContainers[0]);
                     //             }
                     //         }
                     //     }
@@ -155,7 +155,7 @@ Creep.prototype.roleScientist = function() {
                 if (lab.mineralAmount > 0) {
                     if (this.storeAllBut() == true) {
                         if (this.withdraw(lab, lab.mineralType) == ERR_NOT_IN_RANGE) {
-                            this.moveTo(lab);
+                            this.travelTo(lab);
                         }
                     }
                 }

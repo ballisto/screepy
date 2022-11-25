@@ -70,7 +70,7 @@ PowerCreep.prototype.storeAllBut = function(resource, uselinks) {
     
     if(targetContainer != null) {
       if (this.pos.getRangeTo(targetContainer) > 1) {
-          this.moveTo(targetContainer.pos);
+          this.travelTo(targetContainer.pos);
       }
       else {
           for (var res in this.carry) {

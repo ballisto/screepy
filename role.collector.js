@@ -7,7 +7,7 @@ Creep.prototype.roleCollector = function() {
         //     for(const r in droppedResources) {
         //         if(droppedResources[r].resourceType == RESOURCE_ENERGY ) {
         //             if(this.pickup(droppedResources[r]) != OK) {
-        //                 this.moveTo(droppedResources[r]);
+        //                 this.travelTo(droppedResources[r]);
         //                 return true;
         //             }
         //             else {
@@ -91,7 +91,7 @@ Creep.prototype.roleCollector = function() {
                         //creep not full
                         for (let e in mineralsContainers[0].store){
                             if (e != "energy" && this.withdraw(mineralsContainers[0],e) == ERR_NOT_IN_RANGE) {
-                                this.moveTo(mineralsContainers[0],{reusePath: moveReusePath()});
+                                this.travelTo(mineralsContainers[0],{reusePath: moveReusePath()});
                             }
                         }
                     }
@@ -108,13 +108,13 @@ Creep.prototype.roleCollector = function() {
             else if (container.ticksToRegeneration == undefined && (container.energy == undefined || container.energy < 3000)) {
                 //container
                 if (this.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    this.moveTo(container);
+                    this.travelTo(container);
                 }
             }
             else {
                 //Source
                 if (this.harvest(container) == ERR_NOT_IN_RANGE) {
-                    this.moveTo(container);
+                    this.travelTo(container);
                 }
             }
         }
@@ -137,7 +137,7 @@ Creep.prototype.roleCollector = function() {
                 }
 
                 if (res == ERR_NOT_IN_RANGE) {
-                    this.moveTo(container);
+                    this.travelTo(container);
                 }
             }
             else {

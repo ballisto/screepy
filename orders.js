@@ -9,7 +9,7 @@ module.exports = {
             creep.rangedAttack(target);
         }
         if (creep.attack(target) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(target,{reusePath: moveReusePath(true)});
+            creep.travelTo(target,{reusePath: moveReusePath(true)});
         }
     },
 
@@ -22,7 +22,7 @@ module.exports = {
             if (target != null) {
                 // Damaged creeps near healer found --> move closer
                 if (creep.attack(target) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target, {reusePath: moveReusePath(true)});
+                    creep.travelTo(target, {reusePath: moveReusePath(true)});
                 }
                 return true;
             }
@@ -46,7 +46,7 @@ module.exports = {
             if (patient != null) {
                 // Damaged creeps near healer found --> move closer
                 if (creep.heal(patient) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(patient, {reusePath: moveReusePath(true)});
+                    creep.travelTo(patient, {reusePath: moveReusePath(true)});
                 }
                 return true;
             }
@@ -86,14 +86,14 @@ module.exports = {
                     // Creep lost half of its health and needs help --> goto nearest healer
                     let myHealer = this.getNearestRole("healer");
                     if (myHealer != null) {
-                        creep.moveTo(myHealer, {reusePath: moveReusePath(true)});
+                        creep.travelTo(myHealer, {reusePath: moveReusePath(true)});
                     }
                 }
                 else {
                     // Creep fit to fight
                     if (this.attackInRange(creep, 3, this.enemyCreeps) == false) {
                         //No enemy creep around
-                        creep.moveTo(destination, {reusePath: moveReusePath(true)});
+                        creep.travelTo(destination, {reusePath: moveReusePath(true)});
                     }
 
                 }
@@ -107,7 +107,7 @@ module.exports = {
 
                 if (this.healInRange(creep, 5, this.friendlyCreeps) == false) {
                     //Nobody to heal around
-                    creep.moveTo(destination, {reusePath: moveReusePath(true)});
+                    creep.travelTo(destination, {reusePath: moveReusePath(true)});
                 }
                 break;
         }
@@ -141,7 +141,7 @@ module.exports = {
 
                             if (target != undefined) {
                                 if (creep.attack(target) == ERR_NOT_IN_RANGE) {
-                                    creep.moveTo(target, {reusePath: moveReusePath(true)});
+                                    creep.travelTo(target, {reusePath: moveReusePath(true)});
                                 }
                             }
                         }
@@ -161,7 +161,7 @@ module.exports = {
                 if (this.healInRange(creep, 4) == false) {
                     //No damaged creeps around
                     if (creep.pos.getRangeTo(target) > 3) {
-                        creep.moveTo(target);
+                        creep.travelTo(target);
                     }
                 }
                 break;

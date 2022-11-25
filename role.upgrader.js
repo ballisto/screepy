@@ -12,7 +12,7 @@ Creep.prototype.roleUpgrader = function() {
               if(this.room.name != destinationFlag.pos.roomName)  {
                 if(this.goAroundShit(destinationFlag.pos.roomName)) {return true;}       
                 
-                let moveResult = this.moveTo(destinationFlag, {reusePath: 88});
+                let moveResult = this.travelTo(destinationFlag, {reusePath: 88});
                 if(moveResult != 0) {
                    this.say(moveResult);
                 }
@@ -29,13 +29,13 @@ Creep.prototype.roleUpgrader = function() {
     
     if (this.carry.energy > 0) {
         if(this.pos.getRangeTo(this.room.controller.pos) >=3 ) {
-            this.moveTo(this.room.controller);
+            this.travelTo(this.room.controller);
             return true;
         }
         let upgradeResult = this.upgradeController(this.room.controller);
         
         if (upgradeResult == ERR_NOT_IN_RANGE) {
-            this.moveTo(this.room.controller);                                    
+            this.travelTo(this.room.controller);                                    
         }
     }
     else {

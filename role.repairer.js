@@ -27,7 +27,7 @@ Creep.prototype.roleRepairer = function() {
                     // Refresh level 8 controller
                     if (this.upgradeController(this.room.controller) == ERR_NOT_IN_RANGE) {
                         // try to upgrade the controller, if not in range, move towards the controller
-                        this.moveTo(this.room.controller);
+                        this.travelTo(this.room.controller);
                     }
                 }
                 else if (this.room.memory.roomArray.spawns.length > 0) {
@@ -49,7 +49,7 @@ Creep.prototype.roleRepairer = function() {
                         this.memory.myStructure = structure.id;
                         var result = this.repair(structure);
                         if (result == ERR_NOT_IN_RANGE) {
-                            this.moveTo(structure);
+                            this.travelTo(structure);
                         }
                     }
                     // if we can't fine one
@@ -76,7 +76,7 @@ Creep.prototype.roleRepairer = function() {
                         this.memory.myStructure = structure.id;
                         var result = this.repair(structure);
                         if (result == ERR_NOT_IN_RANGE) {
-                            this.moveTo(structure);
+                            this.travelTo(structure);
                         }
                     }
                     
@@ -88,7 +88,7 @@ Creep.prototype.roleRepairer = function() {
                     
                     if (this.build(constructionSite) == ERR_NOT_IN_RANGE) {
                         // move towards it
-                        this.moveTo(constructionSite);
+                        this.travelTo(constructionSite);
                     }
                 }
             }

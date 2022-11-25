@@ -50,7 +50,7 @@ Creep.prototype.roleEnergyHauler = function() {
             // Construction sites found, build them!
             let site = this.pos.findClosestByPath(constructionSites);
             if (this.build(site) == ERR_NOT_IN_RANGE) {
-                this.moveTo(site);
+                this.travelTo(site);
             }
         }
         else {
@@ -64,7 +64,7 @@ Creep.prototype.roleEnergyHauler = function() {
                 }
                 else {
                     var spawn = Game.getObjectById(this.memory.spawn);
-                    this.moveTo(spawn, {reusePath: 50});
+                    this.travelTo(spawn, {reusePath: 50});
                 }
             }
             else {
@@ -84,7 +84,7 @@ Creep.prototype.roleEnergyHauler = function() {
                         
                         if((this.room.name == 'W55S4' || this.room.name == 'W55S4') && this.memory.W55S4_WP1 == undefined) {
                             if(this.pos.getRangeTo(Game.flags['W55S4_WP1']) > 1) {
-                                this.moveTo(Game.flags['W55S4_WP1']);
+                                this.travelTo(Game.flags['W55S4_WP1']);
                                 this.say('WP')
                                 return true;
                             }
@@ -94,7 +94,7 @@ Creep.prototype.roleEnergyHauler = function() {
                         }
                         if((this.room.name == 'W55S4') && this.memory.W55S3_WP1 == undefined && this.memory.W55S4_WP1 != undefined) {
                             if(this.pos.getRangeTo(Game.flags['W55S3_WP1']) > 1) {
-                                this.moveTo(Game.flags['W55S3_WP1']);
+                                this.travelTo(Game.flags['W55S3_WP1']);
                                 this.say('WP')
                                 return true;
                             }
@@ -105,7 +105,7 @@ Creep.prototype.roleEnergyHauler = function() {
                     
                     if(( this.room.name == 'W54S5') && this.memory.W54S5_WP1 == undefined) {
                         if(this.pos.getRangeTo(Game.flags['W54S5_WP1']) > 1) {
-                            this.moveTo(Game.flags['W54S5_WP1']);
+                            this.travelTo(Game.flags['W54S5_WP1']);
                             this.say('WP')
                             return true;
                         }
@@ -116,7 +116,7 @@ Creep.prototype.roleEnergyHauler = function() {
                     
                     if(this.room.name == 'W54S5' && this.memory.W54S5_WP2 == undefined) {
                         if(this.pos.getRangeTo(Game.flags['W54S5_WP2']) > 1) {
-                            this.moveTo(Game.flags['W54S5_WP2']);
+                            this.travelTo(Game.flags['W54S5_WP2']);
                             this.say('WP2')
                             return true;
                         }
@@ -127,7 +127,7 @@ Creep.prototype.roleEnergyHauler = function() {
                     
                     if(this.room.name == 'W54S5' && this.memory.W54S5_WP2 != undefined && this.memory.W54S5_WP1 == undefined) {
                         if(this.pos.getRangeTo(Game.flags['W54S5_WP1']) > 1) {
-                            this.moveTo(Game.flags['W54S5_WP1']);
+                            this.travelTo(Game.flags['W54S5_WP1']);
                             this.say('WP')
                             return true;
                         }
@@ -176,7 +176,7 @@ Creep.prototype.roleEnergyHauler = function() {
                         
                         if((this.room.name == 'W55S4' || this.room.name == 'W55S4') && this.memory.W55S4_WP1 == undefined) {
                             if(this.pos.getRangeTo(Game.flags['W55S4_WP1']) > 1) {
-                                this.moveTo(Game.flags['W55S4_WP1']);
+                                this.travelTo(Game.flags['W55S4_WP1']);
                                 this.say('WP')
                                 return true;
                             }
@@ -186,7 +186,7 @@ Creep.prototype.roleEnergyHauler = function() {
                         }
                 if((this.room.name == 'W54S5') && this.memory.W54S5_WP1 == undefined) {
                         if(this.pos.getRangeTo(Game.flags['W54S5_WP1']) > 1) {
-                            this.moveTo(Game.flags['W54S5_WP1']);
+                            this.travelTo(Game.flags['W54S5_WP1']);
                             this.say('WP')
                             return true;
                         }
@@ -197,7 +197,7 @@ Creep.prototype.roleEnergyHauler = function() {
                     
                     if(this.room.name == 'W54S5' && this.memory.W54S5_WP2 == undefined) {
                         if(this.pos.getRangeTo(Game.flags['W54S5_WP2']) > 1) {
-                            this.moveTo(Game.flags['W54S5_WP2']);
+                            this.travelTo(Game.flags['W54S5_WP2']);
                             this.say('WP2')
                             return true;
                         }
@@ -208,7 +208,7 @@ Creep.prototype.roleEnergyHauler = function() {
                     
                     if(this.room.name == 'W54S5' && this.memory.W54S5_WP2 != undefined && this.memory.W54S5_WP1 == undefined) {
                         if(this.pos.getRangeTo(Game.flags['W54S5_WP1']) > 1) {
-                            this.moveTo(Game.flags['W54S5_WP1']);
+                            this.travelTo(Game.flags['W54S5_WP1']);
                             this.say('WP')
                             return true;
                         }
@@ -218,7 +218,7 @@ Creep.prototype.roleEnergyHauler = function() {
                     }
                 //still in old room, go out
                 
-                this.moveTo(remoteSource, {reusePath: 50});
+                this.travelTo(remoteSource, {reusePath: 50});
             }
             else {
                 //new room reached, start collecting
@@ -249,11 +249,11 @@ Creep.prototype.roleEnergyHauler = function() {
                         let haulerCreepOnPos2 = sourceHaulerPos2.lookFor(LOOK_CREEPS);
                         
                         if(haulerCreepOnPos1.length == 0 && this.pos.x == sourceHaulerPos2.x && this.pos.y == sourceHaulerPos2.y) {
-                            this.moveTo(sourceHaulerPos1);
+                            this.travelTo(sourceHaulerPos1);
                             return true;
                         }
                         if(haulerCreepOnPos1.length && !(this.pos.x == sourceHaulerPos1.x && this.pos.y == sourceHaulerPos1.y)) {
-                            this.moveTo(sourceWaitPos);
+                            this.travelTo(sourceWaitPos);
                             return true;
                         }
                         // else {
@@ -269,7 +269,7 @@ Creep.prototype.roleEnergyHauler = function() {
                             for (let s in container[0].store) {
                                 if (this.withdraw(container[0], s) == ERR_NOT_IN_RANGE) {
                                     //this.moveTo(container[0]);
-                                    this.moveTo(container[0].pos, {reusePath: 50});
+                                    this.travelTo(container[0].pos, {reusePath: 50});
                                 }
                             }
                         }

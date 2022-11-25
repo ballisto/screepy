@@ -38,7 +38,7 @@ Creep.prototype.roleRemoteHarvester = function() {
                     var spawn = Game.getObjectById(this.memory.spawn);
                     if (this.room.name != this.memory.homeroom) {
                         //still in new room, go out
-                        this.moveTo(spawn.pos);
+                        this.travelTo(spawn.pos);
                     }
                     else {
                         // back in spawn room
@@ -50,7 +50,7 @@ Creep.prototype.roleRemoteHarvester = function() {
                             // try to transfer energy, if it is not in range
                             if (this.transfer(structure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                                 // move towards it
-                                this.moveTo(structure, {reusePath: moveReusePath(), ignoreCreeps: false});
+                                this.travelTo(structure, {reusePath: moveReusePath(), ignoreCreeps: false});
                             }
                         }
                         else {
@@ -84,7 +84,7 @@ Creep.prototype.roleRemoteHarvester = function() {
                         let mySource = remoteSource.pos.findClosestByRange(FIND_SOURCES);
                         let returnCode = this.harvest(mySource);
                         if (returnCode == ERR_NOT_IN_RANGE) {
-                            this.moveTo(mySource.pos);
+                            this.travelTo(mySource.pos);
                         }
                         else if (returnCode == OK) {
                             this.memory.statusHarvesting = mySource.id;

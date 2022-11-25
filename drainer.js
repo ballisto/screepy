@@ -5,7 +5,7 @@ Creep.prototype.roleDrainer = function () {
     var destinationFlag = _.filter(Game.flags,{ name: flagName})[0];
     let minttl = 100;
     if(this.room.name == this.memory.homeroom && this.hits < this.hitsMax) {
-        this.moveTo(this.room.controller);
+        this.travelTo(this.room.controller);
         return true;
     }
     if(this.hits < (this.hitsMax * 0.75) ) {
@@ -16,9 +16,9 @@ Creep.prototype.roleDrainer = function () {
     if(destinationFlag != undefined) {
         if(this.room != destinationFlag.room) {
             this.notifyWhenAttacked(false);
-            this.moveTo(destinationFlag);
+            this.travelTo(destinationFlag);
             return true;
         }
-        let moveToFlagResult = this.moveTo(destinationFlag);
+        let moveToFlagResult = this.travelTo(destinationFlag);
     }
 };

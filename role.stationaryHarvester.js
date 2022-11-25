@@ -64,7 +64,7 @@ else {
     }
     else if (flag != undefined) {
         // Move to harvesting point
-        this.moveTo(flag, {reusePath:moveReusePath()});
+        this.travelTo(flag, {reusePath:moveReusePath()});
     }
     else {
         console.log(this.name + " in room " + this.room.name + " has a problem.");

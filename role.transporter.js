@@ -12,8 +12,8 @@ Creep.prototype.roleTransporter = function () {
     //     // if(this.pos.getRangeTo(Game.flags['W57S8_WP']) >1) {
     //     if( (this.room.name != 'W57S8' || this.pos.getRangeTo(Game.flags['W57S8_WP']) >1)) {
     //         this.say('W57S8')
-    //         // this.moveTo(Game.rooms['W57S7'].controller);
-    //         this.moveTo(Game.flags['W57S8_WP']);
+    //         // this.travelTo(Game.rooms['W57S7'].controller);
+    //         this.travelTo(Game.flags['W57S8_WP']);
     //         return true;
     //     }
     //     else {
@@ -28,7 +28,7 @@ Creep.prototype.roleTransporter = function () {
             minttl = destinationFlag.memory.minttl;
         }
             // if(Game.rooms[destinationFlag.pos.roomName] == undefined) {
-            //     let moveResult = this.moveTo(destinationFlag);
+            //     let moveResult = this.travelTo(destinationFlag);
             //                           if(moveResult != 0) {
             //                               this.say(moveResult);
             //                           }
@@ -80,7 +80,7 @@ Creep.prototype.roleTransporter = function () {
                                                 if (creepOnCurPos.length > 0) {
                                                     if(creepOnCurPos[0].id != this.id) {
                                                     
-                                                        this.moveTo(new RoomPosition(19,46,'W53N31'));
+                                                        this.travelTo(new RoomPosition(19,46,'W53N31'));
                                                         return true;
                                                     }
                                                 }
@@ -92,7 +92,7 @@ Creep.prototype.roleTransporter = function () {
                                             
                                         }
                                         
-                                       let moveResult = this.moveTo(destinationFlag, {reusePath: 88});
+                                       let moveResult = this.travelTo(destinationFlag, {reusePath: 88});
                                        if(moveResult != 0) {
                                            this.say(moveResult);
                                        }
@@ -151,7 +151,7 @@ Creep.prototype.roleTransporter = function () {
                                 }
                                 if ( this.memory.homeroom == 'W53N38') {
                                     if (this.room.name != 'W52N36') {
-                                        this.moveTo(Game.getObjectById('5cc8ad66f5c7191a43296f70'));
+                                        this.travelTo(Game.getObjectById('5cc8ad66f5c7191a43296f70'));
                                     }
                                     else {
                                         if(this.storeAllBut()) {
@@ -193,7 +193,7 @@ Creep.prototype.roleTransporter = function () {
                                         if(this.goAroundShit(destinationFlag.pos.roomName)) {return true;}
                                         
                                         
-                                        let moveResult = this.moveTo(destinationFlag, {reusePath: 88});
+                                        let moveResult = this.travelTo(destinationFlag, {reusePath: 88});
                                         if(moveResult != 0) {
                                            this.say(moveResult);
                                         }
@@ -230,7 +230,7 @@ Creep.prototype.roleTransporter = function () {
                                     if( destinationFlag.pos.roomName == 'W57N38') {
                                         if( this.memory.W58N36_WP == undefined) {
                                             if(this.pos.getRangeTo(Game.flags['W58N36_WP']) > 1) {
-                                                this.moveTo(Game.flags['W58N36_WP']);
+                                                this.travelTo(Game.flags['W58N36_WP']);
                                                 this.say('W58N36_WP')
                                                 return true;
                                             }
@@ -240,7 +240,7 @@ Creep.prototype.roleTransporter = function () {
                                         }
                                         if(this.memory.W58N36_WP != undefined && this.memory.W58N33_WP == undefined) {
                                             if(this.pos.getRangeTo(Game.flags['W58N33_WP']) > 1) {
-                                                this.moveTo(Game.flags['W58N33_WP']);
+                                                this.travelTo(Game.flags['W58N33_WP']);
                                                 this.say('W58N33_WP')
                                                 return true;
                                             }
@@ -252,7 +252,7 @@ Creep.prototype.roleTransporter = function () {
                                     if( destinationFlag.pos.roomName == 'W53N38') {
                                         if(this.memory.W52N35_WP == undefined) {
                                             if(this.pos.getRangeTo(Game.flags['W52N35_WP']) > 1) {
-                                                this.moveTo(Game.flags['W52N35_WP'], {reusePath: 50});
+                                                this.travelTo(Game.flags['W52N35_WP'], {reusePath: 50});
                                                 this.say('W52N35_WP')
                                                 return true;
                                             }
@@ -262,7 +262,7 @@ Creep.prototype.roleTransporter = function () {
                                         }
                                         if(this.memory.W52N34_WP == undefined && this.memory.W52N35_WP != undefined) {
                                             if(this.pos.getRangeTo(Game.flags['W52N34_WP']) > 1) {
-                                                this.moveTo(Game.flags['W52N34_WP'], {reusePath: 50});
+                                                this.travelTo(Game.flags['W52N34_WP'], {reusePath: 50});
                                                 this.say('W52N34_WP')
                                                 return true;
                                             }
@@ -272,7 +272,7 @@ Creep.prototype.roleTransporter = function () {
                                         }  
                                         if(this.memory.W53N33_WP == undefined && this.memory.W52N34_WP != undefined) {
                                             if(this.pos.getRangeTo(Game.flags['W53N33_WP']) > 1) {
-                                                this.moveTo(Game.flags['W53N33_WP'], {reusePath: 50});
+                                                this.travelTo(Game.flags['W53N33_WP'], {reusePath: 50});
                                                 this.say('W53N33_WP')
                                                 return true;
                                             }

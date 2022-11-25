@@ -10,12 +10,12 @@ Creep.prototype.roleBlocker = function () {
             
                     if(this.goAroundShit(destinationFlag.pos.roomName)) {return true;}
                     
-                    this.moveTo(destinationFlag, {reusePath: 88});
+                    this.travelTo(destinationFlag, {reusePath: 88});
             
             
             return true;
         }
-        let moveToFlagResult = this.moveTo(destinationFlag);
+        let moveToFlagResult = this.travelTo(destinationFlag);
         
         // if(this.memory.myX == undefined || this.memory.myY == undefined) {
         // // if(true) {
@@ -68,7 +68,7 @@ Creep.prototype.roleBlocker = function () {
         //                 }
         //             }
         //             let myNewPos = new RoomPosition(this.memory.myX, this.memory.myY, destinationFlag.room.name);
-        //             this.moveTo(myNewPos);
+        //             this.travelTo(myNewPos);
                 
         //     }
             

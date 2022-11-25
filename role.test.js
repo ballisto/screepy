@@ -1,7 +1,7 @@
 Creep.prototype.roleTest = function () {
     
     if(this.pos.getRangeTo(Game.flags['W58S4_O'].pos) > 1) {
-        this.moveTo(Game.flags['W58S4_O']);
+        this.travelTo(Game.flags['W58S4_O']);
         return true;
     }
     let source = Game.getObjectById('59bbc643ae9e1411a425ab83');

@@ -24,7 +24,7 @@ Creep.prototype.goAroundShit = function (targetRoomName) {
     if(targetRoomName == 'W52N36') {
         if(this.memory.W53N33_WP == undefined ) {
             if(this.pos.getRangeTo(Game.flags['W53N33_WP']) > 1) {
-                this.moveTo(Game.flags['W53N33_WP'], {reusePath: 50});
+                this.travelTo(Game.flags['W53N33_WP'], {reusePath: 50});
                 this.say('W53N33_WPrudi')
                 return true;
             }
@@ -56,7 +56,7 @@ Creep.prototype.goAroundShit = function (targetRoomName) {
     if( targetRoomName == 'W53N18' && this.memory.homeroom == 'W56N18') {
         if(this.memory.W53N19_WP == undefined ) {
             if(this.pos.getRangeTo(Game.flags['W53N19_WP']) > 1) {
-                this.moveTo(Game.flags['W53N19_WP'], {reusePath: 50});
+                this.travelTo(Game.flags['W53N19_WP'], {reusePath: 50});
                 this.say('W53N19_WP')
                 return true;
             }
@@ -69,7 +69,7 @@ Creep.prototype.goAroundShit = function (targetRoomName) {
     if( targetRoomName == 'W53N18' && (this.memory.homeroom == 'W52N14' || this.memory.homeroom == 'W49N13'|| this.memory.homeroom == 'W53N12')) {
         if(this.memory.W50N20_WP == undefined ) {
             if(this.pos.getRangeTo(Game.flags['W50N20_WP']) > 1) {
-                this.moveTo(Game.flags['W50N20_WP'], {reusePath: 50});
+                this.travelTo(Game.flags['W50N20_WP'], {reusePath: 50});
                 this.say('W50N20_WP')
                 return true;
             }
@@ -79,7 +79,7 @@ Creep.prototype.goAroundShit = function (targetRoomName) {
         }
         if(this.memory.W52N20_WP == undefined) {
             if(this.pos.getRangeTo(Game.flags['W52N20_WP']) > 1) {
-                this.moveTo(Game.flags['W52N20_WP'], {reusePath: 50});
+                this.travelTo(Game.flags['W52N20_WP'], {reusePath: 50});
                 this.say('W52N20_WP')
                 return true;
             }
@@ -181,7 +181,7 @@ Creep.prototype.towerEmergencyFill = function () {
     var tower = this.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_TOWER && s.energy < s.energyCapacity});
     if (tower != null) {
         if (this.transfer(tower, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-            this.moveTo(tower);
+            this.travelTo(tower);
         }
     }
 };
@@ -197,7 +197,7 @@ Creep.prototype.goToHomeRoom = function() {
         }
         else {
             let controller = Game.rooms[this.memory.homeroom].controller;
-            this.moveTo(controller, {reusePath: 100});
+            this.travelTo(controller, {reusePath: 100});
         }
         return false;
     }
@@ -341,7 +341,7 @@ Creep.prototype.flee = function (hostilesArray, range) {
 Creep.prototype.gotoFlag = function (flag) {
     if (flag.memory.waypoints == undefined) {
         // No waypoints set -> proceed directly to flag
-        this.moveTo(flag);
+        this.travelTo(flag);
     }
     else {
         // Target flag has waypoints set
@@ -354,7 +354,7 @@ Creep.prototype.gotoFlag = function (flag) {
         if (flag.memory.waypoints.length == this.memory.waypointCounter) {
             // Last waypoint reached -> go to final destination
             if (this.pos.getRangeTo(flag) > 2) {
-                this.moveTo(flag);
+                this.travelTo(flag);
             }
             else {
                 this.memory.sleep = 3;
@@ -378,12 +378,12 @@ Creep.prototype.gotoFlag = function (flag) {
                         this.memory.waypointCounter++;
                     }
                     else {
-                        this.moveTo(waypointFlag);
+                        this.travelTo(waypointFlag);
                     }
                 }
                 else {
                     // Creep not in waypoint room
-                    this.moveTo(waypointFlag);
+                    this.travelTo(waypointFlag);
                 }
             }
         }

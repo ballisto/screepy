@@ -3,7 +3,7 @@ Creep.prototype.roleWallRepairer = function() {
     if (this.room.name != this.memory.homeroom) {
         //return to home room
         var hometarget = Game.getObjectById(this.memory.spawn);
-        this.moveTo(hometarget);
+        this.travelTo(hometarget);
     }
     else {
         var curAssignment = polier.getCurTaskForCreep(this.id);
@@ -32,7 +32,7 @@ Creep.prototype.roleWallRepairer = function() {
                         var buildResult = this.build(constructionSite);
                         if (buildResult == ERR_NOT_IN_RANGE) {
                             // move towards the constructionSite
-                            this.moveTo(constructionSite);
+                            this.travelTo(constructionSite);
                         }
                         return true;
                     }
@@ -72,7 +72,7 @@ Creep.prototype.roleWallRepairer = function() {
                     let result = this.repair(constructionSite);
                     if (result == ERR_NOT_IN_RANGE) {
                         // move towards it
-                        this.moveTo(constructionSite);                        
+                        this.travelTo(constructionSite);                        
                     }
                 }
                 else {

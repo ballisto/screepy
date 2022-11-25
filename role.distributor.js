@@ -29,7 +29,7 @@ Creep.prototype.roleDistributor = function() {
                 }
             }
             else {
-                this.moveTo(distributorPosition);
+                this.travelTo(distributorPosition);
             }
             return true;
         }
@@ -63,7 +63,7 @@ Creep.prototype.roleDistributor = function() {
                     }
                 }
                 else {
-                    this.moveTo(distributorPosition);
+                    this.travelTo(distributorPosition);
                 }
                 return true;
             }
@@ -73,7 +73,7 @@ Creep.prototype.roleDistributor = function() {
         if (this.memory.positionReached == undefined && this.room.memory.position.creep.distributor != undefined && this.room.memory.position.creep.distributor != -1 && this.room.memory.position.creep.distributor.x != undefined && this.room.memory.position.creep.distributor.y != undefined && this.room.memory.position.creep.distributor.roomName != undefined) {
             let distributorPosition = new RoomPosition(this.room.memory.position.creep.distributor.x, this.room.memory.position.creep.distributor.y, this.room.memory.position.creep.distributor.roomName);
             if (distributorPosition != undefined && !this.pos.isEqualTo(distributorPosition)) {
-                this.moveTo(distributorPosition);
+                this.travelTo(distributorPosition);
             }
             else if(distributorPosition != undefined && this.pos.isEqualTo(distributorPosition)) {
                 this.memory.positionReached = true;
@@ -117,7 +117,7 @@ Creep.prototype.roleDistributor = function() {
           if (_.sum(this.carry) > 0) {
               //Creep full
               if (this.pos.getRangeTo(this.room.terminal) > 1) {
-                  this.moveTo(this.room.terminal);
+                  this.travelTo(this.room.terminal);
               }
               else {
                   // Dump everything into terminal
@@ -172,20 +172,20 @@ Creep.prototype.roleDistributor = function() {
                           energyCost = this.carryCapacity;
                       }
                       if(this.withdraw(this.room.storage, RESOURCE_ENERGY, energyCost) == ERR_NOT_IN_RANGE) {
-                          this.moveTo(this.room.storage);
+                          this.travelTo(this.room.storage);
                       }
                   }
                   else if (this.room.terminal.store[transferResource] < global.AUTOSELL_PACKETSIZE) {
                       // Get transfer resource
                       if(this.withdraw(this.room.storage, transferResource, volumeToCarry) == ERR_NOT_IN_RANGE) {
-                          this.moveTo(this.room.storage);
+                          this.travelTo(this.room.storage);
                       }
                   }
               }
               else {
                   // Get transfer resource
                   if(this.withdraw(this.room.storage, transferResource, volumeToCarry) == ERR_NOT_IN_RANGE) {
-                      this.moveTo(this.room.storage);
+                      this.travelTo(this.room.storage);
                   }
               }
           }
@@ -245,7 +245,7 @@ Creep.prototype.roleDistributor = function() {
                               load = this.carry[res];
                           }
                           if (this.transfer(this.room.terminal, res, load) == ERR_NOT_IN_RANGE) {
-                              this.moveTo(this.room.terminal);
+                              this.travelTo(this.room.terminal);
                           }
                           terminalResources.push(res);
                           break;
@@ -270,7 +270,7 @@ Creep.prototype.roleDistributor = function() {
                           }
                           if( !this.room.storage.isAlmostFull() ) {
                               if (this.withdraw(this.room.terminal, res, load) == ERR_NOT_IN_RANGE) {
-                                  this.moveTo(this.room.terminal);
+                                  this.travelTo(this.room.terminal);
                               }
                           }
                           terminalDelta++;
@@ -292,7 +292,7 @@ Creep.prototype.roleDistributor = function() {
                               if ( !this.room.terminal.isAlmostFull() ) {
                                 
                                   if (this.withdraw(this.room.storage, res, load) == ERR_NOT_IN_RANGE) {
-                                      this.moveTo(this.room.storage);
+                                      this.travelTo(this.room.storage);
                                   }
                               }
                               breaker = true;
