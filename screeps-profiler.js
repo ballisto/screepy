@@ -83,7 +83,10 @@ const functionBlackList = [
 ];
 
 function wrapFunction(name, originalFunction) {
-  if (originalFunction.profilerWrapped) { throw new AlreadyWrappedError(); }
+  if (originalFunction.profilerWrapped) {
+    throw new AlreadyWrappedError();
+  }
+
   function wrappedFunction() {
     if (Profiler.isProfiling()) {
       const nameMatchesFilter = name === getFilter();
@@ -247,15 +250,38 @@ const Profiler = {
     return lines;
   },
 
-  prototypes: [
-    { name: 'Game', val: Game },
-    { name: 'Room', val: Room },
-    { name: 'Structure', val: Structure },
-    { name: 'Spawn', val: Spawn },
-    { name: 'Creep', val: Creep },
-    { name: 'RoomPosition', val: RoomPosition },
-    { name: 'Source', val: Source },
-    { name: 'Flag', val: Flag },
+  prototypes: [{
+      name: 'Game',
+      val: Game
+    },
+    {
+      name: 'Room',
+      val: Room
+    },
+    {
+      name: 'Structure',
+      val: Structure
+    },
+    {
+      name: 'Spawn',
+      val: Spawn
+    },
+    {
+      name: 'Creep',
+      val: Creep
+    },
+    {
+      name: 'RoomPosition',
+      val: RoomPosition
+    },
+    {
+      name: 'Source',
+      val: Source
+    },
+    {
+      name: 'Flag',
+      val: Flag
+    },
   ],
 
   record(functionName, time) {
