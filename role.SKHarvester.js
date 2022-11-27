@@ -14,7 +14,7 @@ Creep.prototype.roleSKHarvester = function() {
                 if (flag.pos.roomName != this.room.name) {
                     // Creep not in assigned room
                     if (this.storeAllBut() == true) {
-                        this.travelTo(flag);
+                        this.moveTo(flag);
                     }
                 }
                 else {
@@ -60,7 +60,7 @@ Creep.prototype.roleSKHarvester = function() {
                             else {
                                 //Safe to work
                                 if (this.pos.isEqualTo(flag) == false) {
-                                    this.travelTo(flag);
+                                    this.moveTo(flag);
                                 }
                                 else {
                                     if (this.carry.energy > 0 && sourceKeeper.length == 0) {

@@ -15,7 +15,7 @@ Creep.prototype.roleProtector = function() {
         if (this.room.name != protectorFlag.pos.roomName) {
             if(this.goAroundShit(protectorFlag.pos.roomName)) {return true;}
                             
-            this.travelTo(protectorFlag, {ignoreCreeps: false, reusePath: moveReusePath()});
+            this.moveTo(protectorFlag, {ignoreCreeps: false, reusePath: moveReusePath()});
             return true;                        
         }
         let hostiles = this.room.hostileCreeps();
@@ -38,7 +38,7 @@ Creep.prototype.roleProtector = function() {
             
             let healError = -1;
             if (this.rangedAttack(target) == ERR_NOT_IN_RANGE) {
-                this.travelTo(target);
+                this.moveTo(target);
             }
             if (this.hits < this.hitsMax * 0.9 )  {
                 healError = this.heal(this);
@@ -46,7 +46,7 @@ Creep.prototype.roleProtector = function() {
             
             if (healError != 0) {
                 if(this.attack(target) == ERR_NOT_IN_RANGE) {
-                    this.travelTo(target);
+                    this.moveTo(target);
                 }
             }
             return true;
@@ -56,7 +56,7 @@ Creep.prototype.roleProtector = function() {
         else if(_.filter(this.room.find(FIND_MY_CREEPS), p => p.hits < p.hitsMax).length > 0 ) {
                     let patients = _.filter(this.room.find(FIND_MY_CREEPS), p => p.hits < p.hitsMax);
                     if(this.heal(patients[0]) == ERR_NOT_IN_RANGE) {
-                        this.travelTo(patients[0]);
+                        this.moveTo(patients[0]);
                     }
             }
     
@@ -66,7 +66,7 @@ Creep.prototype.roleProtector = function() {
             
             
             if (range > 2) {
-                this.travelTo(protectorFlag, {ignoreCreeps: false, reusePath: moveReusePath()});
+                this.moveTo(protectorFlag, {ignoreCreeps: false, reusePath: moveReusePath()});
             }
             
         }
@@ -83,7 +83,7 @@ Creep.prototype.roleProtector = function() {
                 
                 let healError = -1;
                 if (this.rangedAttack(target) == ERR_NOT_IN_RANGE) {
-                    this.travelTo(target);
+                    this.moveTo(target);
                 }
                 if (this.hits < this.hitsMax * 0.9 )  {
                     healError = this.heal(this);
@@ -91,14 +91,14 @@ Creep.prototype.roleProtector = function() {
                 
                 if (healError != 0) {
                     if(this.attack(target) == ERR_NOT_IN_RANGE) {
-                        this.travelTo(target);
+                        this.moveTo(target);
                     }
                 }
                 return true;
             }
             let range = this.pos.getRangeTo(this.room.controller);
             if (range > 1) {
-                this.travelTo(this.room.controller, {reusePath: moveReusePath(), ignoreCreeps: true});
+                this.moveTo(this.room.controller, {reusePath: moveReusePath(), ignoreCreeps: true});
             }
             
             

@@ -36,11 +36,11 @@ Creep.prototype.roleClaimer = function() {
                 }
             }
             else {
-                this.travelTo(this.room.controller);
+                this.moveTo(this.room.controller);
             }
 
             if (returncode == ERR_NOT_IN_RANGE) {
-                this.travelTo(this.room.controller);
+                this.moveTo(this.room.controller);
             }
             
             // console.log('name:' + this.name + 'errorcode: ' +  returncode);

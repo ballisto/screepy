@@ -18,7 +18,7 @@ Creep.prototype.roleEnergyLoader = function() {
                 this.memory.cursource = source.id;
                 let res = this.withdraw(source, RESOURCE_ENERGY);
                 if (res == ERR_NOT_IN_RANGE) {
-                    this.travelTo(source, {reusePath: 50});
+                    this.moveTo(source, {reusePath: 50});
                     return true;
                 }              
                 else {
@@ -48,7 +48,7 @@ Creep.prototype.roleEnergyLoader = function() {
                 let res = this.transfer(sink, RESOURCE_ENERGY);
                 
                 if (res == ERR_NOT_IN_RANGE) {
-                    this.travelTo(sink, {reusePath: 50});
+                    this.moveTo(sink, {reusePath: 50});
                     return true;
                 }
                 else {

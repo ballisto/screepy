@@ -50,7 +50,7 @@ Creep.prototype.moveToMy = function(target, range) {
 var notMovedSince = 0;
 //creep has a history of path conflicts in cache
 if(this.getCacheKey("notMovedSince") != undefined && this.getCacheKey("notMovedSince") > 2) {
-  this.travelTo(target);
+  this.moveTo(target);
   return false;
 }
 else {
@@ -95,7 +95,7 @@ this.creepLog('moveToMy search:', JSON.stringify(search));
 // Fallback to moveTo when the path is incomplete and the creep is only switching positions
 if ((search.path.length < 2 && search.incomplete) || notMovedSince > 2) {
   // this.log(`fallback ${JSON.stringify(target)} ${JSON.stringify(search)}`);
-  this.travelTo(target);
+  this.moveTo(target);
   return false;
 }
 const moveReturnCode = this.move(this.pos.getDirectionTo(search.path[0] || target.pos || target));
@@ -170,7 +170,7 @@ else {
                 return true;
               }
             }
-            this.travelTo(targetObject, {reusePath: 88});
+            this.moveTo(targetObject, {reusePath: 88});
           }
           else {
           switch (curJobData.task) {
@@ -270,7 +270,7 @@ Creep.prototype.getEnergy =
               // try to withdraw energy, if the container is not in range
               if (this.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                   // move towards it
-                  this.travelTo(container, {reusePath: 88});
+                  this.moveTo(container, {reusePath: 88});
               }
           }
       }
@@ -285,7 +285,7 @@ Creep.prototype.getEnergy =
 
               var source_pos = source.pos;
 
-              this.travelTo(source);
+              this.moveTo(source);
 
           }
       }

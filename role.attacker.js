@@ -4,7 +4,7 @@ Creep.prototype.roleAttacker = function() {
     const healerObject = Game.getObjectById(this.memory.healer);
     if(healerObject instanceof Creep) {
       if (this.pos.getRangeTo(healerObject) > 1) {
-        this.travelTo(healerObject);
+        this.moveTo(healerObject);
         return true;
       }
     }
@@ -30,7 +30,7 @@ Creep.prototype.roleAttacker = function() {
           if(this.room.name != roomToAttack.name) {
             if((this.homeRoom().memory.attackRoom == 'W57N5') && this.memory.W56N1WP == undefined) {
               if(this.pos.getRangeTo(Game.flags['W56N1_WP']) >1) {
-                  this.travelTo(Game.flags['W56N1_WP']);
+                  this.moveTo(Game.flags['W56N1_WP']);
                   return true;
               }
               else {
@@ -39,7 +39,7 @@ Creep.prototype.roleAttacker = function() {
           }
           else if((this.homeRoom().memory.attackRoom == 'W57N5') && this.memory.W55N5WP == undefined) {
               if(this.pos.getRangeTo(Game.flags['W55N5_WP']) >1) {
-                  this.travelTo(Game.flags['W55N5_WP']);
+                  this.moveTo(Game.flags['W55N5_WP']);
                   return true;
               }
               else {
@@ -50,14 +50,14 @@ Creep.prototype.roleAttacker = function() {
             return true;
           }
           else {
-            this.travelTo(roomToAttack.controller);
+            this.moveTo(roomToAttack.controller);
             return true;
           }
         }
         // if(Game.getObjectById('59c9063cb438bd4e51c47da8') != undefined) {
         //   var tmpWall = Game.getObjectById('59c9063cb438bd4e51c47da8');
         //   if(this.attack(tmpWall) == ERR_NOT_IN_RANGE) {
-        //       this.travelTo(tmpWall);
+        //       this.moveTo(tmpWall);
         //   }
         // }
         var prey = null;
@@ -87,7 +87,7 @@ Creep.prototype.roleAttacker = function() {
             //     }
             //   }
             // }
-            this.travelTo(prey);
+            this.moveTo(prey);
             // console.log(prey.pos)
             return true;
           }
@@ -104,12 +104,12 @@ Creep.prototype.roleAttacker = function() {
           }
           if (target != undefined)  {
             if(this.attack(target) == ERR_NOT_IN_RANGE) {
-              this.travelTo(target);
+              this.moveTo(target);
             }
             return true;
           }
           else if(roomToAttack.controller != undefined) {
-            this.travelTo(roomToAttack.controller);
+            this.moveTo(roomToAttack.controller);
             return true;
           }
         }
@@ -124,7 +124,7 @@ Creep.prototype.roleAttacker = function() {
         var hostileCreeps = this.room.hostileCreeps();
         if (hostileCreeps.length > 0) {
           if(this.attack(hostileCreeps[0]) == ERR_NOT_IN_RANGE) {
-            this.travelTo(hostileCreeps[0]);
+            this.moveTo(hostileCreeps[0]);
             return true;
         }
       }

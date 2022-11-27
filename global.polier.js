@@ -45,7 +45,7 @@ polier.runCreeps = function() {
             });
             if (area.length > 0) {
                 let destPos = creep.room.getPositionAt(area[0].x, area[0].y);
-                creep.travelTo(destPos);
+                creep.moveTo(destPos);
             }
             else {
                 console.log(creep.name + " - No safe area found in room " + curRoom.name + ".");

@@ -36,19 +36,19 @@ Creep.prototype.roleDemolisher = function() {
         // if(this.pos.getRangeTo(demolishFlag.pos) > 5) {
         if (this.room.name != demolishFlag.pos.roomName) {
             
-            this.travelTo(demolishFlag);
+            this.moveTo(demolishFlag);
             return true;
         }
         else if (demolishFlag.memory.target == "marauder") {
             
             let closestHostileStructure = this.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES);
             if (this.dismantle(closestHostileStructure) == ERR_NOT_IN_RANGE) {
-                this.travelTo(closestHostileStructure);
+                this.moveTo(closestHostileStructure);
             }
         }
         else if (demolishFlag.memory.target == "all") {
             if(this.pos.getRangeTo(demolishFlag) > 2) {
-                this.travelTo(demolishFlag);
+                this.moveTo(demolishFlag);
             }
             else {
             
@@ -56,14 +56,14 @@ Creep.prototype.roleDemolisher = function() {
                 let dismantleResult = this.dismantle(closestHostileStructure);
                 this.say(dismantleResult);
                 if ( dismantleResult == ERR_NOT_IN_RANGE) {
-                    this.travelTo(closestHostileStructure);
+                    this.moveTo(closestHostileStructure);
                 }
             }
         }
         else if (demolishFlag.memory.target == "rampart") {
             
             if(this.pos.getRangeTo(demolishFlag) > 2) {
-                this.travelTo(demolishFlag);
+                this.moveTo(demolishFlag);
                 return true;
             }
             //demolish flag position structures
@@ -73,7 +73,7 @@ Creep.prototype.roleDemolisher = function() {
                 // console.log(i)
                 if (targetlist[i].structureType != undefined) {
                     if (this.dismantle(targetlist[i]) == ERR_NOT_IN_RANGE) {
-                        this.travelTo(targetlist[i]);
+                        this.moveTo(targetlist[i]);
                     }
                     
                 }
@@ -92,7 +92,7 @@ Creep.prototype.roleDemolisher = function() {
             // }
             // console.log(this.pos.getRangeTo(demolishFlag))
             if(this.pos.getRangeTo(demolishFlag) > 2) {
-                this.travelTo(demolishFlag);
+                this.moveTo(demolishFlag);
                 return true;
             }
             //demolish flag position structures
@@ -102,16 +102,16 @@ Creep.prototype.roleDemolisher = function() {
                 // console.log(i)
                 if (targetlist[i].structureType != undefined) {
                     if (this.dismantle(targetlist[i]) == ERR_NOT_IN_RANGE) {
-                        this.travelTo(targetlist[i]);
+                        this.moveTo(targetlist[i]);
                     }
                     // if ((targetlist[i].store != undefined && targetlist[i].store[RESOURCE_ENERGY] > 0) || (targetlist[i].energy != undefined && targetlist[i].energy > 0)) {
                     //     //empty structure of energy first
                     //     if (this.withdraw(targetlist[i], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    //         this.travelTo(targetlist[i]);
+                    //         this.moveTo(targetlist[i]);
                     //     }
                     // }
                     // else if (this.dismantle(targetlist[i]) == ERR_NOT_IN_RANGE) {
-                    //     this.travelTo(targetlist[i]);
+                    //     this.moveTo(targetlist[i]);
                     // }
                     // break;
                 }
@@ -123,7 +123,7 @@ Creep.prototype.roleDemolisher = function() {
                 //         for(var r in containers[c].store) {
                 //             if(containers[c].store[r] != RESOURCE_ENERGY) {
                 //                 if (this.withdraw(containers[c], containers[c].store[r]) == ERR_NOT_IN_RANGE) {
-                //                     this.travelTo(containers[c]);
+                //                     this.moveTo(containers[c]);
                 //                 }
                 //             }
                 //         }

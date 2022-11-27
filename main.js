@@ -9,7 +9,7 @@ require("globals");
 global.reqCPU = Game.cpu.getUsed();
 global.start = Game.time;
 // console.log('CPU@Initialization: ' + (global.reqCPU - cpu) + " / Tick: " + Game.time + " / Bucket: " + Game.cpu.bucket);
-var Traveler = require('Traveler');
+
 const profiler = require('screeps-profiler'); // cf. https://www.npmjs.com/package/screeps-profiler
 profiler.enable() ;
 
@@ -111,13 +111,13 @@ module.exports.loop = function() {
                 }
                 if( powerSpawn != undefined) {
                     if ( Dozer.renew(powerSpawn) == ERR_NOT_IN_RANGE) {
-                        Dozer.travelTo(powerSpawn);    
+                        Dozer.moveTo(powerSpawn);    
                     }
                 }
             }
             else if( !Game.rooms[powerCreepSpawnRoomName].controller.isPowerEnabled ) {
                 if ( Dozer.enableRoom(Game.rooms[powerCreepSpawnRoomName].controller) == ERR_NOT_IN_RANGE) {
-                        Dozer.travelTo(Game.rooms[powerCreepSpawnRoomName].controller);    
+                        Dozer.moveTo(Game.rooms[powerCreepSpawnRoomName].controller);    
                     }
             }
             else {
@@ -139,7 +139,7 @@ module.exports.loop = function() {
                             let usePowerStorageResult = Dozer.usePower(PWR_OPERATE_STORAGE, Game.rooms[powerCreepSpawnRoomName].storage);
                             
                             if ( usePowerStorageResult === ERR_NOT_IN_RANGE ) {
-                                Dozer.travelTo(Game.rooms[powerCreepSpawnRoomName].storage);
+                                Dozer.moveTo(Game.rooms[powerCreepSpawnRoomName].storage);
                             }
                             else if ( usePowerStorageResult === ERR_NOT_ENOUGH_RESOURCES ) {
                                 // Dozer.say(Game.rooms[powerCreepSpawnRoomName].storage.store[RESOURCE_OPS]);
@@ -168,7 +168,7 @@ module.exports.loop = function() {
                             let usePowerTerminalResult = Dozer.usePower(PWR_OPERATE_TERMINAL, Game.rooms[powerCreepSpawnRoomName].terminal);
                             
                             if ( usePowerTerminalResult === ERR_NOT_IN_RANGE ) {
-                                Dozer.travelTo(Game.rooms[powerCreepSpawnRoomName].terminal);
+                                Dozer.moveTo(Game.rooms[powerCreepSpawnRoomName].terminal);
                             }
                             else if ( usePowerTerminalResult === ERR_NOT_ENOUGH_RESOURCES ) {
                                 // Dozer.say(Game.rooms[powerCreepSpawnRoomName].storage.store[RESOURCE_OPS]);

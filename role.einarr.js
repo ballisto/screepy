@@ -6,7 +6,7 @@ Creep.prototype.roleEinarr = function() {
     //   const healerObject = Game.getObjectById(this.memory.healer);
     //   if(healerObject instanceof Creep) {
     //     if (this.pos.getRangeTo(healerObject) > 1) {
-    //       this.travelTo(healerObject);
+    //       this.moveTo(healerObject);
     //       return true;
     //     }
     //   }
@@ -17,7 +17,7 @@ Creep.prototype.roleEinarr = function() {
             var hostileCreeps = this.room.hostileCreeps();
             if (hostileCreeps.length > 0) {
               if(this.rangedAttack(hostileCreeps[0]) == ERR_NOT_IN_RANGE) {
-                this.travelTo(hostileCreeps[0]);
+                this.moveTo(hostileCreeps[0]);
                 return true;
             }
           }
@@ -34,7 +34,7 @@ Creep.prototype.roleEinarr = function() {
       if ( this.homeRoom().memory.attackRoom != undefined ) {
         if((this.homeRoom().memory.attackRoom == 'W57N5') && this.memory.W56N1WP == undefined) {
           if(this.pos.getRangeTo(Game.flags['W56N1_WP']) >1) {
-              this.travelTo(Game.flags['W56N1_WP']);
+              this.moveTo(Game.flags['W56N1_WP']);
               return true;
           }
           else {
@@ -43,7 +43,7 @@ Creep.prototype.roleEinarr = function() {
       }
       else if((this.homeRoom().memory.attackRoom == 'W57N5') && this.memory.W55N5WP == undefined) {
           if(this.pos.getRangeTo(Game.flags['W55N5_WP']) >1) {
-              this.travelTo(Game.flags['W55N5_WP']);
+              this.moveTo(Game.flags['W55N5_WP']);
               return true;
           }
           else {
@@ -62,19 +62,19 @@ Creep.prototype.roleEinarr = function() {
             // const exitDir = this.room.findExitTo(roomToAttack);
             // const exit = this.pos.findClosestByRange(exitDir);
             // const exit = Game.getObjectById('59bbc39d2052a716c3ce66ea');
-            this.travelTo(roomToAttack.controller);
+            this.moveTo(roomToAttack.controller);
             // console.log(roomToAttack);
             return true;
           }
           // if(Game.getObjectById('59c9063cb438bd4e51c47da8') != undefined) {
           //   var tmpWall = Game.getObjectById('59c9063cb438bd4e51c47da8');
           //   if(this.attack(tmpWall) == ERR_NOT_IN_RANGE) {
-          //       this.travelTo(tmpWall);
+          //       this.moveTo(tmpWall);
           //   }
           // }
           let fixWeakRampart = new RoomPosition(19,29,'W57N5');
           if(this.pos.getRangeTo(fixWeakRampart) > 1) {
-            this.travelTo(fixWeakRampart);
+            this.moveTo(fixWeakRampart);
   
           }
           else {
@@ -95,7 +95,7 @@ Creep.prototype.roleEinarr = function() {
   
           if(weakRamparts.length > 0) {
             if(this.dismantle(weakRamparts[0]) == ERR_NOT_IN_RANGE) {
-              this.travelTo(weakRamparts[0]);
+              this.moveTo(weakRamparts[0]);
               return true;
             }
           }
@@ -103,7 +103,7 @@ Creep.prototype.roleEinarr = function() {
           let spawns = this.room.find(FIND_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_SPAWN });
           if(spawns.length > 0) {
             if(this.dismantle(spawns[0]) == ERR_NOT_IN_RANGE) {
-              this.travelTo(spawns[0]);
+              this.moveTo(spawns[0]);
               return true;
             }
           }
@@ -136,7 +136,7 @@ Creep.prototype.roleEinarr = function() {
               //     }
               //   }
               // }
-              this.travelTo(prey);
+              this.moveTo(prey);
               return true;
             }
           }
@@ -146,12 +146,12 @@ Creep.prototype.roleEinarr = function() {
             if (hostileExtensions.length > 0) {
               closestHostileExtension = this.pos.findClosestByRange(hostileExtensions);
               if(this.attack(closestHostileExtension) == ERR_NOT_IN_RANGE) {
-                this.travelTo(closestHostileExtension);
+                this.moveTo(closestHostileExtension);
               }
               return true;
             }
             else if(roomToAttack.controller != undefined) {
-              this.travelTo(roomToAttack.controller);
+              this.moveTo(roomToAttack.controller);
               return true;
             }
           }
@@ -166,7 +166,7 @@ Creep.prototype.roleEinarr = function() {
           var hostileCreeps = this.room.hostileCreeps();
           if (hostileCreeps.length > 0) {
             if(this.rangedAttack(hostileCreeps[0]) == ERR_NOT_IN_RANGE) {
-              this.travelTo(hostileCreeps[0]);
+              this.moveTo(hostileCreeps[0]);
               return true;
           }
         }

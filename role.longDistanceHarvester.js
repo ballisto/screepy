@@ -37,7 +37,7 @@ module.exports = {
                     // try to transfer energy, if it is not in range
                     if (creep.transfer(structure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                         // move towards it
-                        creep.travelTo(structure);
+                        creep.moveTo(structure);
                     }
                 }
             }
@@ -46,7 +46,7 @@ module.exports = {
                 // find exit to home room
                 var exit = creep.room.findExitTo(creep.memory.home);
                 // and move to exit
-                creep.travelTo(creep.pos.findClosestByRange(exit));
+                creep.moveTo(creep.pos.findClosestByRange(exit));
             }
         }
         // if creep is supposed to harvest energy from source
@@ -59,7 +59,7 @@ module.exports = {
                 // try to harvest energy, if the source is not in range
                 if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
                     // move towards the source
-                    creep.travelTo(source);
+                    creep.moveTo(source);
                 }
             }
             // if not in target room
@@ -67,7 +67,7 @@ module.exports = {
                 // find exit to target room
                 var exit = creep.room.findExitTo(creep.memory.target);
                 // move to exit
-                creep.travelTo(creep.pos.findClosestByRange(exit));
+                creep.moveTo(creep.pos.findClosestByRange(exit));
             }
         }
     }
