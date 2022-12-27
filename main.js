@@ -87,7 +87,7 @@ module.exports.loop = function() {
         // }
         
 
-        let powerCreepSpawnRoomName = 'W53N18';
+        let powerCreepSpawnRoomName = 'W52N14';
         let powerCreepName = 'Dozer';
         let Dozer = Game.powerCreeps[powerCreepName];
         if(Game.time % 111 == 0) {

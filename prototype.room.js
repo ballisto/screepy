@@ -48,7 +48,7 @@ Room.prototype.log = function(...messages) {
                 if ((global.mineralDescriptions[r].tier == 0) && r !== 'energy' && this.storage.store[r] > 100  && this.storage.store[r] > this.memory.resourceLimits[r].maxStorage + 2000 ) {
                     let transferAmount = 1000;
                     if (this.storage.store[r] < 1000) { transferAmount = this.storage.store[r];}
-                    terminalTransferX(r, transferAmount, this.name, 'W53N18', true);
+                    terminalTransferX(r, transferAmount, this.name, 'W52N14', true);
                     // console.log(this.name + " "  + r + " - " + this.storage.store[r]);
                     // console.log( (global.mineralDescriptions[r].tier) );
                     // 
