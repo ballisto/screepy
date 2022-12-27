@@ -153,35 +153,35 @@ module.exports.loop = function() {
                         }
                     }
                 }
-                if ( Dozer.powers[PWR_OPERATE_TERMINAL] != undefined && Dozer.powers[PWR_OPERATE_TERMINAL].cooldown === 0 && Game.rooms[powerCreepSpawnRoomName].terminal != undefined) {
-                    // console.log(JSON.stringify(Game.rooms[powerCreepSpawnRoomName].storage.effects));
-                    if ( Dozer.powers[PWR_OPERATE_TERMINAL].cooldown === 0 && Game.rooms[powerCreepSpawnRoomName].terminal != undefined) {
-                        let terminalEffectTicksRemaining = 0;
-                        if ( Game.rooms[powerCreepSpawnRoomName].terminal.effects != undefined ) {
-                            let terminalEffectInfo = _.filter(Game.rooms[powerCreepSpawnRoomName].terminal.effects, (e) => e.power == PWR_OPERATE_TERMINAL);
-                            if (terminalEffectInfo.length == 1) {
-                                terminalEffectTicksRemaining = terminalEffectInfo[0].ticksRemaining;
-                                // console.log(storageEffectTicksRemaining);
-                            }
-                        }
-                        if ( terminalEffectTicksRemaining < 20 ) {
-                            let usePowerTerminalResult = Dozer.usePower(PWR_OPERATE_TERMINAL, Game.rooms[powerCreepSpawnRoomName].terminal);
+                // if ( Dozer.powers[PWR_OPERATE_TERMINAL] != undefined && Dozer.powers[PWR_OPERATE_TERMINAL].cooldown === 0 && Game.rooms[powerCreepSpawnRoomName].terminal != undefined) {
+                //     // console.log(JSON.stringify(Game.rooms[powerCreepSpawnRoomName].storage.effects));
+                //     if ( Dozer.powers[PWR_OPERATE_TERMINAL].cooldown === 0 && Game.rooms[powerCreepSpawnRoomName].terminal != undefined) {
+                //         let terminalEffectTicksRemaining = 0;
+                //         if ( Game.rooms[powerCreepSpawnRoomName].terminal.effects != undefined ) {
+                //             let terminalEffectInfo = _.filter(Game.rooms[powerCreepSpawnRoomName].terminal.effects, (e) => e.power == PWR_OPERATE_TERMINAL);
+                //             if (terminalEffectInfo.length == 1) {
+                //                 terminalEffectTicksRemaining = terminalEffectInfo[0].ticksRemaining;
+                //                 // console.log(storageEffectTicksRemaining);
+                //             }
+                //         }
+                //         if ( terminalEffectTicksRemaining < 20 ) {
+                //             let usePowerTerminalResult = Dozer.usePower(PWR_OPERATE_TERMINAL, Game.rooms[powerCreepSpawnRoomName].terminal);
                             
-                            if ( usePowerTerminalResult === ERR_NOT_IN_RANGE ) {
-                                Dozer.moveTo(Game.rooms[powerCreepSpawnRoomName].terminal);
-                            }
-                            else if ( usePowerTerminalResult === ERR_NOT_ENOUGH_RESOURCES ) {
-                                // Dozer.say(Game.rooms[powerCreepSpawnRoomName].storage.store[RESOURCE_OPS]);
-                                if (Game.rooms[powerCreepSpawnRoomName].storage.store[RESOURCE_OPS] > 0) {
-                                    Dozer.say(Dozer.withdraw(Game.rooms[powerCreepSpawnRoomName].storage, RESOURCE_OPS, 100 - Dozer.carry[RESOURCE_OPS]));
-                                }
-                            }
-                            else {
-                                Dozer.say(usePowerTerminalResult);
-                            }
-                        }
-                    }
-                }
+                //             if ( usePowerTerminalResult === ERR_NOT_IN_RANGE ) {
+                //                 Dozer.moveTo(Game.rooms[powerCreepSpawnRoomName].terminal);
+                //             }
+                //             else if ( usePowerTerminalResult === ERR_NOT_ENOUGH_RESOURCES ) {
+                //                 // Dozer.say(Game.rooms[powerCreepSpawnRoomName].storage.store[RESOURCE_OPS]);
+                //                 if (Game.rooms[powerCreepSpawnRoomName].storage.store[RESOURCE_OPS] > 0) {
+                //                     Dozer.say(Dozer.withdraw(Game.rooms[powerCreepSpawnRoomName].storage, RESOURCE_OPS, 100 - Dozer.carry[RESOURCE_OPS]));
+                //                 }
+                //             }
+                //             else {
+                //                 Dozer.say(usePowerTerminalResult);
+                //             }
+                //         }
+                //     }
+                // }
                 // Dozer.moveTo(Game.rooms[powerCreepSpawnRoomName].storage);   
                 if(Dozer.powers[PWR_GENERATE_OPS] != undefined && Dozer.powers[PWR_GENERATE_OPS].cooldown === 0) {
                     
